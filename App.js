@@ -3,22 +3,16 @@ import { StatusBar } from "expo-status-bar";
 import { Button, StyleSheet, Text, View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import * as DocumentPicker from "expo-document-picker";
-import * as FileSystem from "expo-file-system";
-import { unzip } from "react-native-zip-archive";
+import {
+  linkedinToDatabase,
+  printLinkedinDatabase,
+} from "./src/utils/linkedin";
 
 export default function App() {
   const onZipFileSelected = async (result) => {
     if (result) {
       const uri = result.assets[0].uri;
-      console.log("uri", uri);
-      //unzip
-      const unzipped = await unzip(uri, FileSystem.documentDirectory);
-      console.log("unzipped", unzipped);
-
-      //read file
-      const fileUri = FileSystem.documentDirectory + "Profile.csv";
-      const fileContent = await FileSystem.readAsStringAsync(fileUri);
-      console.log("fileContent", fileContent);
+      await linkedinToDatabase(uri);
     }
   };
 
@@ -35,6 +29,10 @@ export default function App() {
             });
             onZipFileSelected(result);
           }}
+        />
+        <Button
+          title="Check Linkedin DB"
+          onPress={() => printLinkedinDatabase()}
         />
         <StatusBar style="auto" />
       </View>
