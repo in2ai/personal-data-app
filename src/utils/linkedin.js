@@ -2,7 +2,7 @@ import * as FileSystem from "expo-file-system";
 import { unzip } from "react-native-zip-archive";
 import Papa from "papaparse";
 import { connectDatabase } from "../api/db";
-export { linkedinToDatabase, printLinkedinDatabase };
+export { linkedinToDatabase };
 
 const linkedinToDatabase = async (uri) => {
   try {
@@ -17,38 +17,20 @@ const linkedinToDatabase = async (uri) => {
     const data = parsedCsv.data[0];
     const db = await connectDatabase();
     const query = {
-      sql: "insert into linkedin (address, birth_date, first_name, geo_location, headline, industry, instant_messengers, last_name, maiden_name, summary, twitter_handles, websites, zip_code) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      sql: "insert into person (name, surname, about_me, birth_date, mother_tongue) values (?, ?, ?, ?, ?)",
       args: [
-        data["Address"],
-        data["Birth Date"],
         data["First Name"],
-        data["Geo Location"],
-        data["Headline"],
-        data["Industry"],
-        data["Instant Messengers"],
         data["Last Name"],
-        data["Maiden Name"],
         data["Summary"],
-        data["Twitter Handles"],
-        data["Websites"],
-        data["Zip Code"],
+        data["Birth Date"],
+        data["Mother Tongue"],
       ],
     };
-    await db.execAsync([query], false);
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-const printLinkedinDatabase = async () => {
-  try {
-    const db = await connectDatabase();
-    const query = {
-      sql: "select * from linkedin",
-      args: [],
-    };
     const [result] = await db.execAsync([query], false);
-    console.log(result);
+    const id_person = result.insertId;
+    console.log("Person inserted with id: " + id_person);
+
+    await db.execAsync([query], false);
   } catch (error) {
     console.error(error);
   }

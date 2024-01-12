@@ -3,16 +3,14 @@ import { StatusBar } from "expo-status-bar";
 import { Button, StyleSheet, Text, View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import * as DocumentPicker from "expo-document-picker";
-import {
-  linkedinToDatabase,
-  printLinkedinDatabase,
-} from "./src/utils/linkedin";
-import {
-  europassToDatabase,
-  printEuropassDatabase,
-} from "./src/utils/europass";
+import { linkedinToDatabase } from "./src/utils/linkedin";
+import { europassToDatabase } from "./src/utils/europass";
+import { printDatabase } from "./src/utils/print";
+import { createTablesIfNotExists } from "./src/api/db";
 
 export default function App() {
+  createTablesIfNotExists();
+
   const onLinkedinZipFileSelected = async (result) => {
     if (result) {
       const uri = result.assets[0].uri;
@@ -42,10 +40,6 @@ export default function App() {
               onLinkedinZipFileSelected(result);
             }}
           />
-          <Button
-            title="Print DB: linkedin table"
-            onPress={() => printLinkedinDatabase()}
-          />
         </View>
         <View style={styles.section}>
           <Text>Europass</Text>
@@ -59,10 +53,10 @@ export default function App() {
               onEuropassPdfFileSelected(result);
             }}
           />
-          <Button
-            title="Print DB: europass table"
-            onPress={() => printEuropassDatabase()}
-          />
+        </View>
+        <View style={styles.section}>
+          <Text>Database</Text>
+          <Button title="Print DB" onPress={() => printDatabase()} />
         </View>
         <StatusBar style="auto" />
       </View>
