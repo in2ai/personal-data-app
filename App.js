@@ -3,6 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import AuthScreen from "./src/screens/Auth";
+import RelayTestScreen from "./src/screens/RelayTest";
 
 const Stack = createNativeStackNavigator();
 const App = () => {
@@ -15,6 +16,7 @@ const App = () => {
             component={AuthScreen}
             options={{ title: "Autenticación" }}
           />
+          <Stack.Screen name="RelayTest" component={RelayTestScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
