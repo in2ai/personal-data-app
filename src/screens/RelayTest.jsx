@@ -1,8 +1,10 @@
 import "expo-dev-client";
 import "react-native-url-polyfill/auto"; // this is needed to polyfill URLSearchParams which nostr-tools uses
-import { Relay } from "nostr-tools";
+import "websocket-polyfill"; // this is needed to polyfill WebSocket which nostr-tools uses
+
+import { Relay, finalizeEvent, verifyEvent } from "nostr-tools";
 import { useEffect, useState } from "react";
-import { View, Text } from "react-native";
+import { View, Text, Button } from "react-native";
 import tw from "twrnc";
 
 const RelayTestScreen = ({ navigation, route }) => {
@@ -12,7 +14,7 @@ const RelayTestScreen = ({ navigation, route }) => {
 
   const connectRelay = async () => {
     try {
-      const relay = await Relay.connect("wss://relay.damus.io");
+      const relay = await Relay.connect("ws://137.184.117.201:8008");
       console.log("relay connected: ", relay.url);
       setRelay(relay);
     } catch (e) {
@@ -29,7 +31,8 @@ const RelayTestScreen = ({ navigation, route }) => {
     const sub = relay.subscribe(
       [
         {
-          limit: 1,
+          kinds: [1],
+          authors: [publicKey],
         },
       ],
       {
@@ -43,12 +46,6 @@ const RelayTestScreen = ({ navigation, route }) => {
     );
   };
 
-  useEffect(() => {
-    if (relay) {
-      getEvents();
-    }
-  }, [relay]);
-
   return (
     <View style={tw`p-4 android:pt-2 bg-white dark:bg-black`}>
       <View style={tw`mb-4`}>
@@ -59,6 +56,28 @@ const RelayTestScreen = ({ navigation, route }) => {
       {relay && (
         <View style={tw`mb-4`}>
           <Text style={tw`text-lg`}>Connected to relay: {relay.url}</Text>
+          <Button title="Get Events" onPress={getEvents} />
+          <Button
+            title="Post Event"
+            onPress={async () => {
+              try {
+                console.log("publishing event...");
+                let eventTemplate = {
+                  kind: 1,
+                  created_at: Math.floor(Date.now() / 1000),
+                  tags: [],
+                  content: "hello world",
+                };
+                const signedEvent = finalizeEvent(eventTemplate, secretKey);
+                let isGood = verifyEvent(signedEvent);
+                console.log("isGood: ", isGood);
+                await relay.publish(signedEvent);
+                console.log("published event: ", signedEvent);
+              } catch (e) {
+                console.log("failed to publish event: ", e);
+              }
+            }}
+          />
         </View>
       )}
     </View>
