@@ -3,7 +3,7 @@ import "fast-text-encoding"; // this is needed to polyfill TextDecoder which nos
 import "react-native-get-random-values"; // this is needed to polyfill crypto.getRandomValues which nostr-tools uses
 import "react-native-webview-crypto"; // this is needed to polyfill crypto.subtle which nostr-tools uses
 
-import { View, Text, Button } from "react-native";
+import { View, Text, Button, TextInput } from "react-native";
 import tw from "twrnc";
 import { useState } from "react";
 //import { generatePrivateKey } from "nostr-tools";
@@ -18,6 +18,23 @@ const AuthScreen = ({ navigation }) => {
   return (
     <View style={tw`p-4 android:pt-2 bg-white dark:bg-black`}>
       <View style={tw`mb-4`}>
+        <Text style={tw`text-lg`}>Enter your secret key:</Text>
+        <TextInput
+          style={tw`border border-black rounded-md p-2`}
+          onChangeText={setSecretKey}
+          value={secretKey}
+        />
+        <Button
+          title="Submit"
+          onPress={() => {
+            if (secretKey.length !== 64) {
+              alert("Secret key must be 32 bytes long");
+              return;
+            }
+            setPublicKey(getPublicKey(secretKey));
+          }}
+        />
+        <Text style={tw`text-lg mt-4`}>Or generate a new one:</Text>
         <Button
           title="Create Secret Key"
           onPress={() => {

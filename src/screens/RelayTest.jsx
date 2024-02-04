@@ -3,28 +3,25 @@ import "react-native-url-polyfill/auto"; // this is needed to polyfill URLSearch
 import "websocket-polyfill"; // this is needed to polyfill WebSocket which nostr-tools uses
 
 import { Relay, finalizeEvent, verifyEvent } from "nostr-tools";
-import { useEffect, useState } from "react";
-import { View, Text, Button } from "react-native";
+import { useState } from "react";
+import { View, Text, Button, TextInput } from "react-native";
 import tw from "twrnc";
 
 const RelayTestScreen = ({ navigation, route }) => {
   const secretKey = route.params.secretKey;
   const publicKey = route.params.publicKey;
   const [relay, setRelay] = useState(null);
+  const [url, setUrl] = useState("ws://137.184.117.201:8008");
 
   const connectRelay = async () => {
     try {
-      const relay = await Relay.connect("ws://137.184.117.201:8008");
+      const relay = await Relay.connect(url);
       console.log("relay connected: ", relay.url);
       setRelay(relay);
     } catch (e) {
       console.log("relay connection failed: ", e);
     }
   };
-
-  useEffect(() => {
-    connectRelay();
-  }, []);
 
   const getEvents = () => {
     // let's query for an event that exists
@@ -52,6 +49,12 @@ const RelayTestScreen = ({ navigation, route }) => {
         <Text style={tw`text-lg`}>Relay Test</Text>
         <Text style={tw`text-sm`}>Your secret key is: {secretKey}</Text>
         <Text style={tw`text-sm`}>Your public key is: {publicKey}</Text>
+        <TextInput
+          style={tw`border border-black rounded-md p-2`}
+          onChangeText={setUrl}
+          value={url}
+        />
+        <Button title="Connect to Relay" onPress={connectRelay} />
       </View>
       {relay && (
         <View style={tw`mb-4`}>
@@ -80,6 +83,12 @@ const RelayTestScreen = ({ navigation, route }) => {
           />
         </View>
       )}
+      <View style={tw`mb-4`}>
+        <Button
+          title="Go to CV Test"
+          onPress={() => navigation.navigate("CvTest")}
+        />
+      </View>
     </View>
   );
 };

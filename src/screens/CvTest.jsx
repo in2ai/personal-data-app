@@ -3,12 +3,12 @@ import { StatusBar } from "expo-status-bar";
 import { Button, StyleSheet, Text, View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import * as DocumentPicker from "expo-document-picker";
-import { linkedinToDatabase } from "./src/utils/linkedin";
-import { europassToDatabase } from "./src/utils/europass";
-import { printDatabase } from "./src/utils/print";
-import { createTablesIfNotExists } from "./src/api/db";
+import { createTablesIfNotExists } from "../api/db";
+import { linkedinToDatabase } from "../utils/linkedin";
+import { europassToDatabase } from "../utils/europass";
+import { printDatabase } from "../utils/print";
 
-export default function App() {
+export default function CvTestScreen() {
   createTablesIfNotExists();
 
   const onLinkedinZipFileSelected = async (result) => {
