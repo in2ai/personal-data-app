@@ -28,10 +28,9 @@ const linkedinToDatabase = async (uri) => {
     };
     const [result] = await db.execAsync([query], false);
     const id_person = result.insertId;
-    console.log("Person inserted with id: " + id_person);
-
-    await db.execAsync([query], false);
+    return id_person;
   } catch (error) {
     console.error(error);
+    return null;
   }
 };

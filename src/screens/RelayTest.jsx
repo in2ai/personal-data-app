@@ -87,7 +87,9 @@ const RelayTestScreen = ({ navigation, route }) => {
       <View style={tw`mb-4`}>
         <Button
           title="Go to CV Test"
-          onPress={() => navigation.navigate("CvTest")}
+          onPress={() =>
+            navigation.navigate("CvTest", { url, secretKey, publicKey })
+          }
         />
       </View>
     </View>
