@@ -1,5 +1,5 @@
 import * as FileSystem from "expo-file-system";
-import { connectDatabase } from "../api/db";
+import { connectDatabase } from "./db";
 import { Buffer } from "buffer";
 import convert from "xml-js";
 export { europassToDatabase };

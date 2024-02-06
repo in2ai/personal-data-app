@@ -1,4 +1,5 @@
 import * as SQLite from "expo-sqlite";
+import { PersonData } from "../models/person_data";
 
 const createTablesIfNotExists = async () => {
   try {
@@ -170,6 +171,36 @@ const connectDatabase = async () => {
     console.error(error);
     return null;
   }
+};
+
+export const getPerson = async (id) => {
+  const personData: PersonData = {} as PersonData;
+  const db = await connectDatabase();
+
+  //Person
+  let query = {
+    sql: "select * from person where id = ?",
+    args: [id],
+  };
+  let [result]: any = await db.execAsync([query], false);
+  personData.person = result.rows[0];
+
+  //Experiences
+  query = {
+    sql: "select * from experience where id_person = ?",
+    args: [id],
+  };
+  [result] = await db.execAsync([query], false);
+  personData.experiences = result.rows;
+
+  //Skills
+  query = {
+    sql: "select * from skill where id_person = ?",
+    args: [id],
+  };
+  [result] = await db.execAsync([query], false);
+  personData.skills = result.rows;
+  return personData;
 };
 
 export { createTablesIfNotExists, connectDatabase };
