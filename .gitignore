@@ -38,3 +38,5 @@ yarn-error.*
 
 # devcontainer
 DL/.devcontainer/*.json
+DL/data
+DL/*.gz
