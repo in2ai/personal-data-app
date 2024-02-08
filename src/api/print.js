@@ -9,8 +9,9 @@ const printDatabase = async () => {
       args: [],
     };
     const [result] = await db.execAsync([query], false);
-    console.log(result);
+    return result;
   } catch (error) {
     console.error(error);
+    return null;
   }
 };
