@@ -1,18 +1,14 @@
-import "expo-dev-client";
-import { Button, View, Text } from "react-native";
-import { SafeAreaProvider } from "react-native-safe-area-context";
-import * as DocumentPicker from "expo-document-picker";
-import { createTablesIfNotExists, getPerson } from "../api/db";
-import { linkedinToDatabase } from "../api/linkedin";
-import { europassToDatabase } from "../api/europass";
-import { printDatabase } from "../api/print";
-import tw from "twrnc";
-import {
-  getEventsFromRelay,
-  publishEventToRelay,
-  signEvent,
-} from "../api/nostr";
-import { useState } from "react";
+import 'expo-dev-client';
+import * as DocumentPicker from 'expo-document-picker';
+import { useState } from 'react';
+import { Button, View, Text } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+
+import { createTablesIfNotExists, getPerson } from '../api/db';
+import { europassToDatabase } from '../api/europass';
+import { linkedinToDatabase } from '../api/linkedin';
+import { getEventsFromRelay, publishEventToRelay, signEvent } from '../api/nostr';
+import { printDatabase } from '../api/print';
 
 export default function CvTestScreen({ navigation, route }) {
   const secretKey = route.params.secretKey;
@@ -43,13 +39,13 @@ export default function CvTestScreen({ navigation, route }) {
   const insertOffer = async () => {
     try {
       const workOffer = {
-        title: "Oferta de trabajo",
-        summary: "Oferta de trabajo de prueba",
-        requiredSkills: ["React", "Node.js", "MongoDB"],
-        location: "Madrid",
+        title: 'Oferta de trabajo',
+        summary: 'Oferta de trabajo de prueba',
+        requiredSkills: ['React', 'Node.js', 'MongoDB'],
+        location: 'Madrid',
         price: 50000,
-        currency: "EUR",
-        period: "year",
+        currency: 'EUR',
+        period: 'year',
       };
       const workOfferString = JSON.stringify(workOffer);
 
@@ -61,7 +57,7 @@ export default function CvTestScreen({ navigation, route }) {
       };
       const signedEvent = signEvent(eventTemplate, secretKey);
       await publishEventToRelay(url, signedEvent);
-      alert("Offer inserted");
+      alert('Offer inserted');
     } catch (e) {
       alert(e.message);
     }
@@ -93,19 +89,19 @@ export default function CvTestScreen({ navigation, route }) {
       if (person.skills.find((s) => s.value === skill)) match = true;
     });
 
-    if (match) alert("Match with offer " + offer.title + "!");
-    else alert("No match");
+    if (match) alert('Match with offer ' + offer.title + '!');
+    else alert('No match');
   };
 
   return (
     <SafeAreaProvider>
-      <View style={tw`flex items-center my-4`}>
-        <Text style={tw`text-lg`}>CV Test</Text>
+      <View className="my-4 flex items-center">
+        <Text className="text-lg">CV Test</Text>
         <Button
           title="Load Linkedin ZIP"
           onPress={async () => {
             const result = await DocumentPicker.getDocumentAsync({
-              type: "application/zip",
+              type: 'application/zip',
               copyToCacheDirectory: true,
             });
             onLinkedinZipFileSelected(result);
@@ -115,7 +111,7 @@ export default function CvTestScreen({ navigation, route }) {
           title="Load Europass PDF"
           onPress={async () => {
             const result = await DocumentPicker.getDocumentAsync({
-              type: "application/pdf",
+              type: 'application/pdf',
               copyToCacheDirectory: true,
             });
             onEuropassPdfFileSelected(result);
@@ -130,14 +126,14 @@ export default function CvTestScreen({ navigation, route }) {
           }}
         />
       </View>
-      <View style={tw`flex items-center my-4`}>
-        <Text style={tw`text-lg`}>Offers</Text>
+      <View className="my-4 flex items-center">
+        <Text className="text-lg">Offers</Text>
         <Button title="Insert example offer" onPress={insertOffer} />
         <Button title="Get offers" onPress={getOffers} />
       </View>
       {personId && (
-        <View style={tw`flex items-center my-4`}>
-          <Text style={tw`text-lg`}>Match</Text>
+        <View className="my-4 flex items-center">
+          <Text className="text-lg">Match</Text>
           <Button title="My info" onPress={myInfo} />
           <Button title="Match" onPress={match} />
         </View>
