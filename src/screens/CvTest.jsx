@@ -12,7 +12,9 @@ import {
   publishEventToRelay,
   signEvent,
 } from "../api/nostr";
-import { useState } from "react";
+import { useState } from "react";  
+
+import { matchCVOffer } from "../api/dl";
 
 export default function CvTestScreen({ navigation, route }) {
   const secretKey = route.params.secretKey;
@@ -41,6 +43,7 @@ export default function CvTestScreen({ navigation, route }) {
   };
 
   const insertOffer = async () => {
+    console.log("hola")
     try {
       const workOffer = {
         title: "Oferta de trabajo",
@@ -63,6 +66,7 @@ export default function CvTestScreen({ navigation, route }) {
       await publishEventToRelay(url, signedEvent);
       alert("Offer inserted");
     } catch (e) {
+      console.log(e)
       alert(e.message);
     }
   };
@@ -86,15 +90,21 @@ export default function CvTestScreen({ navigation, route }) {
       kinds: [30023],
       limit: 1,
     });
+    // const offer = JSON.parse(offers[0].content);
 
-    const offer = JSON.parse(offers[0].content);
-    let match = false;
-    offer.requiredSkills.forEach((skill) => {
-      if (person.skills.find((s) => s.value === skill)) match = true;
-    });
+    // const person_string = jsonToSpaceDelimitedText(person);
+    // const offer_string = jsonToSpaceDelimitedText(offer);
 
-    if (match) alert("Match with offer " + offer.title + "!");
-    else alert("No match");
+    const person_string = "tengo conocimiento en python y web";
+    const offer_string = "buscamos gente que tenga conocimiento en python y desarrollo web";
+
+    console.log("person",person_string);
+    console.log(offer_string);
+
+    // De momento el modelo se carga al pulsar el boton, habria que cambiarlo para que este cargado
+    const match = await matchCVOffer(person_string,offer_string)
+
+    alert("Match with offer " + match.toString() + "%")
   };
 
   return (
