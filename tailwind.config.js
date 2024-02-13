@@ -4,7 +4,11 @@ module.exports = {
   theme: {
     fontFamily: {},
     extend: {
-      colors: {},
+      colors: {
+        h1Color: '#3c7c8c',
+        defaultAppBgColor: '#ffffff',
+        defaultTextColor: '#333',
+      },
     },
   },
   plugins: [],
