@@ -9,9 +9,11 @@ import {
   signEvent,
 } from '../api/nostr';
 import { useAuthContext } from '../context-providers/auth-context';
+import CustomButton from '../components/smart/CustomButton';
 
 const RelayTestScreen = ({ navigation, route }) => {
-  const { publicKey, secretKey } = useAuthContext();
+  const { publicKey, secretKey, logout } = useAuthContext();
+
   const [relay, setRelay] = useState(false);
   const [message, setMessage] = useState('');
   const [url, setUrl] = useState('ws://137.184.117.201:8008');
@@ -85,6 +87,10 @@ const RelayTestScreen = ({ navigation, route }) => {
           title="Go to CV Test"
           onPress={() => navigation.navigate('CvTest', { url, secretKey, publicKey })}
         />
+      </View>
+
+      <View className="w-full">
+        <CustomButton buttonType="primary" title="Logout" hasLargeFont={true} onPress={logout} />
       </View>
     </View>
   );
