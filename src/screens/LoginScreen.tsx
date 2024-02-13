@@ -7,6 +7,10 @@ import { Text, View } from 'react-native';
 import Field from '../components/smart/Field';
 import CustomButton from '../components/smart/CustomButton';
 
+// Icons
+import PersonFillLock from '../assets/img/svg/person-fill-lock.svg';
+import { useAuthContext } from '../context-providers/auth-context';
+
 const h1Style = 'text-3xl font-medium text-h1Color mb-5';
 const screenContainerStyle =
   'bg-defaultAppBgColor h-full w-full items-center justify-start p-[20%]';
@@ -14,23 +18,41 @@ const screenContainerStyle =
 type LoginScreenProps = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
 const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
+  const { handleUsername, handleSecret } = useAuthContext();
+
+  const [username, setUsername] = useState('');
+  const [secret, setSecret] = useState('');
+
+  const onSubmitUsername = () => {
+    if (!username) return;
+    handleUsername(username);
+  };
+
+  const onSubmitSecret = () => {
+    if (!secret) return;
+    handleSecret(secret);
+  };
+
   return (
     <View className={screenContainerStyle}>
-      <View className="mb-20 w-[25%]">
-        <View className="aspect-square w-full bg-slate-400"></View>
+      <View className="mb-20 w-[20%] max-w-md">
+        <View className="aspect-square w-full">
+          <PersonFillLock width={'100%'} height={'100%'} fill={'#3c7c8c'} />
+        </View>
       </View>
       <View className="w-full">
         <View className="flex w-full items-center">
           <Text className={h1Style}>Crear cuenta</Text>
           <View className="mb-5 w-full">
-            <Field label="Nombre" flex="column" />
+            <Field label="Nombre" flex="column" value={username} onChange={setUsername} />
           </View>
           <View className="w-full">
             <CustomButton
-              disabled={true}
+              disabled={!username}
               buttonType="primary"
               title="Continuar"
               hasLargeFont={true}
+              onPress={onSubmitUsername}
             />
           </View>
         </View>
@@ -38,11 +60,17 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
         <View className="flex w-full items-center">
           <Text className={h1Style}>o iniciar sesión</Text>
           <View className="mb-5 w-full">
-            <Field label="Clave secreta" flex="column" />
+            <Field label="Clave secreta" flex="column" value={secret} onChange={setSecret} />
           </View>
         </View>
         <View className="w-full">
-          <CustomButton disabled={true} buttonType="primary" title="Iniciar" hasLargeFont={true} />
+          <CustomButton
+            disabled={!secret}
+            buttonType="primary"
+            title="Iniciar"
+            hasLargeFont={true}
+            onPress={onSubmitSecret}
+          />
         </View>
       </View>
     </View>

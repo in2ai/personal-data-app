@@ -8,10 +8,10 @@ import {
   publishEventToRelay,
   signEvent,
 } from '../api/nostr';
+import { useAuthContext } from '../context-providers/auth-context';
 
 const RelayTestScreen = ({ navigation, route }) => {
-  const secretKey = route.params.secretKey;
-  const publicKey = route.params.publicKey;
+  const { publicKey, secretKey } = useAuthContext();
   const [relay, setRelay] = useState(false);
   const [message, setMessage] = useState('');
   const [url, setUrl] = useState('ws://137.184.117.201:8008');
