@@ -3,7 +3,7 @@ import '@tensorflow/tfjs-react-native';
 import * as use from '@tensorflow-models/universal-sentence-encoder';
 
 
-async function initTfjs() {
+export async function initTfjs() {
   await tf.ready();
   console.log('TensorFlow.js está listo');
   console.log(tf.getBackend());
@@ -19,12 +19,17 @@ async function testModel() {
   }
 }
 
-initTfjs();
+// initTfjs();
 // testModel();
 
-// Load universal-sentence-encoder.
-async function load_model() {
-  const model = await use.load();
+export async function load_model() {
+  let model;
+  try {
+    model = await use.load(); // Load the model
+    console.log('Modelo cargado exitosamente');
+  } catch (error) {
+    console.error('Error al cargar el modelo:', error);
+  }
   return model
 }
 
@@ -43,15 +48,7 @@ async function calculateSimilarity(embeddings) {
   return similarityScore;
 }
 
-export async function matchCVOffer(cv,offer) {
-
-  let model;
-  try {
-    model = await load_model();
-    console.log('Modelo cargado exitosamente');
-  } catch (error) {
-    console.error('Error al cargar el modelo:', error);
-  }
+export async function matchCVOffer(cv,offer,model) {
 
   try {
 
@@ -76,27 +73,27 @@ function convertirEscala(valorOriginal) {
   return valorFinal;
 }
 
-// export function jsonToSpaceDelimitedText(obj) {
-//   let result = '';
+export function jsonToSpaceDelimitedText(obj) {
+  let result = '';
 
-//   function recurse(obj) {
-//       if (obj !== null && typeof obj === 'object') {
-//           Object.entries(obj).forEach(([key, value]) => {
-//               if (Array.isArray(value)) {
-//                   value.forEach(item => {
-//                       recurse(item);
-//                   });
-//               } else if (typeof value === 'object') {
-//                   recurse(value);
-//               } else {
-//                   result += `${key} ${value} `;
-//               }
-//           });
-//       } else {
-//           result += `${obj} `;
-//       }
-//   }
+  function recurse(obj) {
+      if (obj !== null && typeof obj === 'object') {
+          Object.entries(obj).forEach(([key, value]) => {
+              if (Array.isArray(value)) {
+                  value.forEach(item => {
+                      recurse(item);
+                  });
+              } else if (typeof value === 'object') {
+                  recurse(value);
+              } else {
+                  result += `${value} `;
+              }
+          });
+      } else {
+          result += `${obj} `;
+      }
+  }
 
-//   recurse(obj);
-//   return result.trim();
-// }
+  recurse(obj);
+  return result.trim();
+}

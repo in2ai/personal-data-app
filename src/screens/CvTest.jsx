@@ -12,15 +12,28 @@ import {
   publishEventToRelay,
   signEvent,
 } from "../api/nostr";
-import { useState } from "react";  
+import React, { useState, useEffect } from 'react';
 
-import { matchCVOffer } from "../api/dl";
+import { matchCVOffer, initTfjs,load_model,jsonToSpaceDelimitedText } from "../api/dl";
 
 export default function CvTestScreen({ navigation, route }) {
   const secretKey = route.params.secretKey;
   const publicKey = route.params.publicKey;
   const url = route.params.url;
   const [personId, setPersonId] = useState(null);
+
+  const [model, setModel] = useState(null);
+  const [modelLoading, setModelLoading] = useState(true);
+
+  useEffect(() => {
+    async function initAndLoadModel() {
+      initTfjs();
+      const loadedModel = await load_model(); // Cargar el modelo
+      setModel(loadedModel);
+      setModelLoading(false); // Actualizar el estado para reflejar que la carga del modelo ha terminado
+    }
+    initAndLoadModel();
+  }, []);
 
   createTablesIfNotExists();
 
@@ -85,24 +98,29 @@ export default function CvTestScreen({ navigation, route }) {
   };
 
   const match = async () => {
+
+    if (modelLoading) {
+      alert("El modelo aún se está cargando. Por favor, espera.");
+      return;
+    }
+
     const person = await getPerson(personId);
     const offers = await getEventsFromRelay(url, {
       kinds: [30023],
       limit: 1,
     });
-    // const offer = JSON.parse(offers[0].content);
+    const offer = JSON.parse(offers[0].content);
 
-    // const person_string = jsonToSpaceDelimitedText(person);
-    // const offer_string = jsonToSpaceDelimitedText(offer);
+    const person_string = jsonToSpaceDelimitedText(person);
+    const offer_string = jsonToSpaceDelimitedText(offer);
 
-    const person_string = "tengo conocimiento en python y web";
-    const offer_string = "buscamos gente que tenga conocimiento en python y desarrollo web";
+    // const person_string = "tengo conocimiento en python y web";
+    // const offer_string = "buscamos gente que tenga conocimiento en python y desarrollo web";
 
     console.log("person",person_string);
     console.log(offer_string);
 
-    // De momento el modelo se carga al pulsar el boton, habria que cambiarlo para que este cargado
-    const match = await matchCVOffer(person_string,offer_string)
+    const match = await matchCVOffer(person_string,offer_string,model)
 
     alert("Match with offer " + match.toString() + "%")
   };
