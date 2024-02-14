@@ -5,14 +5,19 @@ import { useAuthContext } from '../context-providers/auth-context';
 
 // Screens
 import LoginScreen from '../screens/LoginScreen';
+import HomeScreen from '../screens/HomeScreen';
+import MyCvScreen from '../screens/MyCvScreen';
+import OffersScreen from '../screens/OffersScreen';
+
 import RelayTestScreen from '../screens/RelayTest';
 import CvTestScreen from '../screens/CvTest';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import HomeScreen from '../screens/HomeScreen';
 
 export type RootStackParamList = {
   Login: undefined;
   Home: undefined;
+  MyCV: undefined;
+  Offers: undefined;
 
   Auth: undefined;
   RelayTest: { secretKey: string; publicKey: string };
@@ -27,7 +32,22 @@ function MainNav(): JSX.Element {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: 'transparent',
+              borderBottomWidth: 0,
+              shadowColor: 'transparent',
+              boxShadow: 'none',
+            },
+            headerTintColor: '#3c7c8c',
+            headerTitleStyle: {
+              fontWeight: '300',
+            },
+          }}
+        >
           {!isLogged ? (
             <Stack.Screen
               name="Login"
@@ -45,6 +65,23 @@ function MainNav(): JSX.Element {
                   headerShown: false,
                 }}
               />
+              <Stack.Screen
+                name="MyCV"
+                component={MyCvScreen}
+                options={({}) => ({
+                  headerTitle: 'Mi currículum',
+                  headerShown: true,
+                })}
+              />
+              <Stack.Screen
+                name="Offers"
+                component={OffersScreen}
+                options={({}) => ({
+                  headerTitle: 'Ofertas',
+                  headerShown: true,
+                })}
+              />
+
               <Stack.Screen name="RelayTest" component={RelayTestScreen} />
               <Stack.Screen name="CvTest" component={CvTestScreen} />
             </>

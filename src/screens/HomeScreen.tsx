@@ -22,9 +22,13 @@ type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const { logout } = useAuthContext();
 
-  const onGoToCv = () => {};
+  const onGoToCv = () => {
+    navigation.navigate('MyCV', { name: 'MyCV' });
+  };
 
-  const onGoToOffers = () => {};
+  const onGoToOffers = () => {
+    navigation.navigate('Offers', { name: 'Offers' });
+  };
 
   const onLogout = () => {
     logout();
