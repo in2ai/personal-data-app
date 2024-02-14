@@ -8,9 +8,12 @@ import LoginScreen from '../screens/LoginScreen';
 import RelayTestScreen from '../screens/RelayTest';
 import CvTestScreen from '../screens/CvTest';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import HomeScreen from '../screens/HomeScreen';
 
 export type RootStackParamList = {
   Login: undefined;
+  Home: undefined;
+
   Auth: undefined;
   RelayTest: { secretKey: string; publicKey: string };
   CvTest: undefined;
@@ -35,6 +38,13 @@ function MainNav(): JSX.Element {
             />
           ) : (
             <>
+              <Stack.Screen
+                name="Home"
+                component={HomeScreen}
+                options={{
+                  headerShown: false,
+                }}
+              />
               <Stack.Screen name="RelayTest" component={RelayTestScreen} />
               <Stack.Screen name="CvTest" component={CvTestScreen} />
             </>
