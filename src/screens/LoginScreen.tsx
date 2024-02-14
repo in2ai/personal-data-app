@@ -17,19 +17,19 @@ const screenContainerStyle = 'flex h-full w-full p-[20%]';
 type LoginScreenProps = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
 const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
-  const { handleUsername, handleSecret } = useAuthContext();
+  const { loginByUsername, loginBySecretKey } = useAuthContext();
 
   const [username, setUsername] = useState('');
   const [secret, setSecret] = useState('');
 
   const onSubmitUsername = () => {
     if (!username) return;
-    handleUsername(username);
+    loginByUsername(username);
   };
 
   const onSubmitSecret = () => {
     if (!secret) return;
-    handleSecret(secret);
+    loginBySecretKey(secret);
   };
 
   return (
