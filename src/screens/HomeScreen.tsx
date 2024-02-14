@@ -7,6 +7,9 @@ import { RootStackParamList } from '../navigation/MainNav';
 
 import CustomButton from '../components/smart/CustomButton';
 
+// Expo
+import { StatusBar } from 'expo-status-bar';
+
 // Icons
 import PersonWorkspace from '../assets/img/svg/person-workspace.svg';
 import FileEarmarkPerson from '../assets/img/svg/file-earmark-person.svg';
@@ -36,7 +39,8 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
 
   return (
     <View className={`relative ${screenContainerStyle}`}>
-      <View className="absolute left-5 top-10">
+      <StatusBar style={'light'} backgroundColor={'#3c7c8c'} />
+      <View className="absolute left-5 top-12">
         <CustomPressableOpacity accessibilityLabel="logout" onPress={onLogout}>
           <View className="flex-row items-center">
             <Power width={25} height={25} fill={'#3c7c8c'} />

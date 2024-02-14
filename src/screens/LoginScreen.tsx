@@ -6,6 +6,9 @@ import { ScrollView, Text, View } from 'react-native';
 import Field from '../components/smart/Field';
 import CustomButton from '../components/smart/CustomButton';
 
+// Expo
+import { StatusBar } from 'expo-status-bar';
+
 // Icons
 import PersonFillLock from '../assets/img/svg/person-fill-lock.svg';
 import { useAuthContext } from '../context-providers/auth-context';
@@ -34,6 +37,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
 
   return (
     <ScrollView>
+      <StatusBar style={'light'} backgroundColor={'#3c7c8c'} />
       <View className={screenContainerStyle}>
         <View className="mb-20 max-w-md items-center ">
           <PersonFillLock width={100} height={100} fill={'#3c7c8c'} />
