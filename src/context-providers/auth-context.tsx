@@ -1,12 +1,17 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { generateKeyPair, getPublicKeyFromPrivate } from '../api/nostr';
+import {
+  getSecuredStoredUser,
+  removeSecuredStoredUser,
+  setSecuredStoredUser,
+} from '../services/store/secure-store-service';
+import { User } from '../models/user';
 
 interface AuthContextInterface {
   isLoading: boolean;
-  login: (username: string) => Promise<boolean>;
   logout: () => void;
-  handleSecret: (secret: string) => void;
-  handleUsername: (username: string) => void;
+  loginBySecretKey: (secret: string) => void;
+  loginByUsername: (username: string) => void;
   publicKey: string | null;
   secretKey: string | null;
   isLogged: boolean;
@@ -22,52 +27,73 @@ const AuthContextProvider = (props: any) => {
 
   const isLogged = secretKey !== null;
 
-  const handleSecret = (secretKey: string) => {
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  // LOGIN
+  const loginBySecretKey = (secretKey: string) => {
     try {
       if (secretKey.length !== 64) {
         alert('Secret key must be 64 bytes long');
         return;
       }
       const publicKey = getPublicKeyFromPrivate(secretKey);
-      setPublicKey(publicKey);
-      setSecretKey(secretKey);
+
+      const user: User = { publicKey, secretKey };
+      setUser(user);
     } catch (e) {
       alert(e.message);
     }
   };
 
-  const handleUsername = () => {
-    console.log('handleUsername');
-    console.log('isLoggedBEFORE: ', isLogged);
-    console.log('secretBEFORE: ', secretKey);
+  const loginByUsername = () => {
     try {
       const keyPair = generateKeyPair();
-      setPublicKey(keyPair.publicKey);
-      setSecretKey(keyPair.secretKey);
-      console.log('isLoggedAFTER: ', isLogged);
-      console.log('secretAFTER: ', secretKey);
+
+      const user: User = { publicKey: keyPair.publicKey, secretKey: keyPair.secretKey };
+      setUser(user);
     } catch (e) {
       alert(e.message);
     }
   };
-
-  const login = async (username: string): Promise<boolean> => {
-    setIsLoading(true);
-    // recover secret
-    return true;
+  const logout = async () => {
+    removeUser();
   };
 
-  const logout = async () => {
+  // USER
+  const getUser = async () => {
+    getSecuredStoredUser()
+      .then((user) => {
+        setPublicKey(user.publicKey);
+        setSecretKey(user.secretKey);
+      })
+      .catch(() => {
+        console.log('No user stored');
+      });
+  };
+
+  const setUser = (user: User) => {
+    setPublicKey(user.publicKey);
+    setSecretKey(user.secretKey);
+    setSecuredStoredUser(user).catch((e) => {
+      alert(e.message);
+    });
+  };
+
+  const removeUser = () => {
     setPublicKey(null);
     setSecretKey(null);
+    removeSecuredStoredUser().catch((e) => {
+      alert(e.message);
+    });
   };
 
   const api = {
     isLoading,
-    login,
     logout,
-    handleSecret,
-    handleUsername,
+    loginBySecretKey,
+    loginByUsername,
     publicKey,
     secretKey,
     isLogged,
