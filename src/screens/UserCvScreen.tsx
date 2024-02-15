@@ -8,6 +8,21 @@ import { UserCV } from '../models/userCV';
 import TrashFill from '../assets/img/svg/trash-fill.svg';
 import CustomPressableOpacity from '../components/layout/CustomPressableOpacity';
 
+//TODO: move to component
+const USER_DATA_ROWS: { label: string; property: string }[] = [
+  { label: 'Nombre', property: 'firstName' },
+  { label: 'Apellidos', property: 'firstName' },
+  { label: 'Dirección', property: 'address' },
+  { label: 'Fecha de nacimiento', property: 'birthDate' },
+  { label: 'Resumen', property: 'summary' },
+  { label: 'Industria', property: 'industry' },
+  { label: 'Código postal', property: 'zipCode' },
+  { label: 'Localización', property: 'geoLocation' },
+  { label: 'Twitter', property: 'twitterHandles' },
+  { label: 'Página web', property: 'websites' },
+  { label: 'Mensajería instantánea', property: 'instantMessengers' },
+];
+
 type UserCvScreenProps = {
   userCv: UserCV;
   onRemoveCv?: () => void;
@@ -29,20 +44,17 @@ const UserCvScreen: React.FC<UserCvScreenProps> = ({ userCv, onRemoveCv }) => {
           <Text className="text-xl text-h1Color">Datos personales</Text>
         </View>
         <View className="pb-2">
-          <View className="w-full pb-1">
-            <View className="pb-3">
-              <Text className="text-lg text-h1Color">Nombre y apellidos</Text>
-              <Text className="text-md text-defaultTextColor">
-                {userCv.name} {userCv.lastName}
-              </Text>
-            </View>
-          </View>
-          <View className="w-full pb-1">
-            <View className="pb-3">
-              <Text className="text-lg text-h1Color">Email</Text>
-              <Text className="text-md text-defaultTextColor">{userCv.email}</Text>
-            </View>
-          </View>
+          {USER_DATA_ROWS.map(
+            (row, index) =>
+              userCv[row.property] && (
+                <View key={index} className="w-full pb-1">
+                  <View className="pb-3">
+                    <Text className="text-lg text-h1Color">{row.label}</Text>
+                    <Text className="text-md text-defaultTextColor">{userCv[row.property]}</Text>
+                  </View>
+                </View>
+              )
+          )}
         </View>
       </ScrollView>
     </View>
