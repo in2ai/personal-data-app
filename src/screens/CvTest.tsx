@@ -9,11 +9,13 @@ import { europassToDatabase } from '../api/europass';
 import { linkedinToDatabase } from '../api/linkedin';
 import { getEventsFromRelay, publishEventToRelay, signEvent } from '../api/nostr';
 import { printDatabase } from '../api/print';
+import { useAuthContext } from '../context-providers/auth-context';
+
+const RELAY_URL = 'ws://137.184.117.201:8008';
 
 export default function CvTestScreen({ navigation, route }) {
-  const secretKey = route.params.secretKey;
-  const publicKey = route.params.publicKey;
-  const url = route.params.url;
+  const { publicKey, secretKey } = useAuthContext();
+
   const [personId, setPersonId] = useState(null);
 
   createTablesIfNotExists();
@@ -56,7 +58,7 @@ export default function CvTestScreen({ navigation, route }) {
         created_at: Math.floor(Date.now() / 1000),
       };
       const signedEvent = signEvent(eventTemplate, secretKey);
-      await publishEventToRelay(url, signedEvent);
+      await publishEventToRelay(RELAY_URL, signedEvent);
       alert('Offer inserted');
     } catch (e) {
       alert(e.message);
@@ -64,7 +66,7 @@ export default function CvTestScreen({ navigation, route }) {
   };
 
   const getOffers = async () => {
-    const events = await getEventsFromRelay(url, {
+    const events = await getEventsFromRelay(RELAY_URL, {
       kinds: [30023],
       limit: 10,
     });
@@ -78,7 +80,7 @@ export default function CvTestScreen({ navigation, route }) {
 
   const match = async () => {
     const person = await getPerson(personId);
-    const offers = await getEventsFromRelay(url, {
+    const offers = await getEventsFromRelay(RELAY_URL, {
       kinds: [30023],
       limit: 1,
     });
