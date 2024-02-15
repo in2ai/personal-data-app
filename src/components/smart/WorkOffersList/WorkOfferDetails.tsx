@@ -46,10 +46,10 @@ const WorkOfferDetails: React.FC<WorkOfferDetailsProps> = ({ workOffer, onApply,
       </View>
       <View className="mt-auto flex-row justify-between p-5">
         <View className="w-1/2 pr-2">
-          <CustomButton title="Aplicar" onPress={onApplyOffer} />
+          <CustomButton buttonType="secondary" title="Cerrar" onPress={onCancel} />
         </View>
         <View className="w-1/2 pl-2">
-          <CustomButton buttonType="secondary" title="Cerrar" onPress={onCancel} />
+          <CustomButton title="Aplicar" onPress={onApplyOffer} />
         </View>
       </View>
     </View>

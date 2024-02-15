@@ -36,7 +36,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   };
 
   return (
-    <ScrollView>
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <StatusBar style={'light'} backgroundColor={'#3c7c8c'} />
       <View className={screenContainerStyle}>
         <View className="mb-20 max-w-md items-center ">
