@@ -38,7 +38,6 @@ function MainNav(): JSX.Element {
             headerTitleAlign: 'center',
             headerStyle: {
               backgroundColor: 'transparent',
-              borderBottomWidth: 0,
               shadowColor: 'transparent',
               boxShadow: 'none',
             },
