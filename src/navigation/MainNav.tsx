@@ -9,8 +9,6 @@ import HomeScreen from '../screens/HomeScreen';
 import MyCvScreen from '../screens/MyCvScreen';
 import OffersScreen from '../screens/OffersScreen';
 
-import RelayTestScreen from '../screens/RelayTest';
-import CvTestScreen from '../screens/CvTest';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 export type RootStackParamList = {
@@ -38,8 +36,6 @@ function MainNav(): JSX.Element {
             headerTitleAlign: 'center',
             headerStyle: {
               backgroundColor: 'transparent',
-              shadowColor: 'transparent',
-              boxShadow: 'none',
             },
             headerTintColor: '#3c7c8c',
             headerTitleStyle: {
@@ -80,9 +76,6 @@ function MainNav(): JSX.Element {
                   headerShown: true,
                 })}
               />
-
-              <Stack.Screen name="RelayTest" component={RelayTestScreen} />
-              <Stack.Screen name="CvTest" component={CvTestScreen} />
             </>
           )}
         </Stack.Navigator>
