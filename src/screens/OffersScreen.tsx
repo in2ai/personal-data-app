@@ -7,23 +7,24 @@ import { RootStackParamList } from '../navigation/MainNav';
 import { useAuthContext } from '../context-providers/auth-context';
 import { getEventsFromRelay, publishEventToRelay, signEvent } from '../api/nostr';
 import { WorkOffer } from '../models/WorkOffer';
+import WorkOffersList from '../components/smart/WorkOffersList/WorkOffersList';
 
 const RELAY_URL = 'ws://137.184.117.201:8008';
 
-const screenContainerStyle = 'flex h-full w-full p-5';
+const screenContainerStyle = 'flex h-full w-full';
 
 type OffersScreenProps = NativeStackScreenProps<RootStackParamList, 'Offers'>;
 
 const OffersScreen: React.FC<OffersScreenProps> = ({ navigation }) => {
   const { publicKey, secretKey } = useAuthContext();
-  const [isLoading, setIsLoading] = useState(false);
-  const [offers, setOffers] = useState<WorkOffer[]>([]);
+  const [isFetching, setIsFetching] = useState(false);
+  const [workOffers, setWorkOffers] = useState<WorkOffer[]>([]);
 
   useEffect(() => {
-    setIsLoading(true);
+    setIsFetching(true);
     getOffers();
     return () => {
-      setIsLoading(false);
+      setIsFetching(false);
     };
   }, []);
 
@@ -71,29 +72,23 @@ const OffersScreen: React.FC<OffersScreenProps> = ({ navigation }) => {
   };
 
   const getOffers = async () => {
-    console.log('//Getting offers: ', publicKey);
-    setIsLoading(true);
+    setIsFetching(true);
     const events = await getEventsFromRelay(RELAY_URL, {
       kinds: [30023],
       limit: 10,
     });
-    const offers: WorkOffer[] = events.map((event) => JSON.parse(event.content));
-    setIsLoading(false);
-    setOffers(offers);
+    const workOffers: WorkOffer[] = events.map((event) => JSON.parse(event.content));
+    setIsFetching(false);
+    setWorkOffers(workOffers);
+  };
+
+  const onRefreshList = () => {
+    getOffers();
   };
 
   return (
     <View className={screenContainerStyle}>
-      {isLoading ? (
-        <View className="h-full w-full items-center justify-center">
-          <View className="mb-5">
-            <Text className="#3c7c8c">Recuperando ofertas...</Text>
-          </View>
-          <ActivityIndicator size="small" color="#3c7c8c" />
-        </View>
-      ) : (
-        <Text>{JSON.stringify(offers)}</Text>
-      )}
+      <WorkOffersList workOffers={workOffers} onRefresh={onRefreshList} isFetching={isFetching} />
     </View>
   );
 };

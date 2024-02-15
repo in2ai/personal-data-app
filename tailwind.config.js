@@ -5,6 +5,7 @@ module.exports = {
     fontFamily: {},
     extend: {
       colors: {
+        brandColor: '#3c7c8c',
         h1Color: '#3c7c8c',
         defaultAppBgColor: '#ffffff',
         defaultTextColor: '#333',
