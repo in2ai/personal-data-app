@@ -28,15 +28,20 @@ const MyCvScreen: React.FC<MyCvScreenProps> = ({}) => {
 
   const onRemoveUserCv = () => {
     removeUserCv();
+    setStartAssistant(false);
+  };
+
+  const onCancelAssistant = () => {
+    setStartAssistant(false);
   };
 
   return (
     <View className={screenContainerStyle}>
       {!userCV ? (
         startAssistant ? (
-          <CvAssistantScreen onSave={onSaveUserCv} />
+          <CvAssistantScreen onSave={onSaveUserCv} onCancel={onCancelAssistant} />
         ) : (
-          <NoCvScreen onStartAssistant={onStartAssistant} />
+          <NoCvScreen onStartAssistant={onStartAssistant} onImportedUserCv={onSaveUserCv} />
         )
       ) : (
         <UserCvScreen userCv={userCV} onRemoveCv={onRemoveUserCv} />

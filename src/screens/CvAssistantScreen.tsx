@@ -34,7 +34,7 @@ const CvAssistantScreen: React.FC<CvAssistantScreenProps> = ({ onCancel, onSave 
     onSave && onSave(editingCv);
   };
 
-  const isValidCv = editingCv.name && editingCv.lastName && editingCv.email;
+  const isValidCv = editingCv.firstName && editingCv.lastName && editingCv.address;
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
@@ -57,8 +57,8 @@ const CvAssistantScreen: React.FC<CvAssistantScreenProps> = ({ onCancel, onSave 
                 <Field
                   label="Nombre"
                   flex="column"
-                  value={editingCv.name}
-                  onChange={(value) => setEditingCv({ ...editingCv, name: value })}
+                  value={editingCv.firstName}
+                  onChange={(value) => setEditingCv({ ...editingCv, firstName: value })}
                 />
               </View>
               <View className="mb-5 w-full">
@@ -71,10 +71,10 @@ const CvAssistantScreen: React.FC<CvAssistantScreenProps> = ({ onCancel, onSave 
               </View>
               <View className="mb-5 w-full">
                 <Field
-                  label="Email"
+                  label="Dirección"
                   flex="column"
-                  value={editingCv.email}
-                  onChange={(value) => setEditingCv({ ...editingCv, email: value })}
+                  value={editingCv.address}
+                  onChange={(value) => setEditingCv({ ...editingCv, address: value })}
                 />
               </View>
             </View>
