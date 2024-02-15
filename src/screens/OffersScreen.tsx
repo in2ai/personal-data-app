@@ -8,6 +8,7 @@ import { useAuthContext } from '../context-providers/auth-context';
 import { getEventsFromRelay, publishEventToRelay, signEvent } from '../api/nostr';
 import { WorkOffer } from '../models/WorkOffer';
 import WorkOffersList from '../components/smart/WorkOffersList/WorkOffersList';
+import WorkOfferDetails from '../components/smart/WorkOffersList/WorkOfferDetails';
 
 const RELAY_URL = 'ws://137.184.117.201:8008';
 
@@ -19,6 +20,7 @@ const OffersScreen: React.FC<OffersScreenProps> = ({ navigation }) => {
   const { publicKey, secretKey } = useAuthContext();
   const [isFetching, setIsFetching] = useState(false);
   const [workOffers, setWorkOffers] = useState<WorkOffer[]>([]);
+  const [selectedWorkOffer, setSelectedWorkOffer] = useState<WorkOffer | null>(null);
 
   useEffect(() => {
     setIsFetching(true);
@@ -86,9 +88,32 @@ const OffersScreen: React.FC<OffersScreenProps> = ({ navigation }) => {
     getOffers();
   };
 
+  const onPressWorkOffer = (workOffer: WorkOffer) => {
+    console.log('onPressWorkOffer', workOffer);
+    setSelectedWorkOffer(workOffer);
+  };
+
+  const onCancel = () => {
+    setSelectedWorkOffer(null);
+  };
+
+  const onApply = (workOffer: WorkOffer) => {
+    alert(`Aplicado con éxito a la oferta "${workOffer.title}"`);
+    setSelectedWorkOffer(null);
+  };
+
   return (
     <View className={screenContainerStyle}>
-      <WorkOffersList workOffers={workOffers} onRefresh={onRefreshList} isFetching={isFetching} />
+      {!selectedWorkOffer ? (
+        <WorkOffersList
+          workOffers={workOffers}
+          onRefresh={onRefreshList}
+          isFetching={isFetching}
+          onPressWorkOffer={onPressWorkOffer}
+        />
+      ) : (
+        <WorkOfferDetails workOffer={selectedWorkOffer} onCancel={onCancel} onApply={onApply} />
+      )}
     </View>
   );
 };

@@ -22,7 +22,7 @@ const WorkOffersList: React.FC<WorkOffersListProps> = ({
     <View className="h-full w-full">
       <FlashList
         renderItem={({ item }) => {
-          return <WorkOfferListItem workOffer={item} />;
+          return <WorkOfferListItem workOffer={item} onPress={onPressWorkOffer} />;
         }}
         estimatedItemSize={100}
         data={workOffers}
