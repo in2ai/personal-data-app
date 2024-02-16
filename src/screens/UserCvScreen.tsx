@@ -11,7 +11,7 @@ import CustomPressableOpacity from '../components/layout/CustomPressableOpacity'
 //TODO: move to component
 const USER_DATA_ROWS: { label: string; property: string }[] = [
   { label: 'Nombre', property: 'firstName' },
-  { label: 'Apellidos', property: 'firstName' },
+  { label: 'Apellidos', property: 'lastName' },
   { label: 'Dirección', property: 'address' },
   { label: 'Fecha de nacimiento', property: 'birthDate' },
   { label: 'Resumen', property: 'summary' },

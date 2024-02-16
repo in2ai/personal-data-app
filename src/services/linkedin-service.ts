@@ -71,7 +71,6 @@ export const getUserFromLinkedInZip = async (fileUri: string): Promise<UserCV> =
 };
 
 const getUserCVFromLinkedInData = (data: LinkedinData) => {
-  console.log('//DATA: ', data);
   const userCV = new UserCV();
   userCV.firstName = data.Profile[0]['First Name'];
   userCV.lastName = data.Profile[0]['Last Name'];
@@ -85,7 +84,6 @@ const getUserCVFromLinkedInData = (data: LinkedinData) => {
   userCV.twitterHandles = data.Profile[0]['Twitter Handles'];
   userCV.websites = data.Profile[0].Websites;
   userCV.instantMessengers = data.Profile[0]['Instant Messengers'];
-  console.log('//USER: ', userCV);
 
   data.Positions?.forEach((position) => {
     const experience = new Experience();
