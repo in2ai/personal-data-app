@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+
+    personal-data-app_dev_env:
+        build: 
+            context: ..
+            dockerfile: .devcontainer/Dockerfile
+        container_name: "personal-data-app_dev_env"
+        environment:
+            TIMEOUT: 10
+            TIMEUPDATE: "04:00"
+            TZ: "Europe/Madrid"
+        volumes: 
+            - ../:/DL
+        command: /bin/sh -c "while sleep 1000; do :; done"
+
+        
+

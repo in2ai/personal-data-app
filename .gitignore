@@ -35,3 +35,12 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+# devcontainer
+DL/.devcontainer/*.json
+DL/data
+DL/*.gz
+# Expo
+.expo
+dist/
+web-build/
