@@ -79,7 +79,11 @@ const OffersScreen: React.FC<OffersScreenProps> = ({ navigation }) => {
       kinds: [30023],
       limit: 10,
     });
-    const workOffers: WorkOffer[] = events.map((event) => JSON.parse(event.content));
+    const workOffers: WorkOffer[] = events.map((event) => ({
+      ...JSON.parse(event.content),
+      match: Math.round(Math.random() * 100),
+    }));
+    workOffers.sort((a, b) => (a.match ?? 0) - (b.match ?? 0)).reverse();
     setIsFetching(false);
     setWorkOffers(workOffers);
   };

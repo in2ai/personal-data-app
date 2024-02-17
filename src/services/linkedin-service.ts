@@ -85,23 +85,25 @@ const getUserCVFromLinkedInData = (data: LinkedinData) => {
   userCV.websites = data.Profile[0].Websites;
   userCV.instantMessengers = data.Profile[0]['Instant Messengers'];
 
-  data.Positions?.forEach((position) => {
-    const experience = new Experience();
-    experience.companyName = position['Company Name'];
-    experience.title = position.Title;
-    experience.description = position.Description;
-    experience.location = position.Location;
-    experience.startedOn = moment(position['Started On']);
-    experience.finishedOn = moment(position['Finished On']);
+  data.Positions &&
+    data.Positions?.forEach((position) => {
+      const experience = new Experience();
+      experience.companyName = position['Company Name'];
+      experience.title = position.Title;
+      experience.description = position.Description;
+      experience.location = position.Location;
+      experience.startedOn = position['Started On'];
+      experience.finishedOn = position['Finished On'];
 
-    userCV.experiences.push(experience);
-  });
+      userCV.experiences.push(experience);
+    });
 
-  data.Skills?.forEach((skill) => {
-    const s = new Skill();
-    s.value = skill.Name;
-    userCV.skills.push(s);
-  });
+  data.Skills &&
+    data.Skills?.forEach((skill) => {
+      const s = new Skill();
+      s.value = skill.Name;
+      userCV.skills.push(s);
+    });
 
   return userCV;
 };
