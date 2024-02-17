@@ -10,6 +10,7 @@ import MyCvScreen from '../screens/MyCvScreen';
 import OffersScreen from '../screens/OffersScreen';
 
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import CvTestScreen from '../screens/CvTest';
 
 export type RootStackParamList = {
   Login: undefined;

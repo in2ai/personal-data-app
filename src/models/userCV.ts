@@ -5,8 +5,8 @@ export class Experience {
   title?: string;
   description?: string;
   location?: string;
-  startedOn?: Moment;
-  finishedOn?: Moment;
+  startedOn?: string;
+  finishedOn?: string;
 }
 
 export class Skill {
@@ -25,6 +25,6 @@ export class UserCV {
   twitterHandles?: string;
   websites?: string;
   instantMessengers?: string;
-  experiences?: Experience[];
-  skills?: Skill[];
+  experiences?: Experience[] = [];
+  skills?: Skill[] = [];
 }
