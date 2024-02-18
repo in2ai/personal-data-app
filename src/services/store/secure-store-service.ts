@@ -1,7 +1,7 @@
 import * as SecureStore from 'expo-secure-store';
 
 import { User } from '../../models/user';
-import { userCV } from '../../models/userCV';
+import { UserData } from '../../models/userData';
 
 // USER
 export const getSecuredStoredUser = async (): Promise<User> => {
@@ -30,29 +30,29 @@ export const removeSecuredStoredUser = async (): Promise<void> => {
   }
 };
 
-// UserCV
-export const getSecuredStoredUserCV = async (): Promise<UserCV> => {
+// UserData
+export const getSecuredStoredUserData = async (): Promise<UserData> => {
   try {
-    const userCVStored = await SecureStore.getItemAsync('userCV');
-    if (!userCVStored) throw new Error('User CV not found');
-    return JSON.parse(userCVStored);
+    const userDataStored = await SecureStore.getItemAsync('userData');
+    if (!userDataStored) throw new Error('User Data not found');
+    return JSON.parse(userDataStored);
   } catch (err) {
-    throw new Error(`ERROR recovering User CV => ${err}`);
+    throw new Error(`ERROR recovering User Data => ${err}`);
   }
 };
 
-export const setSecuredStoredUserCV = async (userCV: userCV): Promise<void> => {
+export const setSecuredStoredUserData = async (userData: UserData): Promise<void> => {
   try {
-    await SecureStore.setItemAsync('userCV', JSON.stringify(userCV));
+    await SecureStore.setItemAsync('userData', JSON.stringify(userData));
   } catch (err) {
-    throw new Error(`ERROR storing user CV => ${err}`);
+    throw new Error(`ERROR storing user Data => ${err}`);
   }
 };
 
-export const removeSecuredStoredUserCV = async (): Promise<void> => {
+export const removeSecuredStoredUserData = async (): Promise<void> => {
   try {
-    await SecureStore.deleteItemAsync('userCV');
+    await SecureStore.deleteItemAsync('userData');
   } catch (err) {
-    throw new Error(`ERROR removing stored user CV => ${err}`);
+    throw new Error(`ERROR removing stored user Data => ${err}`);
   }
 };

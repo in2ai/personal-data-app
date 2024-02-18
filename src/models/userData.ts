@@ -12,7 +12,7 @@ export class Experience {
 export class Skill {
   value?: string;
 }
-export class UserCV {
+export class UserData {
   firstName?: string;
   lastName?: string;
   address?: string;

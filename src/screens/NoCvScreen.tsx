@@ -5,11 +5,11 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import CustomButton from '../components/smart/CustomButton';
 import { getUserFromLinkedInZip } from '../services/linkedin-service';
-import { UserCV } from '../models/userCV';
+import { UserData } from '../models/userData';
 
 type NoCvScreenProps = {
   onStartAssistant?: () => void;
-  onImportedUserCv?: (userCv: UserCV) => void;
+  onImportedUserCv?: (userData: UserData) => void;
 };
 
 const NoCvScreen: React.FC<NoCvScreenProps> = ({ onStartAssistant, onImportedUserCv }) => {
@@ -32,9 +32,9 @@ const NoCvScreen: React.FC<NoCvScreenProps> = ({ onStartAssistant, onImportedUse
 
     // Extract the file and parse the data
     const uri = documentPickerResult.assets[0].uri;
-    const userCV = await getUserFromLinkedInZip(uri);
+    const userData = await getUserFromLinkedInZip(uri);
 
-    onImportedUserCv && onImportedUserCv(userCV);
+    onImportedUserCv && onImportedUserCv(userData);
   };
 
   return (

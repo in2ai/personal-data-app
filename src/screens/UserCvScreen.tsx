@@ -3,7 +3,7 @@ import React from 'react';
 
 import { ScrollView, Text, View } from 'react-native';
 import CustomButton from '../components/smart/CustomButton';
-import { UserCV } from '../models/userCV';
+import { UserData } from '../models/userData';
 
 import TrashFill from '../assets/img/svg/trash-fill.svg';
 import CustomPressableOpacity from '../components/layout/CustomPressableOpacity';
@@ -24,11 +24,11 @@ const USER_DATA_ROWS: { label: string; property: string }[] = [
 ];
 
 type UserCvScreenProps = {
-  userCv: UserCV;
+  userData: UserData;
   onRemoveCv?: () => void;
 };
 
-const UserCvScreen: React.FC<UserCvScreenProps> = ({ userCv, onRemoveCv }) => {
+const UserCvScreen: React.FC<UserCvScreenProps> = ({ userData, onRemoveCv }) => {
   return (
     <View className="relative h-full w-full p-5">
       <View className="absolute right-10 top-10 z-10 ">
@@ -46,11 +46,11 @@ const UserCvScreen: React.FC<UserCvScreenProps> = ({ userCv, onRemoveCv }) => {
         <View className="pb-2">
           {USER_DATA_ROWS.map(
             (row, index) =>
-              userCv[row.property] && (
+              userData[row.property] && (
                 <View key={index} className="w-full pb-1">
                   <View className="pb-3">
                     <Text className="text-lg text-h1Color">{row.label}</Text>
-                    <Text className="text-md text-defaultTextColor">{userCv[row.property]}</Text>
+                    <Text className="text-md text-defaultTextColor">{userData[row.property]}</Text>
                   </View>
                 </View>
               )

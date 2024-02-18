@@ -1,7 +1,7 @@
 import * as FileSystem from 'expo-file-system';
 import { unzip } from 'react-native-zip-archive';
 import Papa from 'papaparse';
-import { Experience, Skill, UserCV } from '../models/userCV';
+import { Experience, Skill, UserData } from '../models/userData';
 import moment from 'moment';
 
 type LinkedinProfile = {
@@ -38,7 +38,7 @@ type LinkedinData = {
   Positions: LinkedinPosition[];
   Skills: LinkedinSkill[];
 };
-export const getUserFromLinkedInZip = async (fileUri: string): Promise<UserCV> => {
+export const getUserFromLinkedInZip = async (fileUri: string): Promise<UserData> => {
   try {
     const test = await unzip(fileUri, FileSystem.documentDirectory);
     const documents = ['Profile', 'Positions', 'Skills'];
@@ -62,28 +62,28 @@ export const getUserFromLinkedInZip = async (fileUri: string): Promise<UserCV> =
     }
 
     // Map data to User model
-    const userCV: UserCV = getUserCVFromLinkedInData(data);
+    const userData: UserData = getUserCVFromLinkedInData(data);
 
-    return userCV;
+    return userData;
   } catch (error) {
     console.log('Error getting user from LinkedIn zip', error);
   }
 };
 
 const getUserCVFromLinkedInData = (data: LinkedinData) => {
-  const userCV = new UserCV();
-  userCV.firstName = data.Profile[0]['First Name'];
-  userCV.lastName = data.Profile[0]['Last Name'];
-  userCV.address = data.Profile[0].Address;
-  userCV.birthDate = data.Profile[0]['Birth Date'];
-  userCV.headline = data.Profile[0].Headline;
-  userCV.summary = data.Profile[0].Summary;
-  userCV.industry = data.Profile[0].Industry;
-  userCV.zipCode = data.Profile[0]['Zip Code'];
-  userCV.geoLocation = data.Profile[0]['Geo Location'];
-  userCV.twitterHandles = data.Profile[0]['Twitter Handles'];
-  userCV.websites = data.Profile[0].Websites;
-  userCV.instantMessengers = data.Profile[0]['Instant Messengers'];
+  const userData = new UserData();
+  userData.firstName = data.Profile[0]['First Name'];
+  userData.lastName = data.Profile[0]['Last Name'];
+  userData.address = data.Profile[0].Address;
+  userData.birthDate = data.Profile[0]['Birth Date'];
+  userData.headline = data.Profile[0].Headline;
+  userData.summary = data.Profile[0].Summary;
+  userData.industry = data.Profile[0].Industry;
+  userData.zipCode = data.Profile[0]['Zip Code'];
+  userData.geoLocation = data.Profile[0]['Geo Location'];
+  userData.twitterHandles = data.Profile[0]['Twitter Handles'];
+  userData.websites = data.Profile[0].Websites;
+  userData.instantMessengers = data.Profile[0]['Instant Messengers'];
 
   data.Positions &&
     data.Positions?.forEach((position) => {
@@ -95,15 +95,15 @@ const getUserCVFromLinkedInData = (data: LinkedinData) => {
       experience.startedOn = position['Started On'];
       experience.finishedOn = position['Finished On'];
 
-      userCV.experiences.push(experience);
+      userData.experiences.push(experience);
     });
 
   data.Skills &&
     data.Skills?.forEach((skill) => {
       const s = new Skill();
       s.value = skill.Name;
-      userCV.skills.push(s);
+      userData.skills.push(s);
     });
 
-  return userCV;
+  return userData;
 };
