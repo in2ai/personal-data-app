@@ -58,7 +58,7 @@ const addLinkedinUserDataToUserData = (mapper: Mapper) => {
     forMember(
       (destination) => destination.experiences,
       mapFrom((source) =>
-        source.Positions.map((position) => ({
+        source.Positions?.map((position) => ({
           companyName: position['Company Name'],
           title: position.Title,
           description: position.Description,
@@ -71,7 +71,7 @@ const addLinkedinUserDataToUserData = (mapper: Mapper) => {
     forMember(
       (destination) => destination.skills,
       mapFrom((source) =>
-        source.Skills.map((skill) => ({
+        source.Skills?.map((skill) => ({
           value: skill.Name,
         }))
       )
