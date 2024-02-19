@@ -15,7 +15,7 @@ const WorkOfferListItem: React.FC<WorkOfferListItemProps> = ({ workOffer, onPres
       : 'rounded-md px-3 py-2 bg-[#ffffff]';
   const matchColorText =
     workOffer.match && workOffer.match > 50
-      ? 'font-bold text-[#6ad06f]'
+      ? 'font-bold text-[#3c7c8c]'
       : 'font-bold text-[#e87975]';
   return (
     <CustomPressableOpacity onPress={() => onPress && onPress(workOffer)}>
