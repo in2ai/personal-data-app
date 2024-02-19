@@ -4,37 +4,61 @@ import React from 'react';
 
 import { Text, View } from 'react-native';
 import CustomButton from '../components/smart/CustomButton';
-import { getUserFromLinkedInZip } from '../services/linkedin-service';
-import { UserCV } from '../models/userCV';
+import { getUserFromLinkedInZip } from '../services/linkedIn/linkedin-service';
+import { UserData } from '../models/userData';
+import { getEuropassUserFromPdfFile } from '../services/europass/europass-service';
+import { EuropassUserData } from '../services/europass/EuropassUserData';
+import { mapper } from '../mappers/mapper';
+import { LinkedinUserData } from '../services/linkedIn/LinkedInUserData';
 
 type NoCvScreenProps = {
   onStartAssistant?: () => void;
-  onImportedUserCv?: (userCv: UserCV) => void;
+  onImportedUserCv?: (userData: UserData) => void;
 };
 
 const NoCvScreen: React.FC<NoCvScreenProps> = ({ onStartAssistant, onImportedUserCv }) => {
+  // LinkedIn
   const onLinkedinZipFileSelected = async () => {
-    // Recover the file from the user's device
-
     DocumentPicker.getDocumentAsync({
       type: 'application/zip',
       copyToCacheDirectory: true,
     })
-      .then((result) => recoverDataFromDocumentPickerResult(result))
+      .then((result) => recoverDataFromLinkedInZip(result))
       .catch((err) => console.log('//Not file recovered'));
   };
 
-  const recoverDataFromDocumentPickerResult = async (
+  const recoverDataFromLinkedInZip = async (
     documentPickerResult: DocumentPicker.DocumentPickerResult
   ) => {
-    console.log('//RECOVERED FILE', documentPickerResult);
     if (!documentPickerResult) return;
 
-    // Extract the file and parse the data
     const uri = documentPickerResult.assets[0].uri;
-    const userCV = await getUserFromLinkedInZip(uri);
+    const linkedinUserData = await getUserFromLinkedInZip(uri);
 
-    onImportedUserCv && onImportedUserCv(userCV);
+    const userData = mapper.map(linkedinUserData, LinkedinUserData, UserData);
+    onImportedUserCv && onImportedUserCv(userData);
+  };
+
+  // Europass
+  const onEuropassFileSelected = async () => {
+    DocumentPicker.getDocumentAsync({
+      type: 'application/pdf',
+      copyToCacheDirectory: true,
+    })
+      .then((result) => recoverDataFromEuropassPdf(result))
+      .catch((err) => console.log('//Not file recovered'));
+  };
+
+  const recoverDataFromEuropassPdf = async (
+    documentPickerResult: DocumentPicker.DocumentPickerResult
+  ) => {
+    if (!documentPickerResult) return;
+
+    const uri = documentPickerResult.assets[0].uri;
+    const europassUserData = await getEuropassUserFromPdfFile(uri);
+
+    const userData = mapper.map(europassUserData, EuropassUserData, UserData);
+    onImportedUserCv && onImportedUserCv(userData);
   };
 
   return (
@@ -56,7 +80,7 @@ const NoCvScreen: React.FC<NoCvScreenProps> = ({ onStartAssistant, onImportedUse
           </Text>
         </View>
         <CustomButton title="LinkedIn (archivo .zip)" onPress={onLinkedinZipFileSelected} />
-        <CustomButton title="Europass (archivo .pdf o .xml)" />
+        <CustomButton title="Europass (archivo .pdf o .xml)" onPress={onEuropassFileSelected} />
       </View>
       <View className="w-full pb-5">
         <View className="pb-3">

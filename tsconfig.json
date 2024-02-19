@@ -1,8 +1,9 @@
 {
-  "compilerOptions": {},
+  "compilerOptions": {
+    "experimentalDecorators": true, // for @automapper/classes
+    "emitDecoratorMetadata": true, // for @automapper/classes
+    "strictPropertyInitialization": false
+  },
   "extends": "expo/tsconfig.base",
-  "include": [
-    "**/*.ts",
-    "**/*.tsx"
-  ]
+  "include": ["**/*.ts", "**/*.tsx"]
 }

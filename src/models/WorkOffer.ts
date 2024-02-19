@@ -6,4 +6,5 @@ export class WorkOffer {
   price: number;
   currency: string;
   period: string;
+  match?: number;
 }

@@ -1,13 +1,13 @@
 import AuthContextProvider from './src/context-providers/auth-context';
-import UserCVContextProvider from './src/context-providers/user-cv-context';
+import UserDataContextProvider from './src/context-providers/user-data-context';
 import MainNav from './src/navigation/MainNav';
 
 const App = () => {
   return (
     <AuthContextProvider>
-      <UserCVContextProvider>
+      <UserDataContextProvider>
         <MainNav />
-      </UserCVContextProvider>
+      </UserDataContextProvider>
     </AuthContextProvider>
   );
 };

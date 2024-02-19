@@ -10,15 +10,15 @@ import CustomPressableOpacity from '../components/layout/CustomPressableOpacity'
 import ArrowRightCircleFill from '../assets/img/svg/arrow-right-circle-fill.svg';
 import ArrowLeftCircleFill from '../assets/img/svg/arrow-left-circle-fill.svg';
 import Field from '../components/smart/Field';
-import { UserCV } from '../models/userCV';
+import { UserData } from '../models/userData';
 
 type CvAssistantScreenProps = {
   onCancel?: () => void;
-  onSave?: (editingCv: UserCV) => void;
+  onSave?: (editingCv: UserData) => void;
 };
 
 const CvAssistantScreen: React.FC<CvAssistantScreenProps> = ({ onCancel, onSave }) => {
-  const [editingCv, setEditingCv] = React.useState<UserCV>(new UserCV());
+  const [editingCv, setEditingCv] = React.useState<UserData>(new UserData());
 
   const [actualStep, setActualStep] = React.useState(1);
   const numSteps = 8;

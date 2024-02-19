@@ -5,18 +5,19 @@ export class Experience {
   title?: string;
   description?: string;
   location?: string;
-  startedOn?: Moment;
-  finishedOn?: Moment;
+  startedOn?: string;
+  finishedOn?: string;
 }
 
 export class Skill {
   value?: string;
 }
-export class UserCV {
+export class UserData {
   firstName?: string;
   lastName?: string;
   address?: string;
   birthDate?: string;
+  motherTongue?: string;
   headline?: string;
   summary?: string;
   industry?: string;
@@ -25,6 +26,6 @@ export class UserCV {
   twitterHandles?: string;
   websites?: string;
   instantMessengers?: string;
-  experiences?: Experience[];
-  skills?: Skill[];
+  experiences?: Experience[] = [];
+  skills?: Skill[] = [];
 }
