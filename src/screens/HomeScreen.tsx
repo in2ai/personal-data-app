@@ -17,12 +17,15 @@ import Files from '../assets/img/svg/files.svg';
 import Power from '../assets/img/svg/power.svg';
 import CustomPressableOpacity from '../components/layout/CustomPressableOpacity';
 import { useAuthContext } from '../context-providers/auth-context';
+import { useUserDataContext } from '../context-providers/user-data-context';
 
 const screenContainerStyle = 'flex h-full w-full justify-center items-center p-5';
 
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
+  const { userData } = useUserDataContext();
+
   const { logout } = useAuthContext();
 
   const onGoToCv = () => {
@@ -62,6 +65,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
       </View>
       <View className="w-60">
         <CustomButton
+          disabled={!userData}
           icon={<Files width={25} height={25} fill={'#fff'} />}
           buttonType="primary"
           title="Ver ofertas"
