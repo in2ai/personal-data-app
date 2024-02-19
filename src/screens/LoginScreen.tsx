@@ -39,8 +39,8 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <StatusBar style={'light'} backgroundColor={'#3c7c8c'} />
       <View className={screenContainerStyle}>
-        <View className="mb-20 max-w-md items-center ">
-          <PersonFillLock width={100} height={100} fill={'#3c7c8c'} />
+        <View className="mb-5 max-w-md items-center ">
+          <PersonFillLock width={80} height={80} fill={'#3c7c8c'} />
         </View>
         <View className="w-full">
           <View className="flex w-full items-center">
@@ -58,7 +58,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
               />
             </View>
           </View>
-          <View className="mb-5 mt-20 h-[1px] w-full border-b border-dotted border-gray-400"></View>
+          <View className="mb-5 mt-10 h-[1px] w-full border-b border-dotted border-gray-400"></View>
           <View className="flex w-full items-center">
             <Text className={h1Style}>o iniciar sesión</Text>
             <View className="mb-5 w-full">
