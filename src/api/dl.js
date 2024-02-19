@@ -2,7 +2,6 @@ import * as tf from '@tensorflow/tfjs';
 import '@tensorflow/tfjs-react-native';
 import * as use from '@tensorflow-models/universal-sentence-encoder';
 
-
 export async function initTfjs() {
   await tf.ready();
   console.log('TensorFlow.js está listo');

@@ -38,7 +38,7 @@ react-native-webview-crypto
 ### Descompresión de archivos
 Para la descompresión de archivos (importación .zip de LinkedIn) se está usando la librería `react-native-zip-archive`, desarrollada para RN, sin embargo, al estar usando Expo hemos tenido que hacer un prebuild ya que esta librería usa funciones nativas de Android e iOS que aún no han llegado a Expo.
 
-### Dependencias con Tensorflow.js
+### [ Resuelvo ] Dependencias con Tensorflow.js
 A la hora de instalar las dependencias necesarias para Tensorflow.js, es necesario instalar los paquetes que se muestran a continuación:
 
 ```
@@ -49,5 +49,11 @@ A la hora de instalar las dependencias necesarias para Tensorflow.js, es necesar
 "expo-gl": "~13.0.1",
 ```
 Pero al instalar el modelo `universal-sentence-encoder` da error con el paquete `@tensorflow/tfjs-core` de dependencias, al necesitar version mayor de `^3.6.0`, teniendo la version `4.17.0`.
+
+Solucion:
+
+Configurar npm, para ejecuciones de npm install con legacy-peer-deps, al hacer npx expo prebuild.
+
+`npm config set legacy-peer-deps true`
 
 # https://in2ai.com
