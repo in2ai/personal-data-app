@@ -23,7 +23,10 @@ const NoCvScreen: React.FC<NoCvScreenProps> = ({ onStartAssistant, onImportedUse
       type: 'application/zip',
       copyToCacheDirectory: true,
     })
-      .then((result) => recoverDataFromLinkedInZip(result))
+      .then((result) => {
+        console.log('result', result);
+        recoverDataFromLinkedInZip(result);
+      })
       .catch((err) => console.log('//Not file recovered'));
   };
 

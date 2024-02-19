@@ -5,6 +5,11 @@ import {
   setSecuredStoredUserData,
 } from '../services/store/secure-store-service';
 import { UserData } from '../models/userData';
+import {
+  getAsyncstorageStoredUserData,
+  removeAsyncstorageStoredUserData,
+  setAsyncstorageStoredUserData,
+} from '../services/store/user-data-store-service';
 
 interface UserDataContextInterface {
   userData: UserData;
@@ -28,8 +33,9 @@ const UserDataContextProvider = (props: any) => {
   }, [userData]);
 
   const getStoredUserData = async () => {
-    getSecuredStoredUserData()
+    getAsyncstorageStoredUserData()
       .then((userData) => {
+        console.log('User CV recovered');
         setUserData(userData);
       })
       .catch(() => {
@@ -39,7 +45,7 @@ const UserDataContextProvider = (props: any) => {
 
   const setStoredUserData = (userData: UserData) => {
     setUserData(userData);
-    setSecuredStoredUserData(userData)
+    setAsyncstorageStoredUserData(userData)
       .then(() => {
         console.log('User CV stored');
       })
@@ -49,7 +55,7 @@ const UserDataContextProvider = (props: any) => {
   };
 
   const removeUserData = () => {
-    removeSecuredStoredUserData()
+    removeAsyncstorageStoredUserData()
       .then(() => {
         setUserData(undefined);
       })
