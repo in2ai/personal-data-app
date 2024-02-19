@@ -33,17 +33,18 @@ const UserDataContextProvider = (props: any) => {
         setUserData(userData);
       })
       .catch(() => {
-        console.log('No user cv stored');
+        console.log('No user CV recovered');
       });
   };
 
   const setStoredUserData = (userData: UserData) => {
+    setUserData(userData);
     setSecuredStoredUserData(userData)
       .then(() => {
-        setUserData(userData);
+        console.log('User CV stored');
       })
       .catch((err) => {
-        console.log(err);
+        console.log('Error storing CV');
       });
   };
 
