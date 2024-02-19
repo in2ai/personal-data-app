@@ -40,14 +40,14 @@ type UserCvScreenProps = {
 
 const UserCvScreen: React.FC<UserCvScreenProps> = ({ userData, onRemoveCv }) => {
   return (
-    <View className="relative h-full w-full p-5">
+    <View className="relative h-full w-full px-5">
       <View className="absolute right-7 top-7 z-10 rounded-full bg-white p-3 opacity-80">
         <CustomPressableOpacity accessibilityLabel="borrar CV" onPress={onRemoveCv}>
           <TrashFill width={25} height={25} fill={'#3c7c8c'} />
         </CustomPressableOpacity>
       </View>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        <View className="w-full flex-row items-center justify-between pb-5 pt-3">
+        <View className="w-full flex-row items-center justify-between py-5">
           <Text className="text-2xl font-bold text-h1Color">Mis datos</Text>
         </View>
         {/* Peronal data */}
