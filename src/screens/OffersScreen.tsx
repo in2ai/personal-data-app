@@ -20,7 +20,7 @@ type OffersScreenProps = NativeStackScreenProps<RootStackParamList, 'Offers'>;
 
 const OffersScreen: React.FC<OffersScreenProps> = ({ navigation }) => {
   const { userData } = useUserDataContext();
-  const { workOffers, setWorkOffers, isFetching, setIsFetching, insertOffer, getOffers} = useOfferContext();
+  const { workOffers, setWorkOffers, isFetching, setIsFetching, insertOffer, getOffers, getOffers_relay} = useOfferContext();
 
   const { publicKey, secretKey } = useAuthContext();
   // const [isFetching, setIsFetching] = useState(false);
@@ -62,7 +62,8 @@ const OffersScreen: React.FC<OffersScreenProps> = ({ navigation }) => {
   };
 
   const onRefreshList = () => {
-    getOffers();
+    //getOffers();
+    getOffers_relay();
   };
 
   const onPressWorkOffer = (workOffer: WorkOffer) => {

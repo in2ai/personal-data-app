@@ -17,7 +17,7 @@ interface OfferContextInterface {
     setSelectedWorkOffer: (workOffer: WorkOffer | null) => void;
     insertOffer: () => Promise<void>;
     getOffers: () => Promise<void>;
-    //insertOffer: (offer: WorkOffer) => Promise<void>;
+    getOffers_relay: () => Promise<void>;
 }
   
 export const OfferContext = React.createContext<OfferContextInterface>(
@@ -69,16 +69,28 @@ const OfferContextProvider = (props: any) => {
     const getOffers = async () => {
       console.log("Get Offer")
       setIsFetching(true);
+      const workOffers = await getAsyncStorageStoredOffers()
+      setIsFetching(false);
+      setWorkOffers(workOffers);
+
+      console.log(workOffers);
+      // checkMatch();
+    };
+
+    const getOffers_relay = async () => {
+      console.log("Get Offer")
+      setIsFetching(true);
       const events = await getEventsFromRelay(RELAY_URL, {
-          kinds: [30023],
-          limit: 10,
+        kinds: [30023],
+        limit: 10,
       });
       const workOffers: WorkOffer[] = events.map((event) => ({
           ...JSON.parse(event.content),
       }));
       setIsFetching(false);
       setWorkOffers(workOffers);
-
+      setAsyncStorageStoredOffers(workOffers);
+      console.log(workOffers);
       // checkMatch();
     };
   
@@ -90,7 +102,8 @@ const OfferContextProvider = (props: any) => {
       setWorkOffers,
       setSelectedWorkOffer,
       insertOffer,
-      getOffers
+      getOffers,
+      getOffers_relay
     };
   
     return <OfferContext.Provider value={api}>{props.children}</OfferContext.Provider>;
