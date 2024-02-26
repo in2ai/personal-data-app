@@ -21,7 +21,9 @@ const WorkOfferListItem: React.FC<WorkOfferListItemProps> = ({ workOffer, onPres
     <CustomPressableOpacity onPress={() => onPress && onPress(workOffer)}>
       <View className="flex-row items-center justify-between border-b border-[#DCE3EB] p-5">
         <View className="">
-          <Text className="text-lg text-h1Color">{workOffer.title}</Text>
+          <Text className="text-lg text-h1Color">
+            {workOffer.title}({workOffer.created_at})
+          </Text>
           <Text className="text-md text-defaultTextColor">{workOffer.summary}</Text>
         </View>
         <View className={matchColorView}>
