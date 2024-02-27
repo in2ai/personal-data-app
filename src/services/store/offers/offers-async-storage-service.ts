@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { WorkOffer } from '../../../models/WorkOffer';
 
-export const getAllOffers = async (): Promise<WorkOffer[]> => {
+const getAllOffers = async (): Promise<WorkOffer[]> => {
   try {
     const workOffersStored = await AsyncStorage.getItem('workOffers');
     if (!workOffersStored) return []; // Retorna un array vacío si no hay datos
@@ -12,7 +12,7 @@ export const getAllOffers = async (): Promise<WorkOffer[]> => {
   }
 };
 
-export const setAllOffers = async (workOffers: WorkOffer[]): Promise<void> => {
+const setAllOffers = async (workOffers: WorkOffer[]): Promise<void> => {
   try {
     await AsyncStorage.setItem('workOffers', JSON.stringify(workOffers));
   } catch (err) {
@@ -20,7 +20,7 @@ export const setAllOffers = async (workOffers: WorkOffer[]): Promise<void> => {
   }
 };
 
-export const removeAllOffers = async (): Promise<void> => {
+const removeAllOffers = async (): Promise<void> => {
   try {
     await AsyncStorage.removeItem('workOffers');
   } catch (err) {
@@ -28,7 +28,7 @@ export const removeAllOffers = async (): Promise<void> => {
   }
 };
 
-export const addNewOffer = async (newOffer: WorkOffer): Promise<void> => {
+const addNewOffer = async (newOffer: WorkOffer): Promise<void> => {
   try {
     const workOffersStored = await getAllOffers();
     workOffersStored.push(newOffer);
@@ -40,7 +40,6 @@ export const addNewOffer = async (newOffer: WorkOffer): Promise<void> => {
 
 const offersAsyncStorageService = {
   getAllOffers,
-  setAllOffers,
   removeAllOffers,
   addNewOffer,
 };

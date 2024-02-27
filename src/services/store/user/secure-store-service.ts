@@ -3,7 +3,7 @@ import * as SecureStore from 'expo-secure-store';
 import { User } from '../../../models/user';
 
 // USER
-export const getUser = async (): Promise<User> => {
+const getUser = async (): Promise<User> => {
   try {
     const userStored = await SecureStore.getItemAsync('user');
     if (!userStored) throw new Error('User not found');
@@ -13,7 +13,7 @@ export const getUser = async (): Promise<User> => {
   }
 };
 
-export const setUser = async (user: User): Promise<void> => {
+const setUser = async (user: User): Promise<void> => {
   try {
     await SecureStore.setItemAsync('user', JSON.stringify(user));
   } catch (err) {
@@ -21,7 +21,7 @@ export const setUser = async (user: User): Promise<void> => {
   }
 };
 
-export const removeUser = async (): Promise<void> => {
+const removeUser = async (): Promise<void> => {
   try {
     await SecureStore.deleteItemAsync('user');
   } catch (err) {

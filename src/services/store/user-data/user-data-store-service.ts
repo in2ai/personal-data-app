@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { UserData } from '../../../models/userData';
 
 // UserData
-export const getUserData = async (): Promise<UserData> => {
+const getUserData = async (): Promise<UserData> => {
   try {
     const userDataStored = await AsyncStorage.getItem('userData');
     if (!userDataStored) throw new Error('User Data not found');
@@ -13,7 +13,7 @@ export const getUserData = async (): Promise<UserData> => {
   }
 };
 
-export const setUserData = async (userData: UserData): Promise<void> => {
+const setUserData = async (userData: UserData): Promise<void> => {
   try {
     await AsyncStorage.setItem('userData', JSON.stringify(userData));
   } catch (err) {
@@ -21,7 +21,7 @@ export const setUserData = async (userData: UserData): Promise<void> => {
   }
 };
 
-export const removeUserData = async (): Promise<void> => {
+const removeUserData = async (): Promise<void> => {
   try {
     await AsyncStorage.removeItem('userData');
   } catch (err) {
