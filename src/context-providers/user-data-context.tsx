@@ -1,15 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
-import {
-  getSecuredStoredUserData,
-  removeSecuredStoredUserData,
-  setSecuredStoredUserData,
-} from '../services/store/secure-store-service';
 import { UserData } from '../models/userData';
-import {
-  getAsyncstorageStoredUserData,
-  removeAsyncstorageStoredUserData,
-  setAsyncstorageStoredUserData,
-} from '../services/store/user-data-store-service';
+import userDataStoreService from '../services/store/user-data/user-data-store-service';
 
 interface UserDataContextInterface {
   userData: UserData;
@@ -33,7 +24,8 @@ const UserDataContextProvider = (props: any) => {
   }, [userData]);
 
   const getStoredUserData = async () => {
-    getAsyncstorageStoredUserData()
+    userDataStoreService
+      .getUserData()
       .then((userData) => {
         console.log('User CV recovered');
         setUserData(userData);
@@ -45,7 +37,8 @@ const UserDataContextProvider = (props: any) => {
 
   const setStoredUserData = (userData: UserData) => {
     setUserData(userData);
-    setAsyncstorageStoredUserData(userData)
+    userDataStoreService
+      .setUserData(userData)
       .then(() => {
         console.log('User CV stored');
       })
@@ -55,7 +48,8 @@ const UserDataContextProvider = (props: any) => {
   };
 
   const removeUserData = () => {
-    removeAsyncstorageStoredUserData()
+    userDataStoreService
+      .removeUserData()
       .then(() => {
         setUserData(undefined);
       })

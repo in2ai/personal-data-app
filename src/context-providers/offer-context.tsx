@@ -1,12 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
-import {
-  getAsyncStorageStoredOffers,
-  removeAsyncStorageStoredOffers,
-  setAsyncStorageStoredOffers,
-} from '../services/store/offer-store-service';
-import { useAuthContext } from '../context-providers/auth-context';
 import { WorkOffer } from '../models/WorkOffer';
 import { relayInit } from 'nostr-tools';
+import offersStoreService from '../services/store/offers/offers-store-service';
 
 const RELAY_URL = 'ws://137.184.117.201:8008';
 interface OfferContextInterface {
@@ -27,13 +22,13 @@ const OfferContextProvider = (props: any) => {
   }, []);
 
   const clearOffersFromStorage = async () => {
-    await removeAsyncStorageStoredOffers();
+    await offersStoreService.removeAllOffers();
     setWorkOffers([]);
   };
 
   const getOffersFromStorage = async () => {
     setIsFetching(true);
-    const workOffers = await getAsyncStorageStoredOffers();
+    const workOffers = await offersStoreService.getAllOffers();
     console.log('Offers from storage', workOffers);
     setIsFetching(false);
     let lastOfferTimestamp = 1706758766; // Thursday, February 1, 2024 3:39:26 AM
@@ -41,7 +36,7 @@ const OfferContextProvider = (props: any) => {
       setWorkOffers(workOffers);
       lastOfferTimestamp = workOffers.sort((a, b) => b.created_at - a.created_at)[0].created_at;
     }
-    workOffers && setWorkOffers(workOffers);
+    // workOffers && setWorkOffers(workOffers);
     subscribeToRelayOffers(lastOfferTimestamp);
   };
 
@@ -75,9 +70,9 @@ const OfferContextProvider = (props: any) => {
   const addNewWorkOffer = async (newWorkOffer: WorkOffer) => {
     // TODO: Use model to add similarity information to the offer
     // TODO: Change to SQL Lite as here we have a list of offers and we can sequencially
-    //       pass by tensorflow and just update similarity %
+    //       pass by tensorflow and just update similarity
     setWorkOffers((workOffers) => [newWorkOffer, ...workOffers]);
-    await setAsyncStorageStoredOffers(workOffers);
+    await offersStoreService.addNewOffer(newWorkOffer);
     console.log('Updated offers in storage, added new offer', newWorkOffer);
   };
 
