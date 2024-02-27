@@ -28,7 +28,7 @@ const WorkOfferListItem: React.FC<WorkOfferListItemProps> = ({ workOffer, onPres
           <Text className="text-md text-defaultTextColor">{workOffer.summary}</Text>
         </View>
         <View className={workOffer.match ? matchColorView : null}>
-          {workOffer.match ? (
+          {workOffer.match || workOffer.match === 0 ? (
             <Text className={matchColorText}>{workOffer.match}%</Text>
           ) : (
             <ActivityIndicator size="small" color="#3c7c8c" />
