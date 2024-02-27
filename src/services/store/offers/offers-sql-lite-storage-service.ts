@@ -43,17 +43,13 @@ const connectDatabase = async (): Promise<SQLite.SQLiteDatabase> => {
 };
 
 const getAllOffers = async (): Promise<WorkOffer[]> => {
-  console.log('//1');
   await createDatabaseIfNotExist();
-  console.log('//2');
   const db = await connectDatabase();
-  console.log('//3');
   let query = {
     sql: 'select * from workoffer',
     args: [],
   };
   const [result]: any = await db.execAsync([query], false);
-  console.log('//4: ', result);
   const workOffers: WorkOffer[] = result.rows.map((row) => {
     return {
       title: row[1],
