@@ -34,7 +34,7 @@ const OfferContextProvider = (props: any) => {
     let lastOfferTimestamp = 1706758766; // Thursday, February 1, 2024 3:39:26 AM
     if (workOffers && workOffers.length > 0) {
       setWorkOffers(workOffers);
-      lastOfferTimestamp = workOffers.sort((a, b) => b.created_at - a.created_at)[0].created_at;
+      lastOfferTimestamp = workOffers.sort((a, b) => b.createdAt - a.createdAt)[0].createdAt;
     }
     // workOffers && setWorkOffers(workOffers);
     subscribeToRelayOffers(lastOfferTimestamp);
@@ -55,9 +55,12 @@ const OfferContextProvider = (props: any) => {
       },
     ]);
     sub.on('event', async (event) => {
+      // TODO: add mapper to map the event to the WorkOffer model
+      // create nostr event model
       const newWorkOffer: WorkOffer = JSON.parse(event.content);
-      newWorkOffer.created_at = event.created_at;
-      console.log('//Received new offer', newWorkOffer.created_at);
+      newWorkOffer.createdAt = event.created_at;
+      newWorkOffer.nostrId = event.id;
+      console.log('//Received new offer', newWorkOffer.createdAt);
       addNewWorkOffer(newWorkOffer);
     });
     sub.on('eose', () => {

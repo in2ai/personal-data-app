@@ -16,7 +16,7 @@ type OffersScreenProps = NativeStackScreenProps<RootStackParamList, 'Offers'>;
 
 const OffersScreen: React.FC<OffersScreenProps> = ({ navigation }) => {
   const { workOffers, isFetching: isFetchingWorkOffers } = useOfferContext();
-  const sortedWorkOffers = workOffers?.sort((a, b) => b.created_at - a.created_at);
+  const sortedWorkOffers = workOffers?.sort((a, b) => b.createdAt - a.createdAt);
 
   const [selectedWorkOffer, setSelectedWorkOffer] = useState<WorkOffer | null>(null);
 
