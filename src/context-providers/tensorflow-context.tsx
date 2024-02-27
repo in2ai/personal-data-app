@@ -4,6 +4,7 @@ import { WorkOffer } from '../models/WorkOffer';
 import { useUserDataContext } from './user-data-context';
 
 interface TensorflowContextInterface {
+  isModelLoaded: boolean;
   checkOffer: (offer: WorkOffer) => Promise<number>;
 }
 
@@ -16,6 +17,8 @@ const TensorflowContextProvider = (props: any) => {
 
   const [modelLoading, setModelLoading] = useState(true);
   const [model, setModel] = useState(null);
+  isModelLoaded = model;
+
   useEffect(() => {
     initAndLoadModel();
   }, []);
@@ -48,7 +51,7 @@ const TensorflowContextProvider = (props: any) => {
     return match;
   };
 
-  const api = { checkOffer };
+  const api = { isModelLoaded, checkOffer };
 
   return <TensorflowContext.Provider value={api}>{props.children}</TensorflowContext.Provider>;
 };

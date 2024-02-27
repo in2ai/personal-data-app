@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { WorkOffer } from '../models/WorkOffer';
 import { relayInit } from 'nostr-tools';
 import offersStoreService from '../services/store/offers/offers-store-service';
+import { useTensorflowContext } from './tensorflow-context';
 
 const RELAY_URL = 'ws://137.184.117.201:8008';
 interface OfferContextInterface {
@@ -12,14 +13,15 @@ interface OfferContextInterface {
 export const OfferContext = React.createContext<OfferContextInterface>({} as OfferContextInterface);
 
 const OfferContextProvider = (props: any) => {
+  const { isModelLoaded, checkOffer } = useTensorflowContext();
   const [isFetching, setIsFetching] = useState(false);
   const [workOffers, setWorkOffers] = useState<WorkOffer[]>([]);
 
   useEffect(() => {
     // For debug purposes, we clear the offers from storage
     // clearOffersFromStorage();
-    getOffersFromStorage();
-  }, []);
+    isModelLoaded && getOffersFromStorage();
+  }, [isModelLoaded]);
 
   const clearOffersFromStorage = async () => {
     await offersStoreService.removeAllOffers();
@@ -76,7 +78,16 @@ const OfferContextProvider = (props: any) => {
     //       pass by tensorflow and just update similarity
     setWorkOffers((workOffers) => [newWorkOffer, ...workOffers]);
     await offersStoreService.addNewOffer(newWorkOffer);
-    console.log('Updated offers in storage, added new offer', newWorkOffer);
+    checkSimilarity(newWorkOffer);
+  };
+
+  const checkSimilarity = async (workOffer: WorkOffer) => {
+    const match = await checkOffer(workOffer);
+    workOffer.match = match;
+    console.log('Match', match);
+    setWorkOffers((workOffers) =>
+      workOffers.map((offer) => (offer.nostrId === workOffer.nostrId ? workOffer : offer))
+    );
   };
 
   const api = {
