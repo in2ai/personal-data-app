@@ -1,13 +1,11 @@
-import offersAsyncStorageService from './offers-async-storage-service';
+import offersSqlLiteStorageService from './offers-sql-lite-storage-service';
 
-const getAllOffers = offersAsyncStorageService.getAllOffers;
-const setAllOffers = offersAsyncStorageService.setAllOffers;
-const removeAllOffers = offersAsyncStorageService.removeAllOffers;
-const addNewOffer = offersAsyncStorageService.addNewOffer;
+const getAllOffers = offersSqlLiteStorageService.getAllOffers;
+const removeAllOffers = offersSqlLiteStorageService.removeAllOffers;
+const addNewOffer = offersSqlLiteStorageService.addNewOffer;
 
 const offersStoreService = {
   getAllOffers,
-  setAllOffers,
   removeAllOffers,
   addNewOffer,
 };
