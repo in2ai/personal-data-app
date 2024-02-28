@@ -43,9 +43,17 @@ const OfferContextProvider = (props: any) => {
     if (workOffers && workOffers.length > 0) {
       setWorkOffers(workOffers);
       lastOfferTimestamp = workOffers.sort((a, b) => b.createdAt - a.createdAt)[0].createdAt;
+      checkOffersFromStorageMatch(workOffers);
     }
-    // workOffers && setWorkOffers(workOffers);
     subscribeToRelayOffers(lastOfferTimestamp);
+  };
+
+  const checkOffersFromStorageMatch = async (workOffers: WorkOffer[]) => {
+    if (workOffers && workOffers.length > 0) {
+      workOffers.forEach((workOffer) => {
+        workOffer.match === null && checkSimilarity(workOffer);
+      });
+    }
   };
 
   const subscribeToRelayOffers = async (lastTimeStamp?: number) => {
@@ -63,8 +71,6 @@ const OfferContextProvider = (props: any) => {
       },
     ]);
     sub.on('event', async (event) => {
-      // TODO: add mapper to map the event to the WorkOffer model
-      // create nostr event model
       const newWorkOffer: WorkOffer = JSON.parse(event.content);
       newWorkOffer.createdAt = event.created_at;
       newWorkOffer.nostrId = event.id;
@@ -82,10 +88,6 @@ const OfferContextProvider = (props: any) => {
     setWorkOffers((workOffers) => [newWorkOffer, ...workOffers]);
     await offersStoreService.addNewOffer(newWorkOffer);
 
-    // TEST database status
-    // const workOffers = await offersStoreService.getAllOffers();
-    // console.log('Offers from storage', workOffers);
-
     checkSimilarity(newWorkOffer);
   };
 
@@ -95,6 +97,7 @@ const OfferContextProvider = (props: any) => {
     setWorkOffers((workOffers) =>
       workOffers.map((offer) => (offer.nostrId === workOffer.nostrId ? workOffer : offer))
     );
+    await offersStoreService.updateOfferMatch(workOffer);
   };
 
   const api = {

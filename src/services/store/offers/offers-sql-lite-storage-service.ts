@@ -127,10 +127,31 @@ const addNewOffer = async (newOffer: WorkOffer): Promise<void> => {
   }
 };
 
+const updateOfferMatch = async (workOffer: WorkOffer): Promise<void> => {
+  const db = await connectDatabase();
+  try {
+    let query = {
+      sql: `UPDATE workoffer SET match = ? WHERE nostr_id = ?`,
+      args: [workOffer.match, workOffer.nostrId],
+    };
+    await db
+      .execAsync([query], false)
+      .then((result) => {
+        console.log('Offer updated', result);
+      })
+      .catch((err) => {
+        console.error('Error updating offer', err);
+      });
+  } catch (err) {
+    throw new Error(`ERROR updating offer => ${err}`);
+  }
+};
+
 const offersSqlLiteStorageService = {
   getAllOffers,
   removeAllOffers,
   addNewOffer,
+  updateOfferMatch,
 };
 
 export default offersSqlLiteStorageService;
