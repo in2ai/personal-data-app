@@ -3,6 +3,7 @@ import { WorkOffer } from '../models/WorkOffer';
 import { relayInit } from 'nostr-tools';
 import offersStoreService from '../services/store/offers/offers-store-service';
 import { useTensorflowContext } from './tensorflow-context';
+import { createDatabaseTableIfNotExist } from '../services/store/offers/offers-sql-lite-storage-service';
 
 const RELAY_URL = 'ws://137.184.117.201:8008';
 interface OfferContextInterface {
@@ -16,6 +17,11 @@ const OfferContextProvider = (props: any) => {
   const { isModelLoaded, checkOffer } = useTensorflowContext();
   const [isFetching, setIsFetching] = useState(false);
   const [workOffers, setWorkOffers] = useState<WorkOffer[]>([]);
+
+  useEffect(() => {
+    createDatabaseTableIfNotExist();
+    console.log('Check if table exists and create if not');
+  }, []);
 
   useEffect(() => {
     // For debug purposes, we clear the offers from storage
@@ -73,18 +79,19 @@ const OfferContextProvider = (props: any) => {
   };
 
   const addNewWorkOffer = async (newWorkOffer: WorkOffer) => {
-    // TODO: Use model to add similarity information to the offer
-    // TODO: Change to SQL Lite as here we have a list of offers and we can sequencially
-    //       pass by tensorflow and just update similarity
     setWorkOffers((workOffers) => [newWorkOffer, ...workOffers]);
     await offersStoreService.addNewOffer(newWorkOffer);
+
+    // TEST database status
+    // const workOffers = await offersStoreService.getAllOffers();
+    // console.log('Offers from storage', workOffers);
+
     checkSimilarity(newWorkOffer);
   };
 
   const checkSimilarity = async (workOffer: WorkOffer) => {
     const match = await checkOffer(workOffer);
     workOffer.match = match;
-    console.log('Match', match);
     setWorkOffers((workOffers) =>
       workOffers.map((offer) => (offer.nostrId === workOffer.nostrId ? workOffer : offer))
     );

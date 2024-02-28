@@ -47,7 +47,6 @@ const TensorflowContextProvider = (props: any) => {
     console.log('offer_string', offer_string);
 
     const match = await matchCVOffer(user_string, offer_string, model);
-    console.log('//SIMILARITY: ', match);
     return match;
   };
 
