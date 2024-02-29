@@ -4,17 +4,21 @@ import { relayInit } from 'nostr-tools';
 import offersStoreService from '../services/store/offers/offers-store-service';
 import { useTensorflowContext } from './tensorflow-context';
 import { createDatabaseTableIfNotExist } from '../services/store/offers/offers-sql-lite-storage-service';
+import { useUserDataContext } from './user-data-context';
 
 const RELAY_URL = 'ws://137.184.117.201:8008';
 interface OfferContextInterface {
   workOffers: WorkOffer[];
   isFetching: boolean;
+  updateAllOffersMatch: () => void;
 }
 
 export const OfferContext = React.createContext<OfferContextInterface>({} as OfferContextInterface);
 
 const OfferContextProvider = (props: any) => {
   const { isModelLoaded, checkOffer } = useTensorflowContext();
+  const { userData } = useUserDataContext();
+
   const [isFetching, setIsFetching] = useState(false);
   const [workOffers, setWorkOffers] = useState<WorkOffer[]>([]);
 
@@ -22,6 +26,12 @@ const OfferContextProvider = (props: any) => {
     createDatabaseTableIfNotExist();
     console.log('Check if table exists and create if not');
   }, []);
+
+  useEffect(() => {
+    if (!userData) return;
+
+    updateAllOffersMatch();
+  }, [userData]);
 
   useEffect(() => {
     // For debug purposes, we clear the offers from storage
@@ -52,6 +62,14 @@ const OfferContextProvider = (props: any) => {
     if (workOffers && workOffers.length > 0) {
       workOffers.forEach((workOffer) => {
         workOffer.match === null && checkSimilarity(workOffer);
+      });
+    }
+  };
+
+  const updateAllOffersMatch = async () => {
+    if (workOffers && workOffers.length > 0) {
+      workOffers.forEach(async (workOffer) => {
+        checkSimilarity(workOffer);
       });
     }
   };
@@ -93,6 +111,7 @@ const OfferContextProvider = (props: any) => {
 
   const checkSimilarity = async (workOffer: WorkOffer) => {
     const match = await checkOffer(workOffer);
+    console.log('//Updated match: ', match);
     workOffer.match = match;
     setWorkOffers((workOffers) =>
       workOffers.map((offer) => (offer.nostrId === workOffer.nostrId ? workOffer : offer))
@@ -103,6 +122,7 @@ const OfferContextProvider = (props: any) => {
   const api = {
     workOffers,
     isFetching,
+    updateAllOffersMatch,
   };
 
   return <OfferContext.Provider value={api}>{props.children}</OfferContext.Provider>;
