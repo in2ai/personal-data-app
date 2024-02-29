@@ -1,7 +1,9 @@
 import React, { memo } from 'react';
-import { Text, View } from 'react-native';
+import { ActivityIndicator, Text, View } from 'react-native';
 import { WorkOffer } from '../../../models/WorkOffer';
 import CustomPressableOpacity from '../../layout/CustomPressableOpacity';
+
+import { timestampToddMMYYYYhhmmss } from '../../../helpers/utils.ts';
 
 type WorkOfferListItemProps = {
   workOffer: WorkOffer;
@@ -22,10 +24,15 @@ const WorkOfferListItem: React.FC<WorkOfferListItemProps> = ({ workOffer, onPres
       <View className="flex-row items-center justify-between border-b border-[#DCE3EB] p-5">
         <View className="">
           <Text className="text-lg text-h1Color">{workOffer.title}</Text>
+          <Text className="text-xs">({timestampToddMMYYYYhhmmss(workOffer.createdAt)})</Text>
           <Text className="text-md text-defaultTextColor">{workOffer.summary}</Text>
         </View>
-        <View className={matchColorView}>
-          <Text className={matchColorText}>{workOffer.match ?? 0}%</Text>
+        <View className={workOffer.match ? matchColorView : null}>
+          {workOffer.match || workOffer.match === 0 ? (
+            <Text className={matchColorText}>{workOffer.match}%</Text>
+          ) : (
+            <ActivityIndicator size="small" color="#3c7c8c" />
+          )}
         </View>
       </View>
     </CustomPressableOpacity>

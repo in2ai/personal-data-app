@@ -1,10 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { generateKeyPair, getPublicKeyFromPrivate } from '../api/nostr';
-import {
-  getSecuredStoredUser,
-  removeSecuredStoredUser,
-  setSecuredStoredUser,
-} from '../services/store/secure-store-service';
+import userStoreService from '../services/store/user/secure-store-service';
 import { User } from '../models/user';
 
 interface AuthContextInterface {
@@ -63,7 +59,8 @@ const AuthContextProvider = (props: any) => {
 
   // USER
   const getUser = async () => {
-    getSecuredStoredUser()
+    userStoreService
+      .getUser()
       .then((user) => {
         setPublicKey(user.publicKey);
         setSecretKey(user.secretKey);
@@ -76,7 +73,7 @@ const AuthContextProvider = (props: any) => {
   const setUser = (user: User) => {
     setPublicKey(user.publicKey);
     setSecretKey(user.secretKey);
-    setSecuredStoredUser(user).catch((e) => {
+    userStoreService.setUser(user).catch((e) => {
       alert(e.message);
     });
   };
@@ -84,7 +81,7 @@ const AuthContextProvider = (props: any) => {
   const removeUser = () => {
     setPublicKey(null);
     setSecretKey(null);
-    removeSecuredStoredUser().catch((e) => {
+    userStoreService.removeUser().catch((e) => {
       alert(e.message);
     });
   };
