@@ -15,9 +15,8 @@ export const TensorflowContext = React.createContext<TensorflowContextInterface>
 const TensorflowContextProvider = (props: any) => {
   const { userData } = useUserDataContext();
 
-  const [modelLoading, setModelLoading] = useState(true);
   const [model, setModel] = useState(null);
-  isModelLoaded = model;
+  const isModelLoaded = model ? true : false;
 
   useEffect(() => {
     initAndLoadModel();
@@ -27,7 +26,6 @@ const TensorflowContextProvider = (props: any) => {
     await initTfjs();
     const loadedModel = await load_model();
     setModel(loadedModel);
-    setModelLoading(false);
   };
 
   const checkOffer = async (offer: WorkOffer): Promise<number> => {
@@ -40,6 +38,7 @@ const TensorflowContextProvider = (props: any) => {
       return;
     }
 
+    console.log('Checking similarity');
     const user_string = jsonToSpaceDelimitedText(userData);
     const offer_string = jsonToSpaceDelimitedText(offer);
 
