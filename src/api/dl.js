@@ -61,71 +61,71 @@ async function calculateSimilarity(sentences,model) {
   return convertirEscala(similarityScore)
 }
 
-async function calculateSimilarityTotal(cv, offer, pesos, model) {
+async function calculateSimilarityTotal(cv, offer, weights, model) {
   console.log('cv', cv);
   console.log('offer', offer);
 
-  let similitudTotal = 0;
+  let similarityTotal = 0;
 
   // Calcular similitud de habilidades
 
   let skillsCv = new Set(cv.skills.map(skill => skill.value.toLowerCase()));
   let requiredSkillsOffer = new Set(offer.requiredSkills.map(skill => skill.toLowerCase()));
-  let interseccionSkills = new Set([...skillsCv].filter(x => requiredSkillsOffer.has(x)));
-  let similitudSkills = (interseccionSkills.size / requiredSkillsOffer.size) * 100;
+  let intersectionSkills = new Set([...skillsCv].filter(x => requiredSkillsOffer.has(x)));
+  let similaritySkills = (intersectionSkills.size / requiredSkillsOffer.size) * 100;
 
   // Calcular similitud de ubicación
-  let similitudUbicacion = await calculateSimilarity([cv.geoLocation, offer.location],model);
+  let similarityUbicacion = await calculateSimilarity([cv.geoLocation, offer.location],model);
 
-  let similitudExperiences = []; 
-  let similitudTitles = [];
-  let similitudLocations = [];
+  let similarityExperiences = []; 
+  let similarityTitles = [];
+  let similarityLocations = [];
   for (let i = 0; i < cv.experiences.length; i++) {
-    let similitud = await calculateSimilarity([cv.experiences[i].description, offer.summary],model);
+    let similarity = await calculateSimilarity([cv.experiences[i].description, offer.summary],model);
     let title = await calculateSimilarity([cv.experiences[i].title, offer.title],model);
     let location = await calculateSimilarity([cv.experiences[i].location, offer.location],model)
-    similitudExperiences.push(parseFloat(similitud));
-    similitudTitles.push(parseFloat(title));
-    similitudLocations.push(parseFloat(location));
+    similarityExperiences.push(parseFloat(similarity));
+    similarityTitles.push(parseFloat(title));
+    similarityLocations.push(parseFloat(location));
   }
-  let maxSimilitudExperiences= Math.max(...similitudExperiences)
+  let maxSimilarityExperiences= Math.max(...similarityExperiences)
   const average = array => array.reduce((a, b) => a + b) / array.length;
-  let averagesimilitudTitles = average(similitudTitles)
-  let averagesimilitudLocations = average(similitudLocations)
+  let averageSimilarityTitles = average(similarityTitles)
+  let averageSimilarityLocations = average(similarityLocations)
 
   // Calcular similitud de título de trabajo y resumen
-  let similitudHeadlineTitle = await calculateSimilarity([cv.headline, offer.title],model);
-  let similitudHeadlineSummery = await calculateSimilarity([cv.headline, offer.summary],model);
-  let similitudHeadline = (parseFloat(similitudHeadlineTitle) + parseFloat(similitudHeadlineSummery)) / 2
+  let similarityHeadlineTitle = await calculateSimilarity([cv.headline, offer.title],model);
+  let similarityHeadlineSummery = await calculateSimilarity([cv.headline, offer.summary],model);
+  let similarityHeadline = (parseFloat(similarityHeadlineTitle) + parseFloat(similarityHeadlineSummery)) / 2
 
   // Ponderar y sumar similitudes
-  similitudTotal += similitudSkills * pesos.skills;
-  similitudTotal += parseFloat(similitudUbicacion) * pesos.ubicacion;
-  similitudTotal += maxSimilitudExperiences * pesos.experience;
-  similitudTotal += averagesimilitudTitles * pesos.title;
-  similitudTotal += averagesimilitudLocations * pesos.location;
-  similitudTotal += similitudHeadline * pesos.headline;
+  similarityTotal += similaritySkills * weights.skills;
+  similarityTotal += parseFloat(similarityUbicacion) * weights.ubicacion;
+  similarityTotal += maxSimilarityExperiences * weights.experience;
+  similarityTotal += averageSimilarityTitles * weights.title;
+  similarityTotal += averageSimilarityLocations * weights.location;
+  similarityTotal += similarityHeadline * weights.headline;
 
-  console.log(similitudSkills,pesos.skills,similitudSkills*pesos.skills)
-  console.log((similitudUbicacion * 100),pesos.ubicacion,(similitudUbicacion * 100)*pesos.ubicacion)
-  console.log((maxSimilitudExperiences * 100),pesos.experience,(maxSimilitudExperiences * 100)*pesos.experience)
-  console.log((averagesimilitudTitles * 100),pesos.title,(averagesimilitudTitles * 100)*pesos.title)
-  console.log((averagesimilitudLocations * 100),pesos.location,(averagesimilitudLocations * 100)*pesos.location)
-  console.log((similitudHeadline * 100),pesos.headline,(similitudHeadline * 100)*pesos.headline)
+  console.log(similaritySkills,weights.skills,similaritySkills*weights.skills)
+  console.log((similarityUbicacion * 100),weights.ubicacion,(similarityUbicacion * 100)*weights.ubicacion)
+  console.log((maxSimilarityExperiences * 100),weights.experience,(maxSimilarityExperiences * 100)*weights.experience)
+  console.log((averageSimilarityTitles * 100),weights.title,(averageSimilarityTitles * 100)*weights.title)
+  console.log((averageSimilarityLocations * 100),weights.location,(averageSimilarityLocations * 100)*weights.location)
+  console.log((similarityHeadline * 100),weights.headline,(similarityHeadline * 100)*weights.headline)
 
   // Ajustar basado en el peso total
-  let suma = 0;
-  Object.values(pesos).forEach(valor => {
-      suma += valor;
+  let sum = 0;
+  Object.values(weights).forEach(valor => {
+      sum += valor;
   })
-  similitudTotal /= suma;
-  return similitudTotal;
+  similarityTotal /= sum;
+  return similarityTotal;
 }
 
 export async function matchCVOffer(cv,offer,model) {
 
   try {
-    let pesos = {
+    let weights = {
         skills: 0.5,
         ubicacion: 0.15,
         experience:0.2,
@@ -133,10 +133,10 @@ export async function matchCVOffer(cv,offer,model) {
         location:0.05,
         headline: 0.05
     };
-    let porcentajeSimilitud = await calculateSimilarityTotal(cv, offer, pesos, model);
+    let percentageSimilitud = await calculateSimilarityTotal(cv, offer, weights, model);
 
-    console.log(`Similarity: ${porcentajeSimilitud.toFixed(2)}`);
-    return porcentajeSimilitud;
+    console.log(`Similarity: ${percentageSimilitud.toFixed(2)}`);
+    return percentageSimilitud;
   } catch (error) {
     console.error(error);
     return 0
