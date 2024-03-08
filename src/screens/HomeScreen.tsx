@@ -2,7 +2,7 @@ import 'expo-dev-client';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
 
-import { Text, View } from 'react-native';
+import { Text, View, Button } from 'react-native';
 import { RootStackParamList } from '../navigation/MainNav';
 
 import CustomButton from '../components/smart/CustomButton';
@@ -19,11 +19,17 @@ import CustomPressableOpacity from '../components/layout/CustomPressableOpacity'
 import { useAuthContext } from '../context-providers/auth-context';
 import { useUserDataContext } from '../context-providers/user-data-context';
 
+//remove
+import { useTensorflowContext } from '../context-providers/tensorflow-context';
+
 const screenContainerStyle = 'flex h-full w-full justify-between items-center p-5';
 
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
+  //remove
+  const { isModelLoaded, checkOffer, checkOffer_v } = useTensorflowContext();
+
   const { publicKey, secretKey } = useAuthContext();
   const { userData } = useUserDataContext();
 
@@ -76,6 +82,9 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
           />
         </View>
       </View>
+      {/* remove */}
+      {/* <View><Button title="Match" onPress={checkOffer_v} /></View> */}
+
       <View className="mt-auto">
         <View className="mb-5 w-[80%] flex-row rounded-md bg-[#ffffff] p-3">
           <Text className="text-[#404040]">Public key: </Text>
