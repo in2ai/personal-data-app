@@ -1,9 +1,9 @@
-import * as SQLite from "expo-sqlite";
-import { PersonData } from "../models/person_data";
+import * as SQLite from 'expo-sqlite';
+import { PersonData } from '../../models/.unused/person_data';
 
 const createTablesIfNotExists = async () => {
   try {
-    const db = SQLite.openDatabase("personal-data-app");
+    const db = SQLite.openDatabase('personal-data-app');
     await db.execAsync([{ sql: `pragma foreign_keys = on;`, args: [] }], false);
     await db.execAsync(
       [
@@ -165,7 +165,7 @@ const createTablesIfNotExists = async () => {
 
 const connectDatabase = async () => {
   try {
-    const db = SQLite.openDatabase("personal-data-app");
+    const db = SQLite.openDatabase('personal-data-app');
     return db;
   } catch (error) {
     console.error(error);
@@ -179,7 +179,7 @@ export const getPerson = async (id) => {
 
   //Person
   let query = {
-    sql: "select * from person where id = ?",
+    sql: 'select * from person where id = ?',
     args: [id],
   };
   let [result]: any = await db.execAsync([query], false);
@@ -187,7 +187,7 @@ export const getPerson = async (id) => {
 
   //Experiences
   query = {
-    sql: "select * from experience where id_person = ?",
+    sql: 'select * from experience where id_person = ?',
     args: [id],
   };
   [result] = await db.execAsync([query], false);
@@ -195,7 +195,7 @@ export const getPerson = async (id) => {
 
   //Skills
   query = {
-    sql: "select * from skill where id_person = ?",
+    sql: 'select * from skill where id_person = ?',
     args: [id],
   };
   [result] = await db.execAsync([query], false);

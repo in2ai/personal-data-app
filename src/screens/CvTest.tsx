@@ -1,20 +1,16 @@
-import "expo-dev-client";
-import { Button, View, Text } from "react-native";
-import { SafeAreaProvider } from "react-native-safe-area-context";
-import * as DocumentPicker from "expo-document-picker";
-import { createTablesIfNotExists, getPerson } from "../api/db";
-import { linkedinToDatabase } from "../api/linkedin";
-import { europassToDatabase } from "../api/europass";
-import { printDatabase } from "../api/print";
-import tw from "twrnc";
-import {
-  getEventsFromRelay,
-  publishEventToRelay,
-  signEvent,
-} from "../api/nostr";
+import 'expo-dev-client';
+import { Button, View, Text } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import * as DocumentPicker from 'expo-document-picker';
+import { createTablesIfNotExists, getPerson } from '../api/.unused/db';
+import { linkedinToDatabase } from '../api/.unused/linkedin';
+import { europassToDatabase } from '../api/.unused/europass';
+import { printDatabase } from '../api/.unused/print';
+import tw from 'twrnc';
+import { getEventsFromRelay, publishEventToRelay, signEvent } from '../api/.unused/nostr';
 import React, { useState, useEffect } from 'react';
 
-import { matchCVOffer, initTfjs,load_model,jsonToSpaceDelimitedText } from "../api/dl";
+import { matchCVOffer, initTfjs, load_model, jsonToSpaceDelimitedText } from '../api/dl';
 
 export default function CvTestScreen({ navigation, route }) {
   const { publicKey, secretKey } = useAuthContext();
@@ -55,7 +51,7 @@ export default function CvTestScreen({ navigation, route }) {
   };
 
   const insertOffer = async () => {
-    console.log("hola")
+    console.log('hola');
     try {
       const workOffer = {
         title: 'Oferta de trabajo',
@@ -78,7 +74,7 @@ export default function CvTestScreen({ navigation, route }) {
       await publishEventToRelay(RELAY_URL, signedEvent);
       alert('Offer inserted');
     } catch (e) {
-      console.log(e)
+      console.log(e);
       alert(e.message);
     }
   };
@@ -97,9 +93,8 @@ export default function CvTestScreen({ navigation, route }) {
   };
 
   const match = async () => {
-
     if (modelLoading) {
-      alert("El modelo aún se está cargando. Por favor, espera.");
+      alert('El modelo aún se está cargando. Por favor, espera.');
       return;
     }
 
@@ -116,12 +111,12 @@ export default function CvTestScreen({ navigation, route }) {
     // const person_string = "tengo conocimiento en python y web";
     // const offer_string = "buscamos gente que tenga conocimiento en python y desarrollo web";
 
-    console.log("person",person_string);
+    console.log('person', person_string);
     console.log(offer_string);
 
-    const match = await matchCVOffer(person_string,offer_string,model)
+    const match = await matchCVOffer(person_string, offer_string, model);
 
-    alert("Match with offer " + match.toString() + "%")
+    alert('Match with offer ' + match.toString() + '%');
   };
 
   return (

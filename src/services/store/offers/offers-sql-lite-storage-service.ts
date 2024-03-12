@@ -1,6 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 
-import { WorkOffer } from '../../../models/WorkOffer';
+import { WorkOffer } from '../../../models/workOffer';
 
 export const createDatabaseTableIfNotExist = async () => {
   const db = SQLite.openDatabase('work-offers-database.db');

@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { View, Text, Button, TextInput } from 'react-native';
 
 import { RootStackParamList } from '../../App';
-import { generateKeyPair, getPublicKeyFromPrivate } from '../api/nostr';
+import { generateKeyPair, getPublicKeyFromPrivate } from '../api/.unused/nostr';
 
 type AuthScreenProps = NativeStackScreenProps<RootStackParamList, 'Auth'>;
 

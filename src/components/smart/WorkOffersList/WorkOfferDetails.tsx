@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { Text, View } from 'react-native';
-import { WorkOffer } from '../../../models/WorkOffer';
+import { WorkOffer } from '../../../models/workOffer';
 import CustomPressableOpacity from '../../layout/CustomPressableOpacity';
 import CustomButton from '../CustomButton';
 

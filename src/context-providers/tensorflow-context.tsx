@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { initTfjs, jsonToSpaceDelimitedText, load_model, matchCVOffer } from '../api/dl';
-import { WorkOffer } from '../models/WorkOffer';
+import { WorkOffer } from '../models/workOffer';
 import { useUserDataContext } from './user-data-context';
 
 interface TensorflowContextInterface {

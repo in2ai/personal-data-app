@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { WorkOffer } from '../models/WorkOffer';
+import { WorkOffer } from '../models/workOffer';
 import { relayInit } from 'nostr-tools';
 import offersStoreService from '../services/store/offers/offers-store-service';
 import { useTensorflowContext } from './tensorflow-context';
