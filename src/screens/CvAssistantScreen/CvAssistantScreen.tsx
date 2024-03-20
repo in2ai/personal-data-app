@@ -5,9 +5,14 @@ import { ScrollView, Text, View } from 'react-native';
 import CustomButton from '../../components/smart/CustomButton';
 
 import { UserData } from '../../models/userData';
+
+// Steps
 import PersonalDataStep from './Steps/PersonalDataStep';
 import StepNavigator from '../../components/smart/StepNavigator';
 import ContactDataStep from './Steps/ContactDataStep';
+import ProfessionalDataStep from './Steps/ProfessionalDataStep';
+import ExperienceDataStep from './Steps/ExperienceDataStep';
+import SkillsDataStep from './Steps/SkillsDataStep';
 
 type CvAssistantScreenProps = {
   onCancel?: () => void;
@@ -24,6 +29,12 @@ const CvAssistantScreen: React.FC<CvAssistantScreenProps> = ({ onCancel, onSave 
   const steps = [
     { screen: 1, component: <PersonalDataStep editingCv={editingCv} onChangeCv={onChangeCv} /> },
     { screen: 2, component: <ContactDataStep editingCv={editingCv} onChangeCv={onChangeCv} /> },
+    {
+      screen: 3,
+      component: <ProfessionalDataStep editingCv={editingCv} onChangeCv={onChangeCv} />,
+    },
+    { screen: 4, component: <ExperienceDataStep editingCv={editingCv} onChangeCv={onChangeCv} /> },
+    { screen: 5, component: <SkillsDataStep editingCv={editingCv} onChangeCv={onChangeCv} /> },
   ];
 
   // Actions

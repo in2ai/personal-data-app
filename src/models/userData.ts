@@ -22,6 +22,7 @@ export class UserData {
   headline?: string;
   summary?: string;
   industry?: string;
+  languages?: string;
   zipCode?: string;
   geoLocation?: string;
   twitterHandles?: string;
