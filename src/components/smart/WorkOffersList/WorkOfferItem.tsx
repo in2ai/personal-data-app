@@ -2,8 +2,7 @@ import React, { memo } from 'react';
 import { ActivityIndicator, Text, View } from 'react-native';
 import { WorkOffer } from '../../../models/workOffer';
 import CustomPressableOpacity from '../../layout/CustomPressableOpacity';
-
-import { timestampToddMMYYYYhhmmss } from '../../../helpers/utils.ts';
+import { timestampToddMMYYYYhhmmss } from '../../../helpers/utils';
 
 type WorkOfferListItemProps = {
   workOffer: WorkOffer;

@@ -1,7 +1,7 @@
 import 'expo-dev-client';
 import React from 'react';
 
-import { ScrollView, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import CustomButton from '../../components/smart/CustomButton';
 
 import { UserData } from '../../models/userData';
@@ -15,12 +15,13 @@ import ExperienceDataStep from './Steps/ExperienceDataStep';
 import SkillsDataStep from './Steps/SkillsDataStep';
 
 type CvAssistantScreenProps = {
+  userData?: UserData;
   onCancel?: () => void;
   onSave?: (editingCv: UserData) => void;
 };
 
-const CvAssistantScreen: React.FC<CvAssistantScreenProps> = ({ onCancel, onSave }) => {
-  const [editingCv, setEditingCv] = React.useState<UserData>(new UserData());
+const CvAssistantScreen: React.FC<CvAssistantScreenProps> = ({ userData, onCancel, onSave }) => {
+  const [editingCv, setEditingCv] = React.useState<UserData>(userData ?? new UserData());
 
   const onChangeCv = (updatedCv: UserData) => {
     console.log('Cv updated', updatedCv);
@@ -42,7 +43,7 @@ const CvAssistantScreen: React.FC<CvAssistantScreenProps> = ({ onCancel, onSave 
     onSave && onSave(editingCv);
   };
 
-  const isValidCv = editingCv.firstName && editingCv.lastName && editingCv.address;
+  const isValidCv = true; //editingCv.firstName && editingCv.lastName && editingCv.address;
 
   return (
     <View className="W-full h-full justify-between bg-[#ffffff]">

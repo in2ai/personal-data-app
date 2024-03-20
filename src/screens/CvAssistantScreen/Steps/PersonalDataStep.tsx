@@ -6,6 +6,7 @@ import { ScrollView, Text, View } from 'react-native';
 import { UserData } from '../../../models/userData';
 
 import Field from '../../../components/smart/Field';
+import DateField from '../../../components/smart/DateField';
 
 type PersonalDataStepProps = {
   editingCv: UserData;
@@ -69,7 +70,7 @@ const PersonalDataStep: React.FC<PersonalDataStepProps> = ({ editingCv, onChange
             />
           </View>
           <View className="mb-5 w-full">
-            <Field
+            <DateField
               label="Fecha de nacimiento"
               flex="column"
               value={editingCv.birthDate}

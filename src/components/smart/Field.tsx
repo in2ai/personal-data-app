@@ -1,6 +1,7 @@
 import React from 'react';
-import { Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Text, TextInput, View } from 'react-native';
 
+import CustomPressableOpacity from '../layout/CustomPressableOpacity';
 import XCircle from '../../assets/img/svg/x-circle.svg';
 
 type FieldProps = {
@@ -52,12 +53,11 @@ const Field: React.FC<FieldProps> = ({
             placeholder={placeholder}
           />
           {hasResetEnabled && (
-            <TouchableOpacity
-              className="absolute right-3 h-full flex-none justify-center pl-3"
-              onPress={() => onChangeText('')}
-            >
-              <XCircle width={20} height={20} fill={'#bbb'} />
-            </TouchableOpacity>
+            <View className="absolute right-3 h-full flex-none justify-center pl-3">
+              <CustomPressableOpacity onPress={() => onChangeText('')}>
+                <XCircle width={20} height={20} fill={'#bbb'} />
+              </CustomPressableOpacity>
+            </View>
           )}
         </View>
       </View>
