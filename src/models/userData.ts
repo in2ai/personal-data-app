@@ -18,6 +18,7 @@ export class UserData {
   address?: string;
   birthDate?: string;
   motherTongue?: string;
+  email?: string;
   headline?: string;
   summary?: string;
   industry?: string;

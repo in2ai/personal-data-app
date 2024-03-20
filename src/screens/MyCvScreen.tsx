@@ -6,7 +6,7 @@ import { Text, View } from 'react-native';
 import { RootStackParamList } from '../navigation/MainNav';
 import { useUserDataContext } from '../context-providers/user-data-context';
 import NoCvScreen from './NoCvScreen';
-import CvAssistantScreen from './CvAssistantScreen';
+import CvAssistantScreen from './CvAssistantScreen/CvAssistantScreen';
 import { UserData } from '../models/userData';
 import UserCvScreen from './UserCvScreen';
 
