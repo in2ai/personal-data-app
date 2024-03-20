@@ -7,7 +7,7 @@ import {
   getEventsFromRelay,
   publishEventToRelay,
   signEvent,
-} from '../api/nostr';
+} from '../api/.unused/nostr';
 import { useAuthContext } from '../context-providers/auth-context';
 import CustomButton from '../components/smart/CustomButton';
 

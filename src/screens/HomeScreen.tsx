@@ -2,7 +2,7 @@ import 'expo-dev-client';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
 
-import { Text, View } from 'react-native';
+import { ActivityIndicator, Text, View } from 'react-native';
 import { RootStackParamList } from '../navigation/MainNav';
 
 import CustomButton from '../components/smart/CustomButton';
@@ -18,6 +18,7 @@ import Power from '../assets/img/svg/power.svg';
 import CustomPressableOpacity from '../components/layout/CustomPressableOpacity';
 import { useAuthContext } from '../context-providers/auth-context';
 import { useUserDataContext } from '../context-providers/user-data-context';
+import { useTensorflowContext } from '../context-providers/tensorflow-context';
 
 const screenContainerStyle = 'flex h-full w-full justify-between items-center p-5';
 
@@ -28,6 +29,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const { userData } = useUserDataContext();
 
   const { logout } = useAuthContext();
+  const { isModelLoaded } = useTensorflowContext();
 
   const onGoToCv = () => {
     navigation.navigate('MyCV', { name: 'MyCV' });
@@ -52,40 +54,49 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
           </View>
         </CustomPressableOpacity>
       </View>
-      <View className="items-center">
-        <View className="mb-20 mt-[35%] w-full items-center">
-          <PersonWorkspace width={100} height={100} fill={'#3c7c8c'} />
+      {!isModelLoaded ? (
+        <View className="flex h-full items-center justify-center">
+          <ActivityIndicator size="large" color="#3c7c8c" />
+          <Text className="mt-5 text-[#3c7c8c]">Loading model...</Text>
         </View>
-        <View className="mb-5 w-60">
-          <CustomButton
-            icon={<FileEarmarkPerson width={25} height={25} fill={'#ffffff'} />}
-            buttonType="primary"
-            title="Mi currículum"
-            hasLargeFont={true}
-            onPress={onGoToCv}
-          />
-        </View>
-        <View className="w-60">
-          <CustomButton
-            disabled={!userData}
-            icon={<Files width={25} height={25} fill={'#fff'} />}
-            buttonType="primary"
-            title="Ver ofertas"
-            hasLargeFont={true}
-            onPress={onGoToOffers}
-          />
-        </View>
-      </View>
-      <View className="mt-auto">
-        <View className="mb-5 w-[80%] flex-row rounded-md bg-[#ffffff] p-3">
-          <Text className="text-[#404040]">Public key: </Text>
-          <Text className="text-[#686868]">{publicKey}</Text>
-        </View>
-        <View className="mb-5 w-[80%] flex-row  rounded-md bg-[#ffffff] p-3">
-          <Text className="text-[#404040]">Secret key: </Text>
-          <Text className="text-[#686868]">{secretKey}</Text>
-        </View>
-      </View>
+      ) : (
+        <>
+          <View className="items-center">
+            <View className="mb-20 mt-[35%] w-full items-center">
+              <PersonWorkspace width={100} height={100} fill={'#3c7c8c'} />
+            </View>
+            <View className="mb-5 w-60">
+              <CustomButton
+                icon={<FileEarmarkPerson width={25} height={25} fill={'#ffffff'} />}
+                buttonType="primary"
+                title="Mi currículum"
+                hasLargeFont={true}
+                onPress={onGoToCv}
+              />
+            </View>
+            <View className="w-60">
+              <CustomButton
+                disabled={!userData}
+                icon={<Files width={25} height={25} fill={'#fff'} />}
+                buttonType="primary"
+                title="Ver ofertas"
+                hasLargeFont={true}
+                onPress={onGoToOffers}
+              />
+            </View>
+          </View>
+          <View className="mt-auto">
+            <View className="mb-5 w-[80%] flex-row rounded-md bg-[#ffffff] p-3">
+              <Text className="text-[#404040]">Public key: </Text>
+              <Text className="text-[#686868]">{publicKey}</Text>
+            </View>
+            <View className="mb-5 w-[80%] flex-row  rounded-md bg-[#ffffff] p-3">
+              <Text className="text-[#404040]">Secret key: </Text>
+              <Text className="text-[#686868]">{secretKey}</Text>
+            </View>
+          </View>
+        </>
+      )}
     </View>
   );
 };

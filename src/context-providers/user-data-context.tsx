@@ -20,6 +20,8 @@ const UserDataContextProvider = (props: any) => {
   }, []);
 
   useEffect(() => {
+    if (!userData) return;
+
     setStoredUserData(userData);
   }, [userData]);
 

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { generateKeyPair, getPublicKeyFromPrivate } from '../api/nostr';
+import { generateKeyPair, getPublicKeyFromPrivate } from '../api/.unused/nostr';
 import userStoreService from '../services/store/user/secure-store-service';
 import { User } from '../models/user';
 

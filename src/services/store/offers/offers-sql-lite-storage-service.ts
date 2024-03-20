@@ -1,6 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 
-import { WorkOffer } from '../../../models/WorkOffer';
+import { WorkOffer } from '../../../models/workOffer';
 
 export const createDatabaseTableIfNotExist = async () => {
   const db = SQLite.openDatabase('work-offers-database.db');
@@ -147,11 +147,32 @@ const updateOfferMatch = async (workOffer: WorkOffer): Promise<void> => {
   }
 };
 
+const resetOfferMatch = async (workOffer: WorkOffer): Promise<void> => {
+  const db = await connectDatabase();
+  try {
+    let query = {
+      sql: `UPDATE workoffer SET match = ? WHERE nostr_id = ?`,
+      args: [null, workOffer.nostrId],
+    };
+    await db
+      .execAsync([query], false)
+      .then((result) => {
+        console.log('Offer resetted match', result);
+      })
+      .catch((err) => {
+        console.error('Error resetting offer match', err);
+      });
+  } catch (err) {
+    throw new Error(`ERROR resetting offer match => ${err}`);
+  }
+};
+
 const offersSqlLiteStorageService = {
   getAllOffers,
   removeAllOffers,
   addNewOffer,
   updateOfferMatch,
+  resetOfferMatch,
 };
 
 export default offersSqlLiteStorageService;

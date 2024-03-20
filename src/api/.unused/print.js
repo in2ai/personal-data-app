@@ -1,4 +1,4 @@
-import { connectDatabase } from '../api/db';
+import { connectDatabase } from './db';
 export { printDatabase };
 
 const printDatabase = async () => {
