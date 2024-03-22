@@ -19,6 +19,7 @@ import CustomPressableOpacity from '../components/layout/CustomPressableOpacity'
 import { useAuthContext } from '../context-providers/auth-context';
 import { useUserDataContext } from '../context-providers/user-data-context';
 import { useTensorflowContext } from '../context-providers/tensorflow-context';
+import { useOfferContext } from '../context-providers/offer-context';
 
 const screenContainerStyle = 'flex h-full w-full justify-between items-center p-5';
 
@@ -28,8 +29,13 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const { publicKey, secretKey } = useAuthContext();
   const { userData } = useUserDataContext();
 
+  const { clearOffersFromStorage } = useOfferContext(); // TODO: for debug purposes
+
   const { logout } = useAuthContext();
-  const { isModelLoaded } = useTensorflowContext();
+
+  // TODO: for development mode
+  // const { isModelLoaded } = useTensorflowContext();
+  const isModelLoaded = true;
 
   const onGoToCv = () => {
     navigation.navigate('MyCV', { name: 'MyCV' });
@@ -41,6 +47,11 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
 
   const onLogout = () => {
     logout();
+  };
+
+  // TODO: for debug purposes
+  const onResetOffers = () => {
+    clearOffersFromStorage();
   };
 
   return (
@@ -84,8 +95,19 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
                 onPress={onGoToOffers}
               />
             </View>
+            <View className="mt-20 w-60">
+              <CustomButton
+                disabled={!userData}
+                icon={<Files width={25} height={25} fill={'#fff'} />}
+                buttonType="secondary"
+                title="Reset ofertas"
+                hasLargeFont={true}
+                onPress={onResetOffers}
+              />
+            </View>
           </View>
-          <View className="mt-auto">
+          {/* For demo purposes */}
+          {/* <View className="mt-auto">
             <View className="mb-5 w-[80%] flex-row rounded-md bg-[#ffffff] p-3">
               <Text className="text-[#404040]">Public key: </Text>
               <Text className="text-[#686868]">{publicKey}</Text>
@@ -94,7 +116,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
               <Text className="text-[#404040]">Secret key: </Text>
               <Text className="text-[#686868]">{secretKey}</Text>
             </View>
-          </View>
+          </View> */}
         </>
       )}
     </View>
