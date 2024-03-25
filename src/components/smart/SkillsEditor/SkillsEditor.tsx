@@ -31,7 +31,7 @@ const SkillsEditor: React.FC<SkillsEditorProps> = ({ skills = [], onChange }) =>
 
   return (
     <View className="flex flex-1 pt-3">
-      <View className="flex-none">
+      <View className="mb-3 flex-none">
         <TextField
           hasResetOnSubmit={true}
           hasResetEnabled={false}

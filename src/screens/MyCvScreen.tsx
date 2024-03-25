@@ -8,7 +8,7 @@ import { useUserDataContext } from '../context-providers/user-data-context';
 import NoCvScreen from './NoCvScreen';
 import CvAssistantScreen from './CvAssistantScreen/CvAssistantScreen';
 import { UserData } from '../models/userData';
-import UserCvScreen from './UserCvScreen';
+import UserCvScreen from './UserCvScreen/UserCvScreen';
 
 const screenContainerStyle = 'flex h-full w-full';
 

@@ -33,9 +33,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
 
   const { logout } = useAuthContext();
 
-  // TODO: for development mode
-  // const { isModelLoaded } = useTensorflowContext();
-  const isModelLoaded = true;
+  const { isModelLoaded } = useTensorflowContext();
 
   const onGoToCv = () => {
     navigation.navigate('MyCV', { name: 'MyCV' });

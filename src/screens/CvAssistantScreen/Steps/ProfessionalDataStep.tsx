@@ -1,12 +1,17 @@
 import 'expo-dev-client';
 import React from 'react';
-
 import { ScrollView, Text, View } from 'react-native';
 
 import { UserData } from '../../../models/userData';
 
-import Field from '../../../components/smart/Field';
-import TextField from '../../../components/smart/TextFIeld';
+import StepForm, { StepFormRow } from './StepForm';
+
+export const USER_PROFESSIONAL_DATA_ROWS: StepFormRow[] = [
+  { label: 'Industria', property: 'industry', type: 'text' },
+  { label: 'Titular', property: 'headline', type: 'text' },
+  { label: 'Sumario', property: 'summary', type: 'text' },
+  { label: 'Lenguas', property: 'languages', type: 'text' },
+];
 
 type ProfessionalDataStepProps = {
   editingCv: UserData;
@@ -14,14 +19,6 @@ type ProfessionalDataStepProps = {
 };
 
 const ProfessionalDataStep: React.FC<ProfessionalDataStepProps> = ({ editingCv, onChangeCv }) => {
-  const [internalCv, setInternalCv] = React.useState<UserData>(editingCv);
-
-  const onChangeCV = (propertyName: string, value: string) => {
-    const updatedCv = { ...internalCv, [propertyName]: value };
-    setInternalCv(updatedCv);
-    onChangeCv && onChangeCv(updatedCv);
-  };
-
   return (
     <>
       <View className="border-b border-dotted border-[#3c7c8c] pb-3">
@@ -29,38 +26,11 @@ const ProfessionalDataStep: React.FC<ProfessionalDataStepProps> = ({ editingCv, 
       </View>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View className="py-5">
-          <View className="mb-5 w-full">
-            <TextField
-              label="Industria"
-              flex="column"
-              value={editingCv.industry}
-              onChange={(value) => onChangeCV('industry', value)}
-            />
-          </View>
-          <View className="mb-5 w-full">
-            <TextField
-              label="Titular"
-              flex="column"
-              value={editingCv.headline}
-              onChange={(value) => onChangeCV('headline', value)}
-            />
-          </View>
-          <View className="mb-5 w-full">
-            <TextField
-              label="Sumario"
-              flex="column"
-              value={editingCv.summary}
-              onChange={(value) => onChangeCV('summary', value)}
-            />
-          </View>
-          <View className="mb-5 w-full">
-            <TextField
-              label="Lenguas"
-              flex="column"
-              value={editingCv.languages}
-              onChange={(value) => onChangeCV('languages', value)}
-            />
-          </View>
+          <StepForm
+            userData={editingCv}
+            stepFormRows={USER_PROFESSIONAL_DATA_ROWS}
+            onChangeCv={onChangeCv}
+          />
         </View>
       </ScrollView>
     </>

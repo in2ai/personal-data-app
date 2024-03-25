@@ -1,31 +1,20 @@
 import 'expo-dev-client';
 import React from 'react';
-
 import { ScrollView, Text, View } from 'react-native';
-import CustomButton from '../components/smart/CustomButton';
-import { UserData } from '../models/userData';
 
-import CustomPressableOpacity from '../components/layout/CustomPressableOpacity';
-import { isoStringToddMMYYYY } from '../helpers/utils';
+import { UserData } from '../../models/userData';
 
-import TrashFill from '../assets/img/svg/trash-fill.svg';
-import PencilSquare from '../assets/img/svg/pencil-square.svg';
+import CustomPressableOpacity from '../../components/layout/CustomPressableOpacity';
+import { isoStringToddMMYYYY } from '../../helpers/utils';
 
-//TODO: move to component
-const USER_PERSONAL_DATA_ROWS: { label: string; property: string; type: string }[] = [
-  { label: 'Nombre', property: 'firstName', type: 'text' },
-  { label: 'Apellidos', property: 'lastName', type: 'text' },
-  { label: 'Dirección', property: 'address', type: 'text' },
-  { label: 'Fecha de nacimiento', property: 'birthDate', type: 'ISOstring' },
-  { label: 'Lengua materna', property: 'motherTongue', type: 'text' },
-  { label: 'Resumen', property: 'summary', type: 'text' },
-  { label: 'Industria', property: 'industry', type: 'text' },
-  { label: 'Código postal', property: 'zipCode', type: 'text' },
-  { label: 'Localización', property: 'geoLocation', type: 'text' },
-  { label: 'Twitter', property: 'twitterHandles', type: 'text' },
-  { label: 'Página web', property: 'websites', type: 'text' },
-  { label: 'Mensajería instantánea', property: 'instantMessengers', type: 'text' },
-];
+import TrashFill from '../../assets/img/svg/trash-fill.svg';
+import PencilSquare from '../../assets/img/svg/pencil-square.svg';
+
+import { USER_PERSONAL_DATA_ROWS } from '../CvAssistantScreen/Steps/PersonalDataStep';
+import { USER_CONTACT_DATA_ROWS } from '../CvAssistantScreen/Steps/ContactDataStep';
+import { USER_PROFESSIONAL_DATA_ROWS } from '../CvAssistantScreen/Steps/ProfessionalDataStep';
+import UserCvDataSection from './UserCvDataSection';
+import UserCvSkillsSection from './UserCvSkillsSection';
 
 const USER_EXPERIENCE_DATA_ROWS: { label: string; property: string; type: string }[] = [
   { label: 'Compañía', property: 'companyName', type: 'text' },
@@ -43,8 +32,6 @@ type UserCvScreenProps = {
 };
 
 const UserCvScreen: React.FC<UserCvScreenProps> = ({ userData, onEditCv, onRemoveCv }) => {
-  console.log('//USER DATA', userData);
-
   return (
     <View className="relative h-full w-full px-5">
       <View className="absolute right-5 top-5 z-10">
@@ -65,30 +52,28 @@ const UserCvScreen: React.FC<UserCvScreenProps> = ({ userData, onEditCv, onRemov
         <View className="w-full flex-row items-center justify-between py-5">
           <Text className="text-2xl font-bold text-h1Color">Mis datos</Text>
         </View>
-        {/* Peronal data */}
-        <View className="mb-5">
-          <View className="mb-3 w-full flex-row items-center justify-between border-b border-b-brandColor pb-2">
-            <Text className="text-xl text-h1Color">Datos personales</Text>
-          </View>
-          <View className="pb-2">
-            {USER_PERSONAL_DATA_ROWS.map(
-              (row, index) =>
-                userData[row.property] && (
-                  <View key={index} className="w-full pb-1">
-                    <View className="pb-3">
-                      <Text className="text-lg text-h1Color">{row.label}</Text>
-                      <Text className="text-md text-defaultTextColor">
-                        {row.type === 'ISOstring'
-                          ? isoStringToddMMYYYY(userData[row.property])
-                          : userData[row.property]}
-                      </Text>
-                    </View>
-                  </View>
-                )
-            )}
-          </View>
-        </View>
+        {/* Personal data */}
+        <UserCvDataSection
+          title="Datos personales"
+          userDataRows={USER_PERSONAL_DATA_ROWS}
+          userData={userData}
+        />
+        {/* Contact data */}
+        <UserCvDataSection
+          title="Datos de contacto"
+          userDataRows={USER_CONTACT_DATA_ROWS}
+          userData={userData}
+        />
+        {/* Professional data */}
+        <UserCvDataSection
+          title="Datos de contacto"
+          userDataRows={USER_PROFESSIONAL_DATA_ROWS}
+          userData={userData}
+        />
         {/* Skills */}
+        <UserCvSkillsSection title="Habilidades" skills={userData.skills} />
+
+        {/* Experience */}
         {userData.experiences?.length > 0 && (
           <View className="mb-5">
             <View className="mb-3 w-full flex-row items-center justify-between border-b border-b-brandColor pb-2">
