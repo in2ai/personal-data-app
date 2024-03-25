@@ -6,6 +6,7 @@ import { ScrollView, Text, View } from 'react-native';
 import { UserData } from '../../../models/userData';
 
 import Field from '../../../components/smart/Field';
+import TextField from '../../../components/smart/TextFIeld';
 
 type ContactDataStepProps = {
   editingCv: UserData;
@@ -29,7 +30,7 @@ const ContactDataStep: React.FC<ContactDataStepProps> = ({ editingCv, onChangeCv
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View className="py-5">
           <View className="mb-5 w-full">
-            <Field
+            <TextField
               label="Email"
               flex="column"
               value={editingCv.email}
@@ -37,7 +38,7 @@ const ContactDataStep: React.FC<ContactDataStepProps> = ({ editingCv, onChangeCv
             />
           </View>
           <View className="mb-5 w-full">
-            <Field
+            <TextField
               label="Twitter"
               flex="column"
               value={editingCv.twitterHandles}
@@ -45,7 +46,7 @@ const ContactDataStep: React.FC<ContactDataStepProps> = ({ editingCv, onChangeCv
             />
           </View>
           <View className="mb-5 w-full">
-            <Field
+            <TextField
               label="Websites"
               flex="column"
               value={editingCv.websites}
@@ -53,7 +54,7 @@ const ContactDataStep: React.FC<ContactDataStepProps> = ({ editingCv, onChangeCv
             />
           </View>
           <View className="mb-5 w-full">
-            <Field
+            <TextField
               label="Instant messengers"
               flex="column"
               value={editingCv.instantMessengers}

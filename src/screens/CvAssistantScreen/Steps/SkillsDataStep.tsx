@@ -1,11 +1,10 @@
 import 'expo-dev-client';
 import React from 'react';
 
-import { ScrollView, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 
 import { UserData } from '../../../models/userData';
 
-import Field from '../../../components/smart/Field';
 import SkillsEditor from '../../../components/smart/SkillsEditor/SkillsEditor';
 
 type SkillsDataStepProps = {

@@ -6,6 +6,7 @@ import { ScrollView, Text, View } from 'react-native';
 import { UserData } from '../../../models/userData';
 
 import Field from '../../../components/smart/Field';
+import TextField from '../../../components/smart/TextFIeld';
 
 type ProfessionalDataStepProps = {
   editingCv: UserData;
@@ -29,7 +30,7 @@ const ProfessionalDataStep: React.FC<ProfessionalDataStepProps> = ({ editingCv, 
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View className="py-5">
           <View className="mb-5 w-full">
-            <Field
+            <TextField
               label="Industria"
               flex="column"
               value={editingCv.industry}
@@ -37,7 +38,7 @@ const ProfessionalDataStep: React.FC<ProfessionalDataStepProps> = ({ editingCv, 
             />
           </View>
           <View className="mb-5 w-full">
-            <Field
+            <TextField
               label="Titular"
               flex="column"
               value={editingCv.headline}
@@ -45,7 +46,7 @@ const ProfessionalDataStep: React.FC<ProfessionalDataStepProps> = ({ editingCv, 
             />
           </View>
           <View className="mb-5 w-full">
-            <Field
+            <TextField
               label="Sumario"
               flex="column"
               value={editingCv.summary}
@@ -53,7 +54,7 @@ const ProfessionalDataStep: React.FC<ProfessionalDataStepProps> = ({ editingCv, 
             />
           </View>
           <View className="mb-5 w-full">
-            <Field
+            <TextField
               label="Lenguas"
               flex="column"
               value={editingCv.languages}

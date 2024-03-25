@@ -3,7 +3,7 @@ import React from 'react';
 import { ScrollView, View } from 'react-native';
 import { Skill } from '../../../models/userData';
 import SkillItem from './SkillItem';
-import Field from '../Field';
+import TextField from '../TextFIeld';
 
 type SkillsEditorProps = { skills: Skill[]; onChange?: (skills: Skill[]) => void };
 
@@ -11,8 +11,14 @@ const SkillsEditor: React.FC<SkillsEditorProps> = ({ skills = [], onChange }) =>
   const [updatedSkills, setUpdatedSkills] = React.useState<Skill[]>(skills);
 
   const onAddNewSkill = (newSkill: string) => {
-    console.log('New skill: ', newSkill);
-    const newSkills = [...updatedSkills, { value: newSkill }];
+    const isSkillAlreadyAdded = updatedSkills.some(
+      (skill) => skill.value === newSkill.toLowerCase()
+    );
+    if (isSkillAlreadyAdded) {
+      return;
+    }
+
+    const newSkills = [...updatedSkills, { value: newSkill.toLowerCase() }];
     setUpdatedSkills(newSkills);
     onChange && onChange(newSkills);
   };
@@ -26,7 +32,7 @@ const SkillsEditor: React.FC<SkillsEditorProps> = ({ skills = [], onChange }) =>
   return (
     <View className="flex flex-1 pt-3">
       <View className="flex-none">
-        <Field
+        <TextField
           hasResetOnSubmit={true}
           hasResetEnabled={false}
           label="Añadir habilidad"

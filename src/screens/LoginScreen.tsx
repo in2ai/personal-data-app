@@ -13,6 +13,7 @@ import { StatusBar } from 'expo-status-bar';
 import PersonFillLock from '../assets/img/svg/person-fill-lock.svg';
 import { useAuthContext } from '../context-providers/auth-context';
 import { RootStackParamList } from '../navigation/MainNav';
+import TextField from '../components/smart/TextFIeld';
 
 const h1Style = 'text-3xl font-medium text-h1Color pb-5';
 const screenContainerStyle = 'flex h-full w-full p-[20%]';
@@ -46,7 +47,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
           <View className="flex w-full items-center">
             <Text className={h1Style}>Crear cuenta</Text>
             <View className="mb-5 w-full">
-              <Field label="Nombre" flex="column" value={username} onChange={setUsername} />
+              <TextField label="Nombre" flex="column" value={username} onChange={setUsername} />
             </View>
             <View className="w-full">
               <CustomButton
@@ -62,7 +63,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
           <View className="flex w-full items-center">
             <Text className={h1Style}>o iniciar sesión</Text>
             <View className="mb-5 w-full">
-              <Field label="Clave secreta" flex="column" value={secret} onChange={setSecret} />
+              <TextField label="Clave secreta" flex="column" value={secret} onChange={setSecret} />
             </View>
           </View>
           <View className="w-full">

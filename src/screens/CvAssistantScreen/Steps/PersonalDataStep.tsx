@@ -7,6 +7,7 @@ import { UserData } from '../../../models/userData';
 
 import Field from '../../../components/smart/Field';
 import DateField from '../../../components/smart/DateField';
+import TextField from '../../../components/smart/TextFIeld';
 
 type PersonalDataStepProps = {
   editingCv: UserData;
@@ -30,7 +31,7 @@ const PersonalDataStep: React.FC<PersonalDataStepProps> = ({ editingCv, onChange
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View className="py-5">
           <View className="mb-5 w-full">
-            <Field
+            <TextField
               label="Nombre"
               flex="column"
               value={editingCv.firstName}
@@ -38,7 +39,7 @@ const PersonalDataStep: React.FC<PersonalDataStepProps> = ({ editingCv, onChange
             />
           </View>
           <View className="mb-5 w-full">
-            <Field
+            <TextField
               label="Apellidos"
               flex="column"
               value={editingCv.lastName}
@@ -46,7 +47,7 @@ const PersonalDataStep: React.FC<PersonalDataStepProps> = ({ editingCv, onChange
             />
           </View>
           <View className="mb-5 w-full">
-            <Field
+            <TextField
               label="Dirección"
               flex="column"
               value={editingCv.address}
@@ -54,7 +55,7 @@ const PersonalDataStep: React.FC<PersonalDataStepProps> = ({ editingCv, onChange
             />
           </View>
           <View className="mb-5 w-full">
-            <Field
+            <TextField
               label="Código postal"
               flex="column"
               value={editingCv.zipCode}
@@ -62,7 +63,7 @@ const PersonalDataStep: React.FC<PersonalDataStepProps> = ({ editingCv, onChange
             />
           </View>
           <View className="mb-5 w-full">
-            <Field
+            <TextField
               label="Geolocalización"
               flex="column"
               value={editingCv.geoLocation}
@@ -78,7 +79,7 @@ const PersonalDataStep: React.FC<PersonalDataStepProps> = ({ editingCv, onChange
             />
           </View>
           <View className="w-full pb-5">
-            <Field
+            <TextField
               label="Lengua materna"
               flex="column"
               value={editingCv.motherTongue}
