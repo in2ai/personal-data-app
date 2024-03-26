@@ -7,10 +7,12 @@ import { createDatabaseTableIfNotExist } from '../services/store/offers/offers-s
 import { useUserDataContext } from './user-data-context';
 
 const RELAY_URL = 'ws://137.184.117.201:8008';
+
 interface OfferContextInterface {
   workOffers: WorkOffer[];
   isFetching: boolean;
   updateAllOffersMatch: () => void;
+  clearOffersFromStorage: () => void; // TODO: for debugging purpposes
 }
 
 export const OfferContext = React.createContext<OfferContextInterface>({} as OfferContextInterface);
@@ -34,8 +36,6 @@ const OfferContextProvider = (props: any) => {
   }, [userData]);
 
   useEffect(() => {
-    // For debug purposes, we clear the offers from storage
-    // clearOffersFromStorage();
     isModelLoaded && getOffersFromStorage();
   }, [isModelLoaded]);
 
@@ -123,6 +123,7 @@ const OfferContextProvider = (props: any) => {
     workOffers,
     isFetching,
     updateAllOffersMatch,
+    clearOffersFromStorage, // TODO: for debugging purposes
   };
 
   return <OfferContext.Provider value={api}>{props.children}</OfferContext.Provider>;

@@ -9,6 +9,7 @@ module.exports = {
         h1Color: '#3c7c8c',
         defaultAppBgColor: '#ffffff',
         defaultTextColor: '#333',
+        lightGrey: '#b8c1c9',
       },
     },
   },

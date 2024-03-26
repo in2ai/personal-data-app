@@ -35,7 +35,7 @@ const DateField: React.FC<DateFieldProps> = ({ label, flex = 'row', value, onCha
   const onConfirmDate = (date: Date) => {
     setOpen(false);
     setInternalDate(date);
-    onChange && onChange(date.toISOString());
+    onChange && onChange(date.toISOString().split('T')[0]);
   };
 
   const onCancelDate = () => {

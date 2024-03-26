@@ -4,30 +4,28 @@ import { Text, TextInput, View } from 'react-native';
 import CustomPressableOpacity from '../layout/CustomPressableOpacity';
 import XCircle from '../../assets/img/svg/x-circle.svg';
 
-type FieldProps = {
+type TextFieldProps = {
   label?: string;
   placeholder?: string;
   flex?: 'row' | 'column';
-  value?: string | number;
-  type?: 'text' | 'password';
+  value?: string;
   hasResetEnabled?: boolean;
   hasResetOnSubmit?: boolean;
-  onChange?: (value: string | number) => void;
-  onSubmitEditing?: (value: string | number) => void;
+  onChange?: (value: string) => void;
+  onSubmitEditing?: (value: string) => void;
 };
 
-const Field: React.FC<FieldProps> = ({
+const TextField: React.FC<TextFieldProps> = ({
   label,
   placeholder,
   flex = 'row',
   value,
-  type = 'text',
   hasResetEnabled = true,
   hasResetOnSubmit = false,
   onChange,
   onSubmitEditing,
 }) => {
-  const [internalValue, setInternalValue] = React.useState<string | number>('');
+  const [internalValue, setInternalValue] = React.useState<string>('');
 
   React.useEffect(() => {
     value !== undefined && setInternalValue(value);
@@ -57,7 +55,6 @@ const Field: React.FC<FieldProps> = ({
       <View className="flex-row items-center justify-between ">
         <View className="border-lightGrey relative flex-grow rounded-md border bg-white">
           <TextInput
-            secureTextEntry={type === 'password'}
             className="p-3 px-5 text-lg text-[#4B566B]"
             onChangeText={onChangeText}
             onSubmitEditing={onSubmitEdit}
@@ -77,4 +74,4 @@ const Field: React.FC<FieldProps> = ({
   );
 };
 
-export default Field;
+export default TextField;
