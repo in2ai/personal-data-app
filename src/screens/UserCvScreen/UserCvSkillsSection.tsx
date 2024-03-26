@@ -7,7 +7,7 @@ type UserCvSkillsSectionProps = {
   skills: Skill[];
 };
 
-const UserCvSkillsSection: React.FC<UserCvSkillsSectionProps> = ({ title, skills }) => {
+const UserCvSkillsSection: React.FC<UserCvSkillsSectionProps> = ({ title, skills = [] }) => {
   return (
     <View className="mb-5">
       <View className="mb-3 w-full flex-row items-center justify-between border-b border-b-brandColor pb-2">

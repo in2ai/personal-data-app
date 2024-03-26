@@ -10,7 +10,11 @@ type UserCvDataSectionProps = {
   userDataRows: StepFormRow[];
 };
 
-const UserCvDataSection: React.FC<UserCvDataSectionProps> = ({ title, userData, userDataRows }) => {
+const UserCvDataSection: React.FC<UserCvDataSectionProps> = ({
+  title,
+  userData,
+  userDataRows = [],
+}) => {
   return (
     <View className="mb-5">
       <View className="mb-3 w-full flex-row items-center justify-between border-b border-b-brandColor pb-2">

@@ -15,6 +15,7 @@ import { USER_CONTACT_DATA_ROWS } from '../CvAssistantScreen/Steps/ContactDataSt
 import { USER_PROFESSIONAL_DATA_ROWS } from '../CvAssistantScreen/Steps/ProfessionalDataStep';
 import UserCvDataSection from './UserCvDataSection';
 import UserCvSkillsSection from './UserCvSkillsSection';
+import UserCvExperienceSection from './UserCvExperienceSection';
 
 const USER_EXPERIENCE_DATA_ROWS: { label: string; property: string; type: string }[] = [
   { label: 'Compañía', property: 'companyName', type: 'text' },
@@ -71,33 +72,13 @@ const UserCvScreen: React.FC<UserCvScreenProps> = ({ userData, onEditCv, onRemov
           userData={userData}
         />
         {/* Skills */}
-        <UserCvSkillsSection title="Habilidades" skills={userData.skills} />
+        {userData.skills?.length > 0 && (
+          <UserCvSkillsSection title="Habilidades" skills={userData.skills} />
+        )}
 
         {/* Experience */}
         {userData.experiences?.length > 0 && (
-          <View className="mb-5">
-            <View className="mb-3 w-full flex-row items-center justify-between border-b border-b-brandColor pb-2">
-              <Text className="text-xl text-h1Color">Experiencia</Text>
-            </View>
-            {userData.experiences.map((experience) => (
-              <View key={experience.companyName} className="mb-3 border-b border-b-[#c2c2c2] pb-2">
-                <View className="pb-3">
-                  <Text className="text-lg text-h1Color">{experience.companyName}</Text>
-                  <Text className="text-md font-bold text-defaultTextColor">
-                    {experience.title}
-                  </Text>
-                  <Text className="font-light italic text-[#787878]">
-                    {experience.startedOn ?? ''} - {experience.finishedOn ?? ''}
-                  </Text>
-                </View>
-                {experience.description && (
-                  <View className="pb-5">
-                    <Text className="text-md text-defaultTextColor">{experience.description}</Text>
-                  </View>
-                )}
-              </View>
-            ))}
-          </View>
+          <UserCvExperienceSection title="Experiencia" experiences={userData.experiences} />
         )}
       </ScrollView>
     </View>
