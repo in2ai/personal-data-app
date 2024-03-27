@@ -90,20 +90,20 @@ const OfferContextProvider = (props: any) => {
       {
         kinds: [30023],
         since: lastTimeStamp + 1,
-        '#industry': undefined, //['work_offer'],
+        '#t': ['artificial_intelligence'],
       },
     ]);
     sub.on('event', async (event) => {
-      console.log('/////New event');
+      console.log('/////New event: ', event);
       const newWorkOffer: WorkOffer = JSON.parse(event.content);
       newWorkOffer.createdAt = event.created_at;
       newWorkOffer.nostrId = event.id;
       addNewWorkOffer(newWorkOffer);
     });
-    // sub.on('eose', () => {
-    //   console.log('/////EOSE');
-    //   sub.unsub();
-    // });
+    sub.on('eose', () => {
+      console.log('/////EOSE');
+      sub.unsub();
+    });
 
     relay.connect();
   };
