@@ -3,7 +3,6 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState } from 'react';
 
 import { ScrollView, Text, View } from 'react-native';
-import Field from '../components/smart/Field';
 import CustomButton from '../components/smart/CustomButton';
 
 // Expo
@@ -38,7 +37,6 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-      <StatusBar style={'light'} backgroundColor={'#3c7c8c'} />
       <View className={screenContainerStyle}>
         <View className="mb-5 max-w-md items-center ">
           <PersonFillLock width={80} height={80} fill={'#3c7c8c'} />

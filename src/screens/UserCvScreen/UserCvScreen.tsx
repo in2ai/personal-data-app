@@ -5,7 +5,6 @@ import { ScrollView, Text, View } from 'react-native';
 import { UserData } from '../../models/userData';
 
 import CustomPressableOpacity from '../../components/layout/CustomPressableOpacity';
-import { isoStringToddMMYYYY } from '../../helpers/utils';
 
 import TrashFill from '../../assets/img/svg/trash-fill.svg';
 import PencilSquare from '../../assets/img/svg/pencil-square.svg';
@@ -50,36 +49,35 @@ const UserCvScreen: React.FC<UserCvScreenProps> = ({ userData, onEditCv, onRemov
         </View>
       </View>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        <View className="w-full flex-row items-center justify-between py-5">
-          <Text className="text-2xl font-bold text-h1Color">Mis datos</Text>
-        </View>
-        {/* Personal data */}
-        <UserCvDataSection
-          title="Datos personales"
-          userDataRows={USER_PERSONAL_DATA_ROWS}
-          userData={userData}
-        />
-        {/* Contact data */}
-        <UserCvDataSection
-          title="Datos de contacto"
-          userDataRows={USER_CONTACT_DATA_ROWS}
-          userData={userData}
-        />
-        {/* Professional data */}
-        <UserCvDataSection
-          title="Datos de contacto"
-          userDataRows={USER_PROFESSIONAL_DATA_ROWS}
-          userData={userData}
-        />
-        {/* Skills */}
-        {userData.skills?.length > 0 && (
-          <UserCvSkillsSection title="Habilidades" skills={userData.skills} />
-        )}
+        <View className="py-5">
+          {/* Personal data */}
+          <UserCvDataSection
+            title="Datos personales"
+            userDataRows={USER_PERSONAL_DATA_ROWS}
+            userData={userData}
+          />
+          {/* Contact data */}
+          <UserCvDataSection
+            title="Datos de contacto"
+            userDataRows={USER_CONTACT_DATA_ROWS}
+            userData={userData}
+          />
+          {/* Professional data */}
+          <UserCvDataSection
+            title="Datos de contacto"
+            userDataRows={USER_PROFESSIONAL_DATA_ROWS}
+            userData={userData}
+          />
+          {/* Skills */}
+          {userData.skills?.length > 0 && (
+            <UserCvSkillsSection title="Habilidades" skills={userData.skills} />
+          )}
 
-        {/* Experience */}
-        {userData.experiences?.length > 0 && (
-          <UserCvExperienceSection title="Experiencia" experiences={userData.experiences} />
-        )}
+          {/* Experience */}
+          {userData.experiences?.length > 0 && (
+            <UserCvExperienceSection title="Experiencia" experiences={userData.experiences} />
+          )}
+        </View>
       </ScrollView>
     </View>
   );

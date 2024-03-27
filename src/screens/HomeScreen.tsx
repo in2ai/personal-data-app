@@ -36,11 +36,11 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const { isModelLoaded } = useTensorflowContext();
 
   const onGoToCv = () => {
-    navigation.navigate('MyCV', { name: 'MyCV' });
+    navigation.navigate('MyCV');
   };
 
   const onGoToOffers = () => {
-    navigation.navigate('Offers', { name: 'Offers' });
+    navigation.navigate('Offers');
   };
 
   const onLogout = () => {
@@ -54,8 +54,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
 
   return (
     <View className={`relative ${screenContainerStyle}`}>
-      <StatusBar style={'light'} backgroundColor={'#3c7c8c'} />
-      <View className="absolute left-5 top-12">
+      <View className="absolute left-5 top-5">
         <CustomPressableOpacity accessibilityLabel="logout" onPress={onLogout}>
           <View className="flex-row items-center">
             <Power width={25} height={25} fill={'#3c7c8c'} />
