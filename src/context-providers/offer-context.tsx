@@ -138,13 +138,13 @@ const OfferContextProvider = (props: any) => {
         <StatusBar style={'light'} backgroundColor={'#3c7c8c'} />
         <View className="flex-1">{props.children}</View>
         {/* For debugging pusposes */}
-        <View className="absolute bottom-5 left-5 right-5 z-10 h-40 w-[50%] bg-[#000000] opacity-90">
+        {/* <View className="absolute bottom-5 left-5 right-5 z-10 h-40 w-[50%] bg-[#000000] opacity-90">
           <ScrollView>
             <Text className="text-[#ffffff]">
               {workOffers ? JSON.stringify(workOffers) : 'No offers'}
             </Text>
           </ScrollView>
-        </View>
+        </View> */}
         {/* End for debugging purposes
          */}
       </View>
