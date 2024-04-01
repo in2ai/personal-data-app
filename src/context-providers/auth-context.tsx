@@ -1,7 +1,13 @@
+import 'fast-text-encoding'; // this is needed to polyfill TextDecoder which nostr-tools uses
+import 'react-native-get-random-values'; // this is needed to polyfill crypto.getRandomValues which nostr-tools uses
+import 'react-native-webview-crypto'; // this is needed to polyfill crypto.subtle which nostr-tools uses
+import 'react-native-url-polyfill/auto'; // this is needed to polyfill URLSearchParams which nostr-tools uses
+import 'websocket-polyfill'; // this is needed to polyfill WebSocket which nostr-tools uses
+
 import React, { useContext, useEffect, useState } from 'react';
-import { generateKeyPair, getPublicKeyFromPrivate } from '../api/.unused/nostr';
 import userStoreService from '../services/store/user/secure-store-service';
 import { User } from '../models/user';
+import nostrService from '../services/nostr/nostr-service';
 
 interface AuthContextInterface {
   isLoading: boolean;
@@ -34,7 +40,7 @@ const AuthContextProvider = (props: any) => {
         alert('Secret key must be 64 bytes long');
         return;
       }
-      const publicKey = getPublicKeyFromPrivate(secretKey);
+      const publicKey = nostrService.getPublicKeyFromPrivate(secretKey);
 
       const user: User = { publicKey, secretKey };
       setUser(user);
@@ -45,7 +51,7 @@ const AuthContextProvider = (props: any) => {
 
   const loginByUsername = () => {
     try {
-      const keyPair = generateKeyPair();
+      const keyPair = nostrService.generateKeyPair();
 
       const user: User = { publicKey: keyPair.publicKey, secretKey: keyPair.secretKey };
       setUser(user);

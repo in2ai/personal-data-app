@@ -1,10 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { WorkOffer } from '../models/workOffer';
 import { relayInit } from 'nostr-tools';
 import offersStoreService from '../services/store/offers/offers-store-service';
 import { useTensorflowContext } from './tensorflow-context';
 import { createDatabaseTableIfNotExist } from '../services/store/offers/offers-sql-lite-storage-service';
 import { useUserDataContext } from './user-data-context';
+import { ScrollView, Text, View } from 'react-native';
+import { WorkOffer } from '../models/WorkOffer';
+import { StatusBar } from 'expo-status-bar';
 
 const RELAY_URL = 'ws://137.184.117.201:8008';
 
@@ -42,6 +44,7 @@ const OfferContextProvider = (props: any) => {
   const clearOffersFromStorage = async () => {
     await offersStoreService.removeAllOffers();
     setWorkOffers([]);
+    getOffersFromStorage();
   };
 
   const getOffersFromStorage = async () => {
@@ -53,6 +56,7 @@ const OfferContextProvider = (props: any) => {
     if (workOffers && workOffers.length > 0) {
       setWorkOffers(workOffers);
       lastOfferTimestamp = workOffers.sort((a, b) => b.createdAt - a.createdAt)[0].createdAt;
+      console.log('Last offer timestamp', lastOfferTimestamp);
       checkOffersFromStorageMatch(workOffers);
     }
     subscribeToRelayOffers(lastOfferTimestamp);
@@ -86,16 +90,18 @@ const OfferContextProvider = (props: any) => {
       {
         kinds: [30023],
         since: lastTimeStamp + 1,
+        '#t': ['artificial_intelligence'],
       },
     ]);
     sub.on('event', async (event) => {
+      console.log('/////New event: ', event);
       const newWorkOffer: WorkOffer = JSON.parse(event.content);
       newWorkOffer.createdAt = event.created_at;
       newWorkOffer.nostrId = event.id;
-      console.log('//Received new offer', newWorkOffer.createdAt);
       addNewWorkOffer(newWorkOffer);
     });
     sub.on('eose', () => {
+      console.log('/////EOSE');
       sub.unsub();
     });
 
@@ -126,7 +132,24 @@ const OfferContextProvider = (props: any) => {
     clearOffersFromStorage, // TODO: for debugging purposes
   };
 
-  return <OfferContext.Provider value={api}>{props.children}</OfferContext.Provider>;
+  return (
+    <OfferContext.Provider value={api}>
+      <View className="relative h-full w-full pt-6">
+        <StatusBar style={'light'} backgroundColor={'#3c7c8c'} />
+        <View className="flex-1">{props.children}</View>
+        {/* For debugging pusposes */}
+        {/* <View className="absolute bottom-5 left-5 right-5 z-10 h-40 w-[50%] bg-[#000000] opacity-90">
+          <ScrollView>
+            <Text className="text-[#ffffff]">
+              {workOffers ? JSON.stringify(workOffers) : 'No offers'}
+            </Text>
+          </ScrollView>
+        </View> */}
+        {/* End for debugging purposes
+         */}
+      </View>
+    </OfferContext.Provider>
+  );
 };
 
 export const useOfferContext = () => useContext(OfferContext);
