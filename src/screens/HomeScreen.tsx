@@ -20,6 +20,8 @@ import { useAuthContext } from '../context-providers/auth-context';
 import { useUserDataContext } from '../context-providers/user-data-context';
 import { useTensorflowContext } from '../context-providers/tensorflow-context';
 import { useOfferContext } from '../context-providers/offer-context';
+import SelectDropDown, { SelectItem } from '../components/smart/SelectDropDown';
+import { Select } from '@tensorflow/tfjs';
 
 const screenContainerStyle = 'flex h-full w-full justify-between items-center p-5';
 
@@ -52,6 +54,11 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
     clearOffersFromStorage();
   };
 
+  // Industries
+  const industries: SelectItem[] = [
+    { label: 'Inteligencia Artificial', value: 'artificial_intelligence' },
+  ];
+
   return (
     <View className={`relative ${screenContainerStyle}`}>
       <View className="absolute left-5 top-5">
@@ -82,7 +89,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
                 onPress={onGoToCv}
               />
             </View>
-            <View className="w-60">
+            <View className="mb-5 w-60">
               <CustomButton
                 disabled={!userData}
                 icon={<Files width={25} height={25} fill={'#fff'} />}
@@ -91,6 +98,9 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
                 hasLargeFont={true}
                 onPress={onGoToOffers}
               />
+            </View>
+            <View className="w-60">
+              <SelectDropDown items={industries} selectedItem={industries[0]} />
             </View>
             <View className="mt-20 w-60">
               <CustomButton
