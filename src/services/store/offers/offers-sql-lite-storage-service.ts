@@ -21,7 +21,8 @@ export const createDatabaseTableIfNotExist = async () => {
             period VARCHAR(128),
             nostr_id VARCHAR(128),
             created_at INTEGER,
-            match INTEGER
+            match INTEGER,
+            industry VARCHAR(128)
           )`,
             args: [],
           },
@@ -76,6 +77,41 @@ const getAllOffers = async (): Promise<WorkOffer[]> => {
       nostrId: row.nostr_id,
       createdAt: row.created_at,
       match: row.match,
+      industry: row.industry,
+    };
+  });
+
+  return workOffers;
+};
+
+const getAllIndustryOffers = async (industry: string): Promise<WorkOffer[]> => {
+  const db = await connectDatabase();
+  let query = {
+    sql: 'select * from workoffer WHERE industry = ?',
+    args: [industry],
+  };
+  const [result]: any = await db
+    .execAsync([query], false)
+    .then((result) => {
+      console.log(`Offers from storage from industry "${industry}": `, result);
+      return result;
+    })
+    .catch((error) => {
+      console.error('Error getting offers from industry', error);
+    });
+  const workOffers: WorkOffer[] = result.rows.map((row) => {
+    return {
+      title: row.title,
+      summary: row.summary,
+      requiredSkills: row.required_skills ? row.required_skills.split(',') : [],
+      location: row.location,
+      price: row.price,
+      currency: row.currency,
+      period: row.period,
+      nostrId: row.nostr_id,
+      createdAt: row.created_at,
+      match: row.match,
+      industry: row.industry,
     };
   });
 
@@ -100,7 +136,7 @@ const addNewOffer = async (newOffer: WorkOffer): Promise<void> => {
   const db = await connectDatabase();
   try {
     let query = {
-      sql: `INSERT INTO workoffer (title, summary, required_skills, location, price, currency, period, nostr_id, created_at, match) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      sql: `INSERT INTO workoffer (title, summary, required_skills, location, price, currency, period, nostr_id, created_at, match, industry) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       args: [
         newOffer.title,
         newOffer.summary,
@@ -112,6 +148,7 @@ const addNewOffer = async (newOffer: WorkOffer): Promise<void> => {
         newOffer.nostrId,
         newOffer.createdAt,
         newOffer.match,
+        newOffer.industry,
       ],
     };
     await db
@@ -173,6 +210,7 @@ const offersSqlLiteStorageService = {
   addNewOffer,
   updateOfferMatch,
   resetOfferMatch,
+  getAllIndustryOffers,
 };
 
 export default offersSqlLiteStorageService;

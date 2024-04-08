@@ -5,6 +5,7 @@ const removeAllOffers = offersSqlLiteStorageService.removeAllOffers;
 const addNewOffer = offersSqlLiteStorageService.addNewOffer;
 const updateOfferMatch = offersSqlLiteStorageService.updateOfferMatch;
 const resetOfferMatch = offersSqlLiteStorageService.resetOfferMatch;
+const getAllIndustryOffers = offersSqlLiteStorageService.getAllIndustryOffers;
 
 const offersStoreService = {
   getAllOffers,
@@ -12,6 +13,7 @@ const offersStoreService = {
   addNewOffer,
   updateOfferMatch,
   resetOfferMatch,
+  getAllIndustryOffers,
 };
 
 export default offersStoreService;
