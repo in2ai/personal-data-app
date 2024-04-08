@@ -8,14 +8,17 @@ import LoginScreen from '../screens/LoginScreen';
 import HomeScreen from '../screens/HomeScreen';
 import MyCvScreen from '../screens/MyCvScreen';
 import OffersScreen from '../screens/OffersScreen';
+import ChatScreen from '../screens/ChatScreen';
 
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { WorkOffer } from '../models/WorkOffer';
 
 export type RootStackParamList = {
   Login: undefined;
   Home: undefined;
   MyCV: undefined;
   Offers: undefined;
+  Chat: { workOffer: WorkOffer };
 
   Auth: undefined;
   RelayTest: { secretKey: string; publicKey: string };
@@ -76,6 +79,17 @@ function MainNav(): JSX.Element {
                 component={OffersScreen}
                 options={({}) => ({
                   headerTitle: 'Ofertas',
+                  headerShown: true,
+                  headerStyle: {
+                    padding: 0,
+                  },
+                })}
+              />
+              <Stack.Screen
+                name="Chat"
+                component={ChatScreen}
+                options={({}) => ({
+                  headerTitle: 'Chat',
                   headerShown: true,
                   headerStyle: {
                     padding: 0,

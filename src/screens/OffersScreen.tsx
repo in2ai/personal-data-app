@@ -34,7 +34,7 @@ const OffersScreen: React.FC<OffersScreenProps> = ({ navigation }) => {
   };
 
   const onApply = (workOffer: WorkOffer) => {
-    alert(`Aplicado con éxito a la oferta "${workOffer.title}"`);
+    navigation.navigate('Chat', { workOffer });
     setSelectedWorkOffer(null);
   };
 
