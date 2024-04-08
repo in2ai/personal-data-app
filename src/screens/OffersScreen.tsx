@@ -1,10 +1,10 @@
 import 'expo-dev-client';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { ActivityIndicator, Text, View } from 'react-native';
 import { RootStackParamList } from '../navigation/MainNav';
-import { WorkOffer } from '../models/WorkOffer';
+import { WorkOffer } from '../models/workOffer';
 import WorkOffersList from '../components/smart/WorkOffersList/WorkOffersList';
 import WorkOfferDetails from '../components/smart/WorkOffersList/WorkOfferDetails';
 
@@ -16,7 +16,11 @@ type OffersScreenProps = NativeStackScreenProps<RootStackParamList, 'Offers'>;
 
 const OffersScreen: React.FC<OffersScreenProps> = ({ navigation }) => {
   const { workOffers, isFetching: isFetchingWorkOffers } = useOfferContext();
-  const sortedWorkOffers = workOffers?.sort((a, b) => b.createdAt - a.createdAt);
+  const sortedWorkOffers = workOffers?.sort((a, b) => b.createdAt - a.createdAt) ?? [];
+
+  useEffect(() => {
+    console.log('OffersScreen', workOffers);
+  }, [workOffers]);
 
   const [selectedWorkOffer, setSelectedWorkOffer] = useState<WorkOffer | null>(null);
 

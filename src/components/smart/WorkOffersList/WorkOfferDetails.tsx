@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { Text, View } from 'react-native';
-import { WorkOffer } from '../../../models/WorkOffer';
+import { WorkOffer } from '../../../models/workOffer';
 import CustomPressableOpacity from '../../layout/CustomPressableOpacity';
 import CustomButton from '../CustomButton';
 
@@ -26,13 +26,7 @@ const WorkOfferDetails: React.FC<WorkOfferDetailsProps> = ({ workOffer, onApply,
       </View>
       <View className="p-5">
         <Text className="text-lg text-h1Color">Requisitos</Text>
-        <View>
-          {workOffer.requiredSkills.map((requiredSkill) => (
-            <View key={requiredSkill}>
-              <Text className="text-md text-defaultTextColor">{requiredSkill}</Text>
-            </View>
-          ))}
-        </View>
+        <Text className="text-md text-defaultTextColor">{workOffer.requiredSkills.join(', ')}</Text>
       </View>
       <View className="p-5">
         <Text className="text-lg text-h1Color">Ubicación</Text>

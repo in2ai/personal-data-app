@@ -2,7 +2,6 @@ import * as tf from '@tensorflow/tfjs';
 import '@tensorflow/tfjs-react-native';
 import * as use from '@tensorflow-models/universal-sentence-encoder';
 
-
 export async function initTfjs() {
   await tf.ready();
   console.log('TensorFlow.js está listo');
@@ -30,7 +29,7 @@ export async function load_model() {
   } catch (error) {
     console.error('Error al cargar el modelo:', error);
   }
-  return model
+  return model;
 }
 
 async function encodeText(input, model) {
@@ -146,7 +145,9 @@ export async function matchCVOffer(cv,offer,model) {
   try {
 
     const sentences = [cv, offer];
-    const embeddings = await encodeText(sentences, model)
+    console.log('//CV:', cv);
+    console.log('//Offer:', offer);
+    const embeddings = await encodeText(sentences, model);
     const similarityScore = await calculateSimilarity(embeddings);
 
     console.log(`Similarity Score between the two texts: ${similarityScore.toFixed(3)}`);
@@ -155,7 +156,7 @@ export async function matchCVOffer(cv,offer,model) {
     return similarityPercentage;
   } catch (error) {
     console.error(error);
-    return 0
+    return 0;
   }
 
 }
@@ -164,21 +165,21 @@ export function jsonToSpaceDelimitedText(obj) {
   let result = '';
 
   function recurse(obj) {
-      if (obj !== null && typeof obj === 'object') {
-          Object.entries(obj).forEach(([key, value]) => {
-              if (Array.isArray(value)) {
-                  value.forEach(item => {
-                      recurse(item);
-                  });
-              } else if (typeof value === 'object') {
-                  recurse(value);
-              } else {
-                  result += `${value} `;
-              }
+    if (obj !== null && typeof obj === 'object') {
+      Object.entries(obj).forEach(([key, value]) => {
+        if (Array.isArray(value)) {
+          value.forEach((item) => {
+            recurse(item);
           });
-      } else {
-          result += `${obj} `;
-      }
+        } else if (typeof value === 'object') {
+          recurse(value);
+        } else {
+          result += `${value} `;
+        }
+      });
+    } else {
+      result += `${obj} `;
+    }
   }
 
   recurse(obj);

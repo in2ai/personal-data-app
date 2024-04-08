@@ -42,7 +42,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
       >
         {icon && <View className="pr-2">{icon}</View>}
         <Text
-          className={`font-inter whitespace-nowrap ${
+          className={`whitespace-nowrap ${
             hasLargeFont ? 'text-[25px]' : 'text-[19px]'
           } font-semibold ${
             disabled ? 'text-[#3c7c8c]' : buttonType === 'primary' ? 'text-white' : 'text-[#3c7c8c]'

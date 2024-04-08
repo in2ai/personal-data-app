@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { initTfjs, jsonToSpaceDelimitedText, load_model, matchCVOffer } from '../api/dl';
-import { WorkOffer } from '../models/WorkOffer';
+import { WorkOffer } from '../models/workOffer';
 import { useUserDataContext } from './user-data-context';
 
 interface TensorflowContextInterface {
@@ -15,9 +15,8 @@ export const TensorflowContext = React.createContext<TensorflowContextInterface>
 const TensorflowContextProvider = (props: any) => {
   const { userData } = useUserDataContext();
 
-  const [modelLoading, setModelLoading] = useState(true);
   const [model, setModel] = useState(null);
-  isModelLoaded = model;
+  const isModelLoaded = model ? true : false;
 
   useEffect(() => {
     initAndLoadModel();
@@ -27,7 +26,6 @@ const TensorflowContextProvider = (props: any) => {
     await initTfjs();
     const loadedModel = await load_model();
     setModel(loadedModel);
-    setModelLoading(false);
   };
 
   const checkOffer = async (offer: WorkOffer): Promise<number> => {

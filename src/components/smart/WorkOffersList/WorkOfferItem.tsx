@@ -1,9 +1,8 @@
 import React, { memo } from 'react';
 import { ActivityIndicator, Text, View } from 'react-native';
-import { WorkOffer } from '../../../models/WorkOffer';
 import CustomPressableOpacity from '../../layout/CustomPressableOpacity';
-
-import { timestampToddMMYYYYhhmmss } from '../../../helpers/utils.ts';
+import { timestampToddMMYYYYhhmmss } from '../../../helpers/utils';
+import { WorkOffer } from '../../../models/WorkOffer';
 
 type WorkOfferListItemProps = {
   workOffer: WorkOffer;
@@ -21,13 +20,17 @@ const WorkOfferListItem: React.FC<WorkOfferListItemProps> = ({ workOffer, onPres
       : 'font-bold text-[#e87975]';
   return (
     <CustomPressableOpacity onPress={() => onPress && onPress(workOffer)}>
-      <View className="flex-row items-center justify-between border-b border-[#DCE3EB] p-5">
-        <View className="">
-          <Text className="text-lg text-h1Color">{workOffer.title}</Text>
-          <Text className="text-xs">({timestampToddMMYYYYhhmmss(workOffer.createdAt)})</Text>
-          <Text className="text-md text-defaultTextColor">{workOffer.summary}</Text>
+      <View className="w-full flex-row items-center justify-between p-5">
+        <View className="flex-1">
+          <Text className="text-md font-bold text-h1Color">{workOffer.title}</Text>
+          <Text className="text-xs font-bold">
+            {timestampToddMMYYYYhhmmss(workOffer.createdAt)}
+          </Text>
+          <Text numberOfLines={2} className="text-md text-defaultTextColor">
+            {workOffer.summary}
+          </Text>
         </View>
-        <View className={workOffer.match ? matchColorView : null}>
+        <View className={`flex-none ${workOffer.match ? matchColorView : null}`}>
           {workOffer.match || workOffer.match === 0 ? (
             <Text className={matchColorText}>{workOffer.match}%</Text>
           ) : (

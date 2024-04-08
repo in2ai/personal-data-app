@@ -66,6 +66,9 @@ function MainNav(): JSX.Element {
                 options={({}) => ({
                   headerTitle: 'Mi currículum',
                   headerShown: true,
+                  headerStyle: {
+                    padding: 0,
+                  },
                 })}
               />
               <Stack.Screen
@@ -74,6 +77,9 @@ function MainNav(): JSX.Element {
                 options={({}) => ({
                   headerTitle: 'Ofertas',
                   headerShown: true,
+                  headerStyle: {
+                    padding: 0,
+                  },
                 })}
               />
             </>

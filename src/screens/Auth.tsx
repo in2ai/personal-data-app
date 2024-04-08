@@ -1,10 +1,16 @@
+import 'fast-text-encoding'; // this is needed to polyfill TextDecoder which nostr-tools uses
+import 'react-native-get-random-values'; // this is needed to polyfill crypto.getRandomValues which nostr-tools uses
+import 'react-native-webview-crypto'; // this is needed to polyfill crypto.subtle which nostr-tools uses
+import 'react-native-url-polyfill/auto'; // this is needed to polyfill URLSearchParams which nostr-tools uses
+import 'websocket-polyfill'; // this is needed to polyfill WebSocket which nostr-tools uses
+
 import 'expo-dev-client';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState } from 'react';
 import { View, Text, Button, TextInput } from 'react-native';
 
-import { RootStackParamList } from '../../App';
-import { generateKeyPair, getPublicKeyFromPrivate } from '../api/nostr';
+import nostrService from '../services/nostr/nostr-service';
+import { RootStackParamList } from '../navigation/MainNav';
 
 type AuthScreenProps = NativeStackScreenProps<RootStackParamList, 'Auth'>;
 
@@ -19,7 +25,7 @@ const AuthScreen: React.FC<AuthScreenProps> = ({ navigation }) => {
         alert('Secret key must be 64 bytes long');
         return;
       }
-      const pk = getPublicKeyFromPrivate(inputKey);
+      const pk = nostrService.getPublicKeyFromPrivate(inputKey);
       setPublicKey(pk);
       setSecretKey(inputKey);
     } catch (e) {
@@ -29,7 +35,7 @@ const AuthScreen: React.FC<AuthScreenProps> = ({ navigation }) => {
 
   const handleNewKey = () => {
     try {
-      const keyPair = generateKeyPair();
+      const keyPair = nostrService.generateKeyPair();
       console.log(keyPair);
       setSecretKey(keyPair.secretKey);
       setPublicKey(keyPair.publicKey);

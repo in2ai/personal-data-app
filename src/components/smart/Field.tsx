@@ -1,6 +1,7 @@
 import React from 'react';
-import { Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Text, TextInput, View } from 'react-native';
 
+import CustomPressableOpacity from '../layout/CustomPressableOpacity';
 import XCircle from '../../assets/img/svg/x-circle.svg';
 
 type FieldProps = {
@@ -10,7 +11,9 @@ type FieldProps = {
   value?: string | number;
   type?: 'text' | 'password';
   hasResetEnabled?: boolean;
-  onChange?: (value: string) => void;
+  hasResetOnSubmit?: boolean;
+  onChange?: (value: string | number) => void;
+  onSubmitEditing?: (value: string | number) => void;
 };
 
 const Field: React.FC<FieldProps> = ({
@@ -20,7 +23,9 @@ const Field: React.FC<FieldProps> = ({
   value,
   type = 'text',
   hasResetEnabled = true,
+  hasResetOnSubmit = false,
   onChange,
+  onSubmitEditing,
 }) => {
   const [internalValue, setInternalValue] = React.useState<string | number>('');
 
@@ -33,6 +38,13 @@ const Field: React.FC<FieldProps> = ({
     onChange && onChange(newValue);
   };
 
+  const onSubmitEdit = () => {
+    onSubmitEditing && onSubmitEditing(internalValue);
+    if (hasResetOnSubmit) {
+      setInternalValue('');
+    }
+  };
+
   return (
     <View
       className={flex === 'row' ? 'flex flex-row items-center justify-between' : 'flex flex-col'}
@@ -43,21 +55,21 @@ const Field: React.FC<FieldProps> = ({
         </View>
       )}
       <View className="flex-row items-center justify-between ">
-        <View className="relative flex-grow rounded-md border border-[#DAE1E7] bg-white">
+        <View className="border-lightGrey relative flex-grow rounded-md border bg-white">
           <TextInput
             secureTextEntry={type === 'password'}
             className="p-3 px-5 text-lg text-[#4B566B]"
             onChangeText={onChangeText}
+            onSubmitEditing={onSubmitEdit}
             value={internalValue.toString()}
             placeholder={placeholder}
           />
           {hasResetEnabled && (
-            <TouchableOpacity
-              className="absolute right-3 h-full flex-none justify-center pl-3"
-              onPress={() => onChangeText('')}
-            >
-              <XCircle width={20} height={20} fill={'#bbb'} />
-            </TouchableOpacity>
+            <View className="absolute right-3 h-full flex-none justify-center pl-3">
+              <CustomPressableOpacity onPress={() => onChangeText('')}>
+                <XCircle width={20} height={20} fill={'#bbb'} />
+              </CustomPressableOpacity>
+            </View>
           )}
         </View>
       </View>
