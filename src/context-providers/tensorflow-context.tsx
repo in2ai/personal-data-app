@@ -37,15 +37,13 @@ const TensorflowContextProvider = (props: any) => {
       console.log('NO USER CV');
       return;
     }
+    // const user_string = jsonToSpaceDelimitedText(userData);
+    // const offer_string = jsonToSpaceDelimitedText(offer);
 
-    console.log('Checking similarity');
-    const user_string = jsonToSpaceDelimitedText(userData);
-    const offer_string = jsonToSpaceDelimitedText(offer);
+    // console.log('user_string', user_string);
+    // console.log('offer_string', offer_string);
 
-    console.log('user_string', user_string);
-    console.log('offer_string', offer_string);
-
-    const match = await matchCVOffer(user_string, offer_string, model);
+    const match = await matchCVOffer(userData, offer, model);
     return match;
   };
 

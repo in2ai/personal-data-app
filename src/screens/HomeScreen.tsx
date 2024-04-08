@@ -30,6 +30,7 @@ const industries: SelectItem[] = [
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
+
   const { publicKey, secretKey } = useAuthContext();
   const { userData } = useUserDataContext();
 
