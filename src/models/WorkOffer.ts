@@ -9,4 +9,5 @@ export class WorkOffer {
   nostrId?: string;
   createdAt?: number;
   match?: number;
+  industry?: string;
 }

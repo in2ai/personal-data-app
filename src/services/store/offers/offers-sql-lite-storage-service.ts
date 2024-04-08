@@ -21,7 +21,8 @@ export const createDatabaseTableIfNotExist = async () => {
             period VARCHAR(128),
             nostr_id VARCHAR(128),
             created_at INTEGER,
-            match INTEGER
+            match INTEGER,
+            industry VARCHAR(128)
           )`,
             args: [],
           },
@@ -76,6 +77,7 @@ const getAllOffers = async (): Promise<WorkOffer[]> => {
       nostrId: row.nostr_id,
       createdAt: row.created_at,
       match: row.match,
+      industry: row.industry,
     };
   });
 
@@ -100,7 +102,7 @@ const addNewOffer = async (newOffer: WorkOffer): Promise<void> => {
   const db = await connectDatabase();
   try {
     let query = {
-      sql: `INSERT INTO workoffer (title, summary, required_skills, location, price, currency, period, nostr_id, created_at, match) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      sql: `INSERT INTO workoffer (title, summary, required_skills, location, price, currency, period, nostr_id, created_at, match) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       args: [
         newOffer.title,
         newOffer.summary,
@@ -112,6 +114,7 @@ const addNewOffer = async (newOffer: WorkOffer): Promise<void> => {
         newOffer.nostrId,
         newOffer.createdAt,
         newOffer.match,
+        newOffer.industry,
       ],
     };
     await db

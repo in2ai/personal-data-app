@@ -86,6 +86,7 @@ const OfferContextProvider = (props: any) => {
       console.log('Connected to relay');
     });
 
+    // TODO: Add more industries
     const sub = relay.sub([
       {
         kinds: [30023],
@@ -98,6 +99,7 @@ const OfferContextProvider = (props: any) => {
       const newWorkOffer: WorkOffer = JSON.parse(event.content);
       newWorkOffer.createdAt = event.created_at;
       newWorkOffer.nostrId = event.id;
+      newWorkOffer.industry = 'artificial_intelligence';
       addNewWorkOffer(newWorkOffer);
     });
     sub.on('eose', () => {
