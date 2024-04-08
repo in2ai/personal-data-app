@@ -7,9 +7,6 @@ import { RootStackParamList } from '../navigation/MainNav';
 
 import CustomButton from '../components/smart/CustomButton';
 
-// Expo
-import { StatusBar } from 'expo-status-bar';
-
 // Icons
 import PersonWorkspace from '../assets/img/svg/person-workspace.svg';
 import FileEarmarkPerson from '../assets/img/svg/file-earmark-person.svg';
@@ -21,7 +18,6 @@ import { useUserDataContext } from '../context-providers/user-data-context';
 import { useTensorflowContext } from '../context-providers/tensorflow-context';
 import { useOfferContext } from '../context-providers/offer-context';
 import SelectDropDown, { SelectItem } from '../components/smart/SelectDropDown';
-import { Select } from '@tensorflow/tfjs';
 
 const screenContainerStyle = 'flex h-full w-full justify-between items-center p-5';
 
@@ -31,7 +27,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const { publicKey, secretKey } = useAuthContext();
   const { userData } = useUserDataContext();
 
-  const { clearOffersFromStorage } = useOfferContext(); // TODO: for debug purposes
+  const { selectedIndustry, setSelectedIndustry, clearOffersFromStorage } = useOfferContext(); // TODO: for debug purposes
 
   const { logout } = useAuthContext();
 
@@ -57,7 +53,14 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   // Industries
   const industries: SelectItem[] = [
     { label: 'Inteligencia Artificial', value: 'artificial_intelligence' },
+    { label: 'Desarrollo Móviles', value: 'mobile_development' },
+    { label: 'Recursos Humanos', value: 'human_resources' },
   ];
+  const industry = industries.find((item) => item.value === selectedIndustry);
+
+  const onChangeIndustry = (value: string) => {
+    setSelectedIndustry(value);
+  };
 
   return (
     <View className={`relative ${screenContainerStyle}`}>
@@ -100,7 +103,11 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
               />
             </View>
             <View className="w-60">
-              <SelectDropDown items={industries} selectedItem={industries[0]} />
+              <SelectDropDown
+                items={industries}
+                selectedItem={industry}
+                onChangeValue={onChangeIndustry}
+              />
             </View>
             <View className="mt-20 w-60">
               <CustomButton

@@ -84,6 +84,40 @@ const getAllOffers = async (): Promise<WorkOffer[]> => {
   return workOffers;
 };
 
+const getAllIndustryOffers = async (industry: string): Promise<WorkOffer[]> => {
+  const db = await connectDatabase();
+  let query = {
+    sql: 'select * from workoffer WHERE industry = ?',
+    args: [industry],
+  };
+  const [result]: any = await db
+    .execAsync([query], false)
+    .then((result) => {
+      console.log(`Offers from storage from industry "${industry}": `, result);
+      return result;
+    })
+    .catch((error) => {
+      console.error('Error getting offers from industry', error);
+    });
+  const workOffers: WorkOffer[] = result.rows.map((row) => {
+    return {
+      title: row.title,
+      summary: row.summary,
+      requiredSkills: row.required_skills ? row.required_skills.split(',') : [],
+      location: row.location,
+      price: row.price,
+      currency: row.currency,
+      period: row.period,
+      nostrId: row.nostr_id,
+      createdAt: row.created_at,
+      match: row.match,
+      industry: row.industry,
+    };
+  });
+
+  return workOffers;
+};
+
 const removeAllOffers = async (): Promise<void> => {
   const db = await connectDatabase();
   try {
@@ -102,7 +136,7 @@ const addNewOffer = async (newOffer: WorkOffer): Promise<void> => {
   const db = await connectDatabase();
   try {
     let query = {
-      sql: `INSERT INTO workoffer (title, summary, required_skills, location, price, currency, period, nostr_id, created_at, match) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      sql: `INSERT INTO workoffer (title, summary, required_skills, location, price, currency, period, nostr_id, created_at, match, industry) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       args: [
         newOffer.title,
         newOffer.summary,
@@ -176,6 +210,7 @@ const offersSqlLiteStorageService = {
   addNewOffer,
   updateOfferMatch,
   resetOfferMatch,
+  getAllIndustryOffers,
 };
 
 export default offersSqlLiteStorageService;
