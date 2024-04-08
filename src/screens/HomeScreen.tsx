@@ -21,6 +21,12 @@ import SelectDropDown, { SelectItem } from '../components/smart/SelectDropDown';
 
 const screenContainerStyle = 'flex h-full w-full justify-between items-center p-5';
 
+const industries: SelectItem[] = [
+  { label: 'Inteligencia Artificial', value: 'artificial_intelligence' },
+  { label: 'Desarrollo Móviles', value: 'mobile_development' },
+  { label: 'Recursos Humanos', value: 'human_resources' },
+];
+
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
@@ -51,11 +57,6 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   };
 
   // Industries
-  const industries: SelectItem[] = [
-    { label: 'Inteligencia Artificial', value: 'artificial_intelligence' },
-    { label: 'Desarrollo Móviles', value: 'mobile_development' },
-    { label: 'Recursos Humanos', value: 'human_resources' },
-  ];
   const industry = industries.find((item) => item.value === selectedIndustry);
 
   const onChangeIndustry = (value: string) => {
