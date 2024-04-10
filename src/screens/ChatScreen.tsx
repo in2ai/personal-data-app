@@ -33,6 +33,8 @@ const ChatScreen = ({ navigation, route }: ChatScreenProps) => {
                 authors: authors.filter((author) => author !== undefined),
                 '#t': [workOffer.nostrId],
             }]);
+            console.log('Author:', authors.filter((author) => author !== undefined));
+            console.log('NostrId:', workOffer.nostrId);
             sub.on('event', async (event) => {
                 setChatMessages((prev) => [...prev, {
                     fromPublicKey: event.pubkey,
