@@ -5,7 +5,7 @@ import { RootStackParamList } from '../navigation/MainNav';
 import { Button, ScrollView, Text, TextInput, View } from 'react-native';
 import { WorkOffer } from '../models/WorkOffer';
 import { useAuthContext } from '../context-providers/auth-context';
-import { relayInit } from 'nostr-tools';
+import { EventTemplate, relayInit } from 'nostr-tools';
 import { publishEventToRelay, signEvent } from '../api/.unused/nostr';
 const RELAY_URL = 'ws://137.184.117.201:8008';
 
@@ -25,13 +25,13 @@ const ChatScreen = ({ navigation, route }: ChatScreenProps) => {
     const [message, setMessage] = useState('');
 
     const subscribeToChat = async () => {
-        console.log('Authors', authors);
         const relay = relayInit(RELAY_URL);
         relay.on('connect', () => {
             console.log('Connected to relay');
             const sub = relay.sub([{
                 kinds: [1],
                 authors: authors.filter((author) => author !== undefined),
+                '#t': [workOffer.nostrId],
             }]);
             sub.on('event', async (event) => {
                 setChatMessages((prev) => [...prev, {
@@ -47,10 +47,10 @@ const ChatScreen = ({ navigation, route }: ChatScreenProps) => {
         subscribeToChat();
     }, []);
 
-    const sendMessage = async () => {
-        const eventTemplate = {
+    const sendMessage = async () => {    
+        const eventTemplate: EventTemplate = {
             kind: 1,
-            tags: [],
+            tags: [['t', workOffer.nostrId]],
             content: message,
             created_at: Math.floor(Date.now() / 1000),
         };
