@@ -26,7 +26,9 @@ const WorkOfferDetails: React.FC<WorkOfferDetailsProps> = ({ workOffer, onApply,
       </View>
       <View className="p-5">
         <Text className="text-lg text-h1Color">Requisitos</Text>
-        <Text className="text-md text-defaultTextColor">{workOffer.requiredSkills.join(', ')}</Text>
+        <Text className="text-md text-defaultTextColor">
+          {workOffer.requiredSkills?.join(', ')}
+        </Text>
       </View>
       <View className="p-5">
         <Text className="text-lg text-h1Color">Ubicación</Text>
