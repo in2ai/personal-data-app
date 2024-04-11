@@ -135,7 +135,7 @@ export async function matchCVOffer(cv,offer,model) {
     let percentageSimilitud = await calculateSimilarityTotal(cv, offer, weights, model);
 
     console.log(`Similarity: ${percentageSimilitud.toFixed(2)}`);
-    return percentageSimilitud;
+    return percentageSimilitud.toFixed(2);
   } catch (error) {
     console.error(error);
     return 0

@@ -31,7 +31,7 @@ const WorkOfferListItem: React.FC<WorkOfferListItemProps> = ({ workOffer, onPres
           </Text>
         </View>
         <View className={`flex-none ${workOffer.match ? matchColorView : null}`}>
-          {workOffer.match || workOffer.match === 0 ? (
+          {workOffer.match || workOffer.match === 0 || workOffer.match === null ? (
             <Text className={matchColorText}>{workOffer.match}%</Text>
           ) : (
             <ActivityIndicator size="small" color="#3c7c8c" />
