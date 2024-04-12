@@ -3,13 +3,6 @@ import { initTfjs, jsonToSpaceDelimitedText, load_model, matchCVOffer } from '..
 import { WorkOffer } from '../models/WorkOffer';
 import { useUserDataContext } from './user-data-context';
 
-import {
-  getEventsFromRelay,
-  publishEventToRelay,
-  signEvent,
-} from "../api/.unused/nostr";
-const RELAY_URL = "ws://137.184.117.201:8008";
-
 interface TensorflowContextInterface {
   isModelLoaded: boolean;
   checkOffer: (offer: WorkOffer) => Promise<number>;

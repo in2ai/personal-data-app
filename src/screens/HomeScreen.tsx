@@ -2,7 +2,7 @@ import 'expo-dev-client';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
 
-import { ActivityIndicator, Button, Text, View } from 'react-native';
+import { ActivityIndicator, Text, View } from 'react-native';
 import { RootStackParamList } from '../navigation/MainNav';
 
 import CustomButton from '../components/smart/CustomButton';
@@ -38,7 +38,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
 
   const { logout } = useAuthContext();
 
-  const { isModelLoaded, checkOffer } = useTensorflowContext();
+  const { isModelLoaded } = useTensorflowContext();
 
   const onGoToCv = () => {
     navigation.navigate('MyCV');
@@ -122,7 +122,8 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
               />
             </View>
           </View>
-          <View><Button title='Match' onPress={clearOffersFromStorage}/></View>
+          {/* For demo purposes */}
+          {/*<View><Button title='Match' onPress={clearOffersFromStorage}/></View>*/}
           {/* For demo purposes */}
           {/* <View className="mt-auto">
             <View className="mb-5 w-[80%] flex-row rounded-md bg-[#ffffff] p-3">

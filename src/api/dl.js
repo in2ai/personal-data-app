@@ -138,27 +138,8 @@ export async function matchCVOffer(cv,offer,model) {
     return percentageSimilitud.toFixed(2);
   } catch (error) {
     console.error(error);
-    return 0
+    return -1
   }
-
-  //old
-  try {
-
-    const sentences = [cv, offer];
-    console.log('//CV:', cv);
-    console.log('//Offer:', offer);
-    const embeddings = await encodeText(sentences, model);
-    const similarityScore = await calculateSimilarity(embeddings);
-
-    console.log(`Similarity Score between the two texts: ${similarityScore.toFixed(3)}`);
-    const similarityPercentage = convertirEscala(similarityScore);
-    console.log(`Existe una similitud de: ${similarityPercentage} %`);
-    return similarityPercentage;
-  } catch (error) {
-    console.error(error);
-    return 0;
-  }
-
 }
 
 export function jsonToSpaceDelimitedText(obj) {

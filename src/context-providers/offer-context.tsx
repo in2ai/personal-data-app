@@ -58,18 +58,16 @@ const OfferContextProvider = (props: any) => {
       requiresBatteryNotLow: true,       // <-- Android-only
       requiresCharging: false,          // <-- Android-only
       requiresStorageNotLow: false,     // <-- Android-only
-      requiresDeviceIdle: false,        // <-- Android-only
+      requiresDeviceIdle: true,        // <-- Android-only
       requiredNetworkType: BackgroundFetch.NETWORK_TYPE_NONE, // <-- Default
     }, async (taskId) => {
       console.log("[js] Received background-fetch event: ", taskId);
-      // Aquí invocas la función de análisis (o cualquier otra lógica de segundo plano)
       checkOffersDemon(workOffers) 
       console.log("Todo analizado");
       BackgroundFetch.finish(taskId);
     }, (error) => {
       console.log("[js] RNBackgroundFetch failed to start", error);
     });
-    // Comprueba el estado del permiso para iOS
     BackgroundFetch.status((status) => {
       switch(status) {
         case BackgroundFetch.STATUS_RESTRICTED:
@@ -127,17 +125,21 @@ const OfferContextProvider = (props: any) => {
   };
 
   const checkOffersFromStorageMatch = async (workOffers: WorkOffer[]) => {
+    BackgroundFetch.scheduleTask({
+      taskId: "com.foo.customtask",
+      forceAlarmManager: true,
+      delay: 1000  // <-- milliseconds
+    });
     if (workOffers && workOffers.length > 0) {
       workOffers.forEach((workOffer) => {
-        // workOffer.match === null && checkSimilarity(workOffer);
       });
     }
   };
 
-  const checkOffersDemon= async (workOffers: WorkOffer[]) => {
+  const checkOffersDemon = async (workOffers: WorkOffer[]) => {
     if (workOffers && workOffers.length > 0) {
       workOffers.forEach((workOffer) => {
-        if (workOffer.match === 0 || workOffer.match === null){
+        if (workOffer.match === null || workOffer.match === undefined){
           checkSimilarity(workOffer);
         }
       });
@@ -186,6 +188,7 @@ const OfferContextProvider = (props: any) => {
     BackgroundFetch.scheduleTask({
       taskId: "com.foo.customtask",
       forceAlarmManager: true,
+      requiresDeviceIdle: false,
       delay: 1000  // <-- milliseconds
     });
 
@@ -205,7 +208,7 @@ const OfferContextProvider = (props: any) => {
       workOffers.map((offer) => (offer.nostrId === workOffer.nostrId ? workOffer : offer))
     );
     await offersStoreService.updateOfferMatch(workOffer);
-  };
+  }; 
 
   const api = {
     workOffers,
