@@ -128,6 +128,7 @@ const OfferContextProvider = (props: any) => {
     BackgroundFetch.scheduleTask({
       taskId: "com.foo.customtask",
       forceAlarmManager: true,
+      requiresDeviceIdle: false,
       delay: 1000  // <-- milliseconds
     });
     if (workOffers && workOffers.length > 0) {

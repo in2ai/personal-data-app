@@ -3,6 +3,7 @@ import { ActivityIndicator, Text, View } from 'react-native';
 import CustomPressableOpacity from '../../layout/CustomPressableOpacity';
 import { timestampToddMMYYYYhhmmss } from '../../../helpers/utils';
 import { WorkOffer } from '../../../models/WorkOffer';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 type WorkOfferListItemProps = {
   workOffer: WorkOffer;
@@ -33,6 +34,9 @@ const WorkOfferListItem: React.FC<WorkOfferListItemProps> = ({ workOffer, onPres
         <View className={`flex-none ${workOffer.match ? matchColorView : null}`}>
           {workOffer.match || workOffer.match === 0 ? (
             <Text className={matchColorText}>{workOffer.match}%</Text>
+          ) : workOffer.match === null ? (
+            // Si workOffer.match es null, mostramos un ícono
+            <MaterialIcons name="error-outline" size={24} color="#cc0000" />
           ) : (
             <ActivityIndicator size="small" color="#3c7c8c" />
           )}
