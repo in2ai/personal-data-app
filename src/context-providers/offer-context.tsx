@@ -125,6 +125,7 @@ const OfferContextProvider = (props: any) => {
       newWorkOffer.createdAt = event.created_at;
       newWorkOffer.nostrId = event.id;
       newWorkOffer.industry = selectedIndustry;
+      newWorkOffer.authorPublicKey = event.pubkey;
       addNewWorkOffer(newWorkOffer);
     });
     sub.on('eose', () => {

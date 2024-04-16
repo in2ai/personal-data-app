@@ -10,4 +10,5 @@ export class WorkOffer {
   createdAt?: number;
   match?: number;
   industry?: string;
+  authorPublicKey: string;
 }
