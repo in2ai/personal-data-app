@@ -111,7 +111,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
                 onChangeValue={onChangeIndustry}
               />
             </View>
-            <View className="mt-20 w-60">
+            {/*<View className="mt-20 w-60">
               <CustomButton
                 disabled={!userData}
                 icon={<Files width={25} height={25} fill={'#fff'} />}
@@ -120,7 +120,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
                 hasLargeFont={true}
                 onPress={onResetOffers}
               />
-            </View>
+      </View>*/}
           </View>
           {/* For demo purposes */}
           {/* <View className="mt-auto">

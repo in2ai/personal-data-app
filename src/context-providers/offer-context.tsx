@@ -4,11 +4,10 @@ import offersStoreService from '../services/store/offers/offers-store-service';
 import { useTensorflowContext } from './tensorflow-context';
 import { createDatabaseTableIfNotExist } from '../services/store/offers/offers-sql-lite-storage-service';
 import { useUserDataContext } from './user-data-context';
-import { ScrollView, Text, View } from 'react-native';
+import { View } from 'react-native';
 import { WorkOffer } from '../models/WorkOffer';
 import { StatusBar } from 'expo-status-bar';
-
-const RELAY_URL = 'ws://137.184.117.201:8008';
+import { environment } from '../environments/environment';
 
 interface OfferContextInterface {
   workOffers: WorkOffer[];
@@ -105,7 +104,7 @@ const OfferContextProvider = (props: any) => {
 
   const subscribeToRelayOffers = async (lastTimeStamp?: number) => {
     console.log('Subscribing to relay from timestamp', lastTimeStamp + 1);
-    const relay = await relayInit(RELAY_URL);
+    const relay = await relayInit(environment.RELAY_URL);
 
     relay.on('connect', () => {
       console.log('Connected to relay');

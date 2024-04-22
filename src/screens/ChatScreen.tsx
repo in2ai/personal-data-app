@@ -10,8 +10,7 @@ import { publishEventToRelay, signEvent } from '../api/.unused/nostr';
 import CustomPressableOpacity from '../components/layout/CustomPressableOpacity';
 
 import SendFill from '../assets/img/svg/send-fill.svg';
-
-const RELAY_URL = 'ws://137.184.117.201:8008';
+import { environment } from '../environments/environment';
 
 type ChatScreenProps = NativeStackScreenProps<RootStackParamList, 'Chat'>;
 
@@ -30,7 +29,7 @@ const ChatScreen = ({ navigation, route }: ChatScreenProps) => {
   const [message, setMessage] = useState('');
 
   const subscribeToChat = async () => {
-    const relay = relayInit(RELAY_URL);
+    const relay = relayInit(environment.RELAY_URL);
     relay.on('connect', () => {
       console.log('Connected to relay');
       const sub = relay.sub([
@@ -73,7 +72,7 @@ const ChatScreen = ({ navigation, route }: ChatScreenProps) => {
       created_at: Math.floor(Date.now() / 1000),
     };
     const signedEvent = signEvent(eventTemplate, secretKey);
-    await publishEventToRelay(RELAY_URL, signedEvent);
+    await publishEventToRelay(environment.RELAY_URL, signedEvent);
     setMessage('');
   };
 

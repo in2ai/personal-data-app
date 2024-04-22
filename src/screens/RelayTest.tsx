@@ -10,13 +10,14 @@ import {
 } from '../api/.unused/nostr';
 import { useAuthContext } from '../context-providers/auth-context';
 import CustomButton from '../components/smart/CustomButton';
+import { environment } from '../environments/environment';
 
 const RelayTestScreen = ({ navigation, route }) => {
   const { publicKey, secretKey, logout } = useAuthContext();
 
   const [relay, setRelay] = useState(false);
   const [message, setMessage] = useState('');
-  const [url, setUrl] = useState('ws://137.184.117.201:8008');
+  const [url, setUrl] = useState(environment.RELAY_URL);
 
   const checkRelay = async () => {
     try {
