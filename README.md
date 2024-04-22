@@ -67,4 +67,10 @@ Configurar npm, para ejecuciones de npm install con legacy-peer-deps, al hacer n
 
 `npm config set legacy-peer-deps true`
 
+### Ejecución modelo de lenguaje en dispositivo móvil
+
+Ejecutar un modelo de lenguaje en un dispositivo móvil es complicado. React Native solo usa tres hilos y no permite usar más. Actualmente aunque la aplicación es funcional puede presentar congelaciones cuando se hacen los matchs de ofertas.
+Para solucionar esto nuestra idea es crear una librería de React Native que llame a funciones nativas del sistema Android e iOS para realizar la carga y match del modelo de forma nativa aprovechando al máximo las capacidades técnicas del procesador del dispositivo.
+
+
 # https://in2ai.com
