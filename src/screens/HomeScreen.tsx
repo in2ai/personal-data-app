@@ -123,6 +123,8 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
       </View>*/}
           </View>
           {/* For demo purposes */}
+          {/*<View><Button title='Match' onPress={clearOffersFromStorage}/></View>*/}
+          {/* For demo purposes */}
           {/* <View className="mt-auto">
             <View className="mb-5 w-[80%] flex-row rounded-md bg-[#ffffff] p-3">
               <Text className="text-[#404040]">Public key: </Text>

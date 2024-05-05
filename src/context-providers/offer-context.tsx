@@ -36,7 +36,6 @@ const OfferContextProvider = (props: any) => {
 
   useEffect(() => {
     if (!userData) return;
-
     updateAllOffersMatch();
   }, [userData]);
 
@@ -47,6 +46,42 @@ const OfferContextProvider = (props: any) => {
   useEffect(() => {
     isModelLoaded && selectedIndustry && getSelectedIndustryOffersFromStorage();
   }, [isModelLoaded, selectedIndustry]);
+
+  useEffect(() => {
+    BackgroundFetch.configure({
+      minimumFetchInterval: 15, // <-- minutos, el mínimo permitido
+      stopOnTerminate: false,   // <-- Android-only,
+      startOnBoot: true,         // <-- Android-only
+      requiresBatteryNotLow: true,       // <-- Android-only
+      requiresCharging: false,          // <-- Android-only
+      requiresStorageNotLow: false,     // <-- Android-only
+      requiresDeviceIdle: true,        // <-- Android-only
+      requiredNetworkType: BackgroundFetch.NETWORK_TYPE_NONE, // <-- Default
+    }, async (taskId) => {
+      console.log("[js] Received background-fetch event: ", taskId);
+      checkOffersDemon(workOffers) 
+      console.log("Todo analizado");
+      BackgroundFetch.finish(taskId);
+    }, (error) => {
+      console.log("[js] RNBackgroundFetch failed to start", error);
+    });
+    BackgroundFetch.status((status) => {
+      switch(status) {
+        case BackgroundFetch.STATUS_RESTRICTED:
+          console.log("BackgroundFetch restricted");
+          break;
+        case BackgroundFetch.STATUS_DENIED:
+          console.log("BackgroundFetch denied");
+          break;
+        case BackgroundFetch.STATUS_AVAILABLE:
+          console.log("BackgroundFetch is enabled");
+          break;
+      }
+    });
+    return () => {
+      BackgroundFetch.stop();
+    };
+  }, []);
 
   const clearOffersFromStorage = async () => {
     await offersStoreService.removeAllOffers();
@@ -87,9 +122,24 @@ const OfferContextProvider = (props: any) => {
   };
 
   const checkOffersFromStorageMatch = async (workOffers: WorkOffer[]) => {
+    BackgroundFetch.scheduleTask({
+      taskId: "com.foo.customtask",
+      forceAlarmManager: true,
+      requiresDeviceIdle: false,
+      delay: 1000  // <-- milliseconds
+    });
     if (workOffers && workOffers.length > 0) {
       workOffers.forEach((workOffer) => {
-        workOffer.match === null && checkSimilarity(workOffer);
+      });
+    }
+  };
+
+  const checkOffersDemon = async (workOffers: WorkOffer[]) => {
+    if (workOffers && workOffers.length > 0) {
+      workOffers.forEach((workOffer) => {
+        if (workOffer.match === null || workOffer.match === undefined){
+          checkSimilarity(workOffer);
+        }
       });
     }
   };
@@ -97,7 +147,7 @@ const OfferContextProvider = (props: any) => {
   const updateAllOffersMatch = async () => {
     if (workOffers && workOffers.length > 0) {
       workOffers.forEach(async (workOffer) => {
-        checkSimilarity(workOffer);
+        // checkSimilarity(workOffer);
       });
     }
   };
@@ -133,13 +183,20 @@ const OfferContextProvider = (props: any) => {
     });
 
     relay.connect();
+
+    BackgroundFetch.scheduleTask({
+      taskId: "com.foo.customtask",
+      forceAlarmManager: true,
+      requiresDeviceIdle: false,
+      delay: 1000  // <-- milliseconds
+    });
+
   };
 
   const addNewWorkOffer = async (newWorkOffer: WorkOffer) => {
     setWorkOffers((workOffers) => [newWorkOffer, ...workOffers]);
     await offersStoreService.addNewOffer(newWorkOffer);
-
-    checkSimilarity(newWorkOffer);
+    // checkSimilarity(newWorkOffer);
   };
 
   const checkSimilarity = async (workOffer: WorkOffer) => {
@@ -150,7 +207,7 @@ const OfferContextProvider = (props: any) => {
       workOffers.map((offer) => (offer.nostrId === workOffer.nostrId ? workOffer : offer))
     );
     await offersStoreService.updateOfferMatch(workOffer);
-  };
+  }; 
 
   const api = {
     workOffers,
