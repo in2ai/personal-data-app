@@ -33,7 +33,7 @@ const WorkOfferListItem: React.FC<WorkOfferListItemProps> = ({ workOffer, onPres
         </View>
         <View className={`flex-none ${workOffer.match ? matchColorView : null}`}>
           {workOffer.match || workOffer.match === 0 ? (
-            <Text className={matchColorText}>{workOffer.match}%</Text>
+            <Text className={matchColorText}>{workOffer.match.toFixed(2)}%</Text>
           ) : workOffer.match === null ? (
             // Si workOffer.match es null, mostramos un ícono
             <MaterialIcons name="error-outline" size={24} color="#cc0000" />
