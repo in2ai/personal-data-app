@@ -8,6 +8,7 @@ import { View } from 'react-native';
 import { WorkOffer } from '../models/WorkOffer';
 import { StatusBar } from 'expo-status-bar';
 import { environment } from '../environments/environment';
+import BackgroundFetch from 'react-native-background-fetch';
 
 interface OfferContextInterface {
   workOffers: WorkOffer[];
