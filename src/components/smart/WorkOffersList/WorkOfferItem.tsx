@@ -3,7 +3,9 @@ import { ActivityIndicator, Text, View } from 'react-native';
 import CustomPressableOpacity from '../../layout/CustomPressableOpacity';
 import { timestampToddMMYYYYhhmmss } from '../../../helpers/utils';
 import { WorkOffer } from '../../../models/WorkOffer';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
+// Icons
+import ExclamationCircle from '../../../assets/img/svg/exclamation-circle.svg';
 
 type WorkOfferListItemProps = {
   workOffer: WorkOffer;
@@ -36,7 +38,9 @@ const WorkOfferListItem: React.FC<WorkOfferListItemProps> = ({ workOffer, onPres
             <Text className={matchColorText}>{workOffer.match.toFixed(2)}%</Text>
           ) : workOffer.match === null ? (
             // Si workOffer.match es null, mostramos un ícono
-            <MaterialIcons name="error-outline" size={24} color="#cc0000" />
+            <View className="pl-2">
+              <ExclamationCircle width={22} height={22} fill="#cc0000" />
+            </View>
           ) : (
             <ActivityIndicator size="small" color="#3c7c8c" />
           )}
