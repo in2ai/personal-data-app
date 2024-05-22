@@ -30,7 +30,6 @@ const industries: SelectItem[] = [
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
-
   const { publicKey, secretKey } = useAuthContext();
   const { userData } = useUserDataContext();
 
@@ -123,7 +122,9 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
       </View>*/}
           </View>
           {/* For demo purposes */}
-          {/*<View><Button title='Match' onPress={clearOffersFromStorage}/></View>*/}
+          <View>
+            <CustomButton title="Reset stored offers" onPress={clearOffersFromStorage} />
+          </View>
           {/* For demo purposes */}
           {/* <View className="mt-auto">
             <View className="mb-5 w-[80%] flex-row rounded-md bg-[#ffffff] p-3">

@@ -11,4 +11,5 @@ export class WorkOffer {
   match?: number;
   industry?: string;
   authorPublicKey?: string;
+  isFavorite?: boolean;
 }

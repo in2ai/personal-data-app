@@ -1,5 +1,5 @@
 import React, { memo, useState } from 'react';
-import { WorkOffer } from '../../../models/workOffer';
+import { WorkOffer } from '../../../models/WorkOffer';
 import { FlashList } from '@shopify/flash-list';
 
 import WorkOfferListItem from './WorkOfferItem';
