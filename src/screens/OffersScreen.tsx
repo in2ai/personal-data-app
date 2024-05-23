@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 
 import { ActivityIndicator, Text, View } from 'react-native';
 import { RootStackParamList } from '../navigation/MainNav';
-import { WorkOffer } from '../models/workOffer';
+import { WorkOffer } from '../models/WorkOffer';
 import WorkOffersList from '../components/smart/WorkOffersList/WorkOffersList';
 import WorkOfferDetails from '../components/smart/WorkOffersList/WorkOfferDetails';
 
@@ -18,24 +18,21 @@ const OffersScreen: React.FC<OffersScreenProps> = ({ navigation }) => {
   const { workOffers, isFetching: isFetchingWorkOffers } = useOfferContext();
   const sortedWorkOffers = workOffers?.sort((a, b) => b.createdAt - a.createdAt) ?? [];
 
-  useEffect(() => {
-    console.log('OffersScreen', workOffers);
-  }, [workOffers]);
-
-  const [selectedWorkOffer, setSelectedWorkOffer] = useState<WorkOffer | null>(null);
+  const [selectedWorkOfferNostrId, setSelectedWorkOfferNostrId] = useState<string | null>(null);
+  const selectedWorkOffer = workOffers?.find((wo) => wo.nostrId === selectedWorkOfferNostrId);
 
   const onPressWorkOffer = (workOffer: WorkOffer) => {
     console.log('onPressWorkOffer', workOffer);
-    setSelectedWorkOffer(workOffer);
+    setSelectedWorkOfferNostrId(workOffer.nostrId);
   };
 
   const onCancel = () => {
-    setSelectedWorkOffer(null);
+    setSelectedWorkOfferNostrId(null);
   };
 
   const onApply = (workOffer: WorkOffer) => {
     navigation.navigate('Chat', { workOffer });
-    setSelectedWorkOffer(null);
+    setSelectedWorkOfferNostrId(null);
   };
 
   return !workOffers ? (
