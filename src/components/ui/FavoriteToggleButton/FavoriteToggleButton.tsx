@@ -7,11 +7,13 @@ import StarFill from '../../../assets/img/svg/star-fill.svg';
 import CustomPressableOpacity from '../../layout/CustomPressableOpacity';
 
 type FavoriteToggleButtonProps = {
+  size?: number;
   isSelected?: boolean;
   onToggle?: () => void;
 };
 
 const FavoriteToggleButton: React.FC<FavoriteToggleButtonProps> = ({
+  size = 22,
   isSelected = false,
   onToggle,
 }) => {
@@ -22,9 +24,9 @@ const FavoriteToggleButton: React.FC<FavoriteToggleButtonProps> = ({
     <CustomPressableOpacity onPress={() => onToggleFavorite()}>
       <View>
         {isSelected ? (
-          <StarFill width={22} height={22} fill="#3c7c8c" />
+          <StarFill width={size} height={size} fill="#3c7c8c" />
         ) : (
-          <Star width={22} height={22} fill="#3c7c8c" />
+          <Star width={size} height={size} fill="#3c7c8c" />
         )}
       </View>
     </CustomPressableOpacity>

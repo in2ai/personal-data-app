@@ -122,9 +122,9 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
       </View>*/}
           </View>
           {/* For demo purposes */}
-          <View>
+          {/* <View>
             <CustomButton title="Reset stored offers" onPress={clearOffersFromStorage} />
-          </View>
+          </View> */}
           {/* For demo purposes */}
           {/* <View className="mt-auto">
             <View className="mb-5 w-[80%] flex-row rounded-md bg-[#ffffff] p-3">
