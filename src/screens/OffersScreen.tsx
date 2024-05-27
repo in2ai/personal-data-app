@@ -1,0 +1,58 @@
+import 'expo-dev-client';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import React, { useEffect, useState } from 'react';
+
+import { ActivityIndicator, Text, View } from 'react-native';
+import { RootStackParamList } from '../navigation/MainNav';
+import { WorkOffer } from '../models/WorkOffer';
+import WorkOffersList from '../components/smart/WorkOffersList/WorkOffersList';
+import WorkOfferDetails from '../components/smart/WorkOffersList/WorkOfferDetails';
+
+import { useOfferContext } from '../context-providers/offer-context';
+
+const screenContainerStyle = 'flex h-full w-full';
+
+type OffersScreenProps = NativeStackScreenProps<RootStackParamList, 'Offers'>;
+
+const OffersScreen: React.FC<OffersScreenProps> = ({ navigation }) => {
+  const { workOffers, isFetching: isFetchingWorkOffers } = useOfferContext();
+  const sortedWorkOffers = workOffers?.sort((a, b) => b.createdAt - a.createdAt) ?? [];
+
+  const [selectedWorkOfferNostrId, setSelectedWorkOfferNostrId] = useState<string | null>(null);
+  const selectedWorkOffer = workOffers?.find((wo) => wo.nostrId === selectedWorkOfferNostrId);
+
+  const onPressWorkOffer = (workOffer: WorkOffer) => {
+    console.log('onPressWorkOffer', workOffer);
+    setSelectedWorkOfferNostrId(workOffer.nostrId);
+  };
+
+  const onCancel = () => {
+    setSelectedWorkOfferNostrId(null);
+  };
+
+  const onApply = (workOffer: WorkOffer) => {
+    navigation.navigate('Chat', { workOffer });
+    setSelectedWorkOfferNostrId(null);
+  };
+
+  return !workOffers ? (
+    <View className="flex h-full items-center justify-center">
+      <ActivityIndicator size="large" color="#3c7c8c" />
+      <Text className="mt-5 text-[#3c7c8c]">Loading model...</Text>
+    </View>
+  ) : (
+    <View className={screenContainerStyle}>
+      {!selectedWorkOffer ? (
+        <WorkOffersList
+          workOffers={sortedWorkOffers}
+          isFetching={isFetchingWorkOffers}
+          onPressWorkOffer={onPressWorkOffer}
+        />
+      ) : (
+        <WorkOfferDetails workOffer={selectedWorkOffer} onCancel={onCancel} onApply={onApply} />
+      )}
+    </View>
+  );
+};
+
+export default OffersScreen;

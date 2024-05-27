@@ -16,7 +16,16 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.personal-data-app"
+      "bundleIdentifier": "com.anonymous.personal-data-app",
+      "infoPlist": {
+        "UIBackgroundModes": [
+          "fetch",
+          "processing"
+        ],
+        "BGTaskSchedulerPermittedIdentifiers": [
+          "com.transistorsoft.fetch"
+        ]
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -27,6 +36,14 @@
     },
     "web": {
       "favicon": "./src/assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "6132c2ce-b7f6-4087-a2af-e53b214e88de"
+      }
+    },
+    "plugins": [
+      "react-native-background-fetch"
+    ]
   }
 }
