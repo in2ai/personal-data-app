@@ -1,6 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 
-import { WorkOffer } from '../../../models/workOffer';
+import { WorkOffer } from '../../../models/WorkOffer';
 
 export const createDatabaseTableIfNotExist = async () => {
   const db = SQLite.openDatabase('work-offers-database.db');
@@ -22,7 +22,9 @@ export const createDatabaseTableIfNotExist = async () => {
             nostr_id VARCHAR(128),
             created_at INTEGER,
             match INTEGER,
-            industry VARCHAR(128)
+            industry VARCHAR(128),
+            author_public_key VARCHAR(128),
+            isFavorite BOOLEAN
           )`,
             args: [],
           },
@@ -78,6 +80,8 @@ const getAllOffers = async (): Promise<WorkOffer[]> => {
       createdAt: row.created_at,
       match: row.match,
       industry: row.industry,
+      authorPublicKey: row.author_public_key,
+      isFavorite: row.isFavorite === 1 ? true : false,
     };
   });
 
@@ -112,6 +116,8 @@ const getAllIndustryOffers = async (industry: string): Promise<WorkOffer[]> => {
       createdAt: row.created_at,
       match: row.match,
       industry: row.industry,
+      authorPublicKey: row.author_public_key,
+      isFavorite: row.isFavorite === 1 ? true : false,
     };
   });
 
@@ -136,7 +142,7 @@ const addNewOffer = async (newOffer: WorkOffer): Promise<void> => {
   const db = await connectDatabase();
   try {
     let query = {
-      sql: `INSERT INTO workoffer (title, summary, required_skills, location, price, currency, period, nostr_id, created_at, match, industry) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      sql: `INSERT INTO workoffer (title, summary, required_skills, location, price, currency, period, nostr_id, created_at, match, industry, author_public_key, isFavorite) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       args: [
         newOffer.title,
         newOffer.summary,
@@ -149,6 +155,8 @@ const addNewOffer = async (newOffer: WorkOffer): Promise<void> => {
         newOffer.createdAt,
         newOffer.match,
         newOffer.industry,
+        newOffer.authorPublicKey,
+        newOffer.isFavorite ? 1 : 0,
       ],
     };
     await db
@@ -204,6 +212,26 @@ const resetOfferMatch = async (workOffer: WorkOffer): Promise<void> => {
   }
 };
 
+const toggleFavoriteState = async (workOffer: WorkOffer): Promise<void> => {
+  const db = await connectDatabase();
+  try {
+    let query = {
+      sql: `UPDATE workoffer SET isFavorite = ? WHERE nostr_id = ?`,
+      args: [workOffer.isFavorite ? 0 : 1, workOffer.nostrId],
+    };
+    await db
+      .execAsync([query], false)
+      .then((result) => {
+        console.log('Offer favorite toggled', result);
+      })
+      .catch((err) => {
+        console.error('Error toggling favorite state', err);
+      });
+  } catch (err) {
+    throw new Error(`ERROR toggling favorite state => ${err}`);
+  }
+};
+
 const offersSqlLiteStorageService = {
   getAllOffers,
   removeAllOffers,
@@ -211,6 +239,7 @@ const offersSqlLiteStorageService = {
   updateOfferMatch,
   resetOfferMatch,
   getAllIndustryOffers,
+  toggleFavoriteState,
 };
 
 export default offersSqlLiteStorageService;

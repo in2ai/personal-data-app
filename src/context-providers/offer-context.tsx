@@ -4,13 +4,11 @@ import offersStoreService from '../services/store/offers/offers-store-service';
 import { useTensorflowContext } from './tensorflow-context';
 import { createDatabaseTableIfNotExist } from '../services/store/offers/offers-sql-lite-storage-service';
 import { useUserDataContext } from './user-data-context';
-import { ScrollView, Text, View } from 'react-native';
+import { View } from 'react-native';
 import { WorkOffer } from '../models/WorkOffer';
 import { StatusBar } from 'expo-status-bar';
-
-import BackgroundFetch from "react-native-background-fetch";
-
-const RELAY_URL = 'ws://137.184.117.201:8008';
+import { environment } from '../environments/environment';
+import BackgroundFetch from 'react-native-background-fetch';
 
 interface OfferContextInterface {
   workOffers: WorkOffer[];
@@ -19,6 +17,7 @@ interface OfferContextInterface {
   clearOffersFromStorage: () => void; // TODO: for debugging purpposes
   selectedIndustry: string;
   setSelectedIndustry: (industry: string) => void;
+  toggleWorkOfferFavorite: (workOffer: WorkOffer) => void;
 }
 
 export const OfferContext = React.createContext<OfferContextInterface>({} as OfferContextInterface);
@@ -51,33 +50,37 @@ const OfferContextProvider = (props: any) => {
   }, [isModelLoaded, selectedIndustry]);
 
   useEffect(() => {
-    BackgroundFetch.configure({
-      minimumFetchInterval: 15, // <-- minutos, el mínimo permitido
-      stopOnTerminate: false,   // <-- Android-only,
-      startOnBoot: true,         // <-- Android-only
-      requiresBatteryNotLow: true,       // <-- Android-only
-      requiresCharging: false,          // <-- Android-only
-      requiresStorageNotLow: false,     // <-- Android-only
-      requiresDeviceIdle: true,        // <-- Android-only
-      requiredNetworkType: BackgroundFetch.NETWORK_TYPE_NONE, // <-- Default
-    }, async (taskId) => {
-      console.log("[js] Received background-fetch event: ", taskId);
-      checkOffersDemon(workOffers) 
-      console.log("Todo analizado");
-      BackgroundFetch.finish(taskId);
-    }, (error) => {
-      console.log("[js] RNBackgroundFetch failed to start", error);
-    });
+    BackgroundFetch.configure(
+      {
+        minimumFetchInterval: 15, // <-- minutos, el mínimo permitido
+        stopOnTerminate: false, // <-- Android-only,
+        startOnBoot: true, // <-- Android-only
+        requiresBatteryNotLow: true, // <-- Android-only
+        requiresCharging: false, // <-- Android-only
+        requiresStorageNotLow: false, // <-- Android-only
+        requiresDeviceIdle: true, // <-- Android-only
+        requiredNetworkType: BackgroundFetch.NETWORK_TYPE_NONE, // <-- Default
+      },
+      async (taskId) => {
+        console.log('[js] Received background-fetch event: ', taskId);
+        checkOffersDemon(workOffers);
+        console.log('Todo analizado');
+        BackgroundFetch.finish(taskId);
+      },
+      (error) => {
+        console.log('[js] RNBackgroundFetch failed to start', error);
+      }
+    );
     BackgroundFetch.status((status) => {
-      switch(status) {
+      switch (status) {
         case BackgroundFetch.STATUS_RESTRICTED:
-          console.log("BackgroundFetch restricted");
+          console.log('BackgroundFetch restricted');
           break;
         case BackgroundFetch.STATUS_DENIED:
-          console.log("BackgroundFetch denied");
+          console.log('BackgroundFetch denied');
           break;
         case BackgroundFetch.STATUS_AVAILABLE:
-          console.log("BackgroundFetch is enabled");
+          console.log('BackgroundFetch is enabled');
           break;
       }
     });
@@ -126,21 +129,20 @@ const OfferContextProvider = (props: any) => {
 
   const checkOffersFromStorageMatch = async (workOffers: WorkOffer[]) => {
     BackgroundFetch.scheduleTask({
-      taskId: "com.foo.customtask",
+      taskId: 'com.foo.customtask',
       forceAlarmManager: true,
       requiresDeviceIdle: false,
-      delay: 1000  // <-- milliseconds
+      delay: 1000, // <-- milliseconds
     });
     if (workOffers && workOffers.length > 0) {
-      workOffers.forEach((workOffer) => {
-      });
+      workOffers.forEach((workOffer) => {});
     }
   };
 
   const checkOffersDemon = async (workOffers: WorkOffer[]) => {
     if (workOffers && workOffers.length > 0) {
       workOffers.forEach((workOffer) => {
-        if (workOffer.match === null || workOffer.match === undefined){
+        if (workOffer.match === null || workOffer.match === undefined) {
           checkSimilarity(workOffer);
         }
       });
@@ -157,7 +159,7 @@ const OfferContextProvider = (props: any) => {
 
   const subscribeToRelayOffers = async (lastTimeStamp?: number) => {
     console.log('Subscribing to relay from timestamp', lastTimeStamp + 1);
-    const relay = await relayInit(RELAY_URL);
+    const relay = await relayInit(environment.RELAY_URL);
 
     relay.on('connect', () => {
       console.log('Connected to relay');
@@ -177,6 +179,8 @@ const OfferContextProvider = (props: any) => {
       newWorkOffer.createdAt = event.created_at;
       newWorkOffer.nostrId = event.id;
       newWorkOffer.industry = selectedIndustry;
+      newWorkOffer.authorPublicKey = event.pubkey;
+      newWorkOffer.isFavorite = false;
       addNewWorkOffer(newWorkOffer);
     });
     sub.on('eose', () => {
@@ -187,12 +191,11 @@ const OfferContextProvider = (props: any) => {
     relay.connect();
 
     BackgroundFetch.scheduleTask({
-      taskId: "com.foo.customtask",
+      taskId: 'com.foo.customtask',
       forceAlarmManager: true,
       requiresDeviceIdle: false,
-      delay: 1000  // <-- milliseconds
+      delay: 1000, // <-- milliseconds
     });
-
   };
 
   const addNewWorkOffer = async (newWorkOffer: WorkOffer) => {
@@ -209,7 +212,18 @@ const OfferContextProvider = (props: any) => {
       workOffers.map((offer) => (offer.nostrId === workOffer.nostrId ? workOffer : offer))
     );
     await offersStoreService.updateOfferMatch(workOffer);
-  }; 
+  };
+
+  const toggleWorkOfferFavorite = async (workOffer: WorkOffer) => {
+    await offersStoreService.toggleFavoriteState(workOffer);
+    setWorkOffers((workOffers) =>
+      workOffers.map((offer) =>
+        offer.nostrId !== workOffer.nostrId
+          ? { ...offer }
+          : { ...offer, isFavorite: !offer.isFavorite }
+      )
+    );
+  };
 
   const api = {
     workOffers,
@@ -218,6 +232,7 @@ const OfferContextProvider = (props: any) => {
     clearOffersFromStorage, // TODO: for debugging purposes
     selectedIndustry,
     setSelectedIndustry,
+    toggleWorkOfferFavorite,
   };
 
   return (
