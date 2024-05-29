@@ -10,5 +10,3 @@ WORKDIR /DL
 RUN pip install -r requirements.txt
 # Add to PATH
 ENV PYTHONPATH="/DL:${PYTHONPATH}"
-
-RUN python -m spacy download es_core_news_sm

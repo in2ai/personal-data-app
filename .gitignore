@@ -38,8 +38,9 @@ yarn-error.*
 
 # devcontainer
 DL/.devcontainer/*.json
-DL/data
-DL/*.gz
+DL/v.1/data
+DL/cifar-10-batches-py
+DL/v.1/*.gz
 # Expo
 .expo
 dist/

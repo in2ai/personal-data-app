@@ -1,0 +1,37 @@
+Notas sobre aprendizaje federado
+
+
+Parte del servidor
+
+    - Modelo
+    - Evaluacion
+    - Metrica del modelo general
+
+Serializacion
+    - Comunicacion entre ellos, importante
+
+
+Parte del cliente
+    - Cliente
+        - Entrenar
+        - get_server_parameters
+        - set_server_parameters
+        - Evaluar
+    - Evaluar cada cliente por separado
+    - Datos
+
+Estrategia
+start_simulation
+
+El servidor puede enviar config al entrenamiento de los clientes, se hace mediante fit_config y on_fit_config_fn en la strategy
+Podemos crear nuestro propio strategy [https://flower.ai/docs/framework/tutorial-series-build-a-strategy-from-scratch-pytorch.html]
+
+Server
+    - Python ?
+    - Pytorch 
+
+Cliente
+    - Android
+    - Ios
+    - Se puede con react native ?
+    - Kotlin ?
